@@ -1,3 +1,10 @@
+---
+title: "Research"
+collection: My Research
+permalink: /Research
+date: 2025-10-12
+---
+
 # Research Papers
 ## Working Papers
 ### Strategic Land Supply and Booming Urban Greens in China (New Draft Coming Soon)
