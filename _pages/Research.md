@@ -4,7 +4,16 @@ title: "Research"
 permalink: /Research/
 author_profile: true
 ---
-# Research Papers
+<style>
+summary {
+  cursor: pointer;
+}
+summary:hover {
+  color: #0066cc;  /* 可选：悬停时变色 */
+}
+</style>
+
+#Research Papers
 ## Working Papers
 ### Strategic Land Supply and Booming Urban Greens in China (New Draft Coming Soon)
 Independent Research\
