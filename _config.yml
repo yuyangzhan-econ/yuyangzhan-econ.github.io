@@ -259,7 +259,7 @@ defaults:
     values:
       layout: single
       author_profile: true
-      share: false
+      share: ture
       comments: true
   # _publications
   - scope:
@@ -273,7 +273,7 @@ defaults:
   # _portfolio
   - scope:
       path: ""
-      type: portfolio
+      type: Research
     values:
       layout: single
       author_profile: true
