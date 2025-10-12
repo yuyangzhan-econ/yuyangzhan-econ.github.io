@@ -1,5 +1,5 @@
 ---
-title: "Intermediate Microeconomics (Fall 2025, TA for [Jun Han](http://slhr.ruc.edu.cn/En/Teacher_Home/HAN_Jun/index.htm))*"
+title: "Intermediate Microeconomics (Fall 2025, TA for [Jun Han](http://slhr.ruc.edu.cn/En/Teacher_Home/HAN_Jun/index.htm))"
 collection: teaching
 type: "Undergraduate course"
 venue: "Renmin University of China"
