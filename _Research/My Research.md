@@ -1,7 +1,7 @@
 ---
 title: "Research"
 collection: My Research
-permalink: /Research
+permalink: /Research/
 date: 2025-10-12
 ---
 
