@@ -1,7 +1,11 @@
 ---
 title: "Teaching Experience"
 collection: teaching
+type: "Undergraduate course"
+venue: "Renmin University of China"
+date: 2025-9-1
+location: "Beijing"
 permalink: /Teaching
 ---
-## Renmin University of China
-**Intermediate Microeconomics** (Fall 2025, TA for [Jun Han](http://slhr.ruc.edu.cn/En/Teacher_Home/HAN_Jun/index.htm))
+ **Intermediate Microeconomics**
+ Fall 2025, TA for [Jun Han](http://slhr.ruc.edu.cn/En/Teacher_Home/HAN_Jun/index.htm)
