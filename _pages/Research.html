@@ -20,8 +20,17 @@ summary:hover {
   color: #0066cc;
 }
 
-details[open] .abstract {
-  animation: fadeIn 0.5s ease-in;
+.abstract {
+  padding: 15px;
+  background-color: #fafafa;
+  border-left: 3px solid #e0e0e0;
+  margin-top: 5px;
+  line-height: 1.6;
+  opacity: 0;
+}
+
+.abstract.fade-in {
+  animation: fadeIn 0.5s ease-in forwards;
 }
 
 @keyframes fadeIn {
@@ -37,14 +46,6 @@ details[open] .abstract {
 
 details {
   margin-bottom: 20px;
-}
-
-.abstract {
-  padding: 15px;
-  background-color: #fafafa;
-  border-left: 3px solid #e0e0e0;
-  margin-top: 5px;
-  line-height: 1.6;
 }
 
 .paper-title {
@@ -74,14 +75,23 @@ details {
   </div>
 </details>
 
-<!-- 添加更多论文 -->
-<!--
-<h3 class="paper-title">Second Paper Title</h3>
-<p class="paper-meta">Joint with Co-author</p>
-<details>
-  <summary>Abstract</summary>
-  <div class="abstract">
-    Abstract content here...
-  </div>
-</details>
--->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const detailsElements = document.querySelectorAll('details');
+  
+  detailsElements.forEach(detail => {
+    detail.addEventListener('toggle', function() {
+      const abstract = this.querySelector('.abstract');
+      
+      if (this.open) {
+        // 移除动画类
+        abstract.classList.remove('fade-in');
+        // 强制重排以重启动画
+        void abstract.offsetWidth;
+        // 重新添加动画类
+        abstract.classList.add('fade-in');
+      }
+    });
+  });
+});
+</script>
