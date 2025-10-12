@@ -8,20 +8,6 @@
 #      Markdown formatted page while the second is generated using JSON.
 
 main:
-  #- title: "Publications"
-    #url: /publications/
-
- # - title: "Talks"
-  #  url: /talks/    
-
-  
-    
-  #- title: "Portfolio"
- #   url: /portfolio/
-        
- # - title: "Blog Posts"
-  #  url: /year-archive/
-    
   - title: "CV"
     url: /CV/Yuyang Zhan CV.pdf
 
@@ -30,9 +16,3 @@ main:
 
   - title: "Teaching"
     url: /_teaching/teaching-1.md
-    
-  # - title: "CV"
-  #   url: /cv-json/
-    
-  #- title: "Guide"
- #   url: /markdown/
