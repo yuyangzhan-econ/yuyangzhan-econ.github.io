@@ -23,13 +23,13 @@ main:
   #  url: /year-archive/
     
   - title: "CV"
-    url: /cv/
+    url: /CV/
 
   - title: "Research"
-    url: /Research/
+    url: /_Research/
 
   - title: "Teaching"
-    url: /teaching/    
+    url: /_teaching/    
     
   # - title: "CV"
   #   url: /cv-json/
