@@ -26,12 +26,7 @@ summary:hover {
   border-left: 3px solid #e0e0e0;
   margin-top: 5px;
   line-height: 1.6;
-  display: none;
-}
-
-details[open] .abstract {
-  display: block;
-  animation: fadeIn 0.5s ease;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -43,6 +38,10 @@ details[open] .abstract {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.animate {
+  animation: fadeIn 0.5s ease;
 }
 
 details {
@@ -75,3 +74,41 @@ details {
     This paper examines shifting China's air-quality monitoring stations to independent private operators prompted municipal officials to strategically develop green spaces around monitoring stations. A simple model demonstrates that higher data manipulation costs caused by the reform generate substitution effects (expanded real green space) and signal-strength effects (increased reliance on credible data). Analysis of over one million land-transfer records with difference-in-differences design reveals park and green-space transfers nearly doubled within 5 km of monitoring stations post-reform, with effects diminishing by distance. These findings underscore the necessity of comprehensive, multi-metric evaluation systems to prevent unintended spatial resource allocation distortions.
   </div>
 </details>
+
+<script>
+(function() {
+  // 等待DOM加载完成
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnimations);
+  } else {
+    initAnimations();
+  }
+  
+  function initAnimations() {
+    const allDetails = document.querySelectorAll('details');
+    
+    allDetails.forEach(function(details) {
+      details.addEventListener('toggle', function() {
+        if (this.open) {
+          const abstract = this.querySelector('.abstract');
+          
+          // 先隐藏
+          abstract.style.display = 'none';
+          
+          // 立即显示并添加动画类
+          setTimeout(function() {
+            abstract.style.display = 'block';
+            abstract.classList.remove('animate');
+            
+            // 强制重排
+            abstract.offsetHeight;
+            
+            // 添加动画
+            abstract.classList.add('animate');
+          }, 10);
+        }
+      });
+    });
+  }
+})();
+</script>
