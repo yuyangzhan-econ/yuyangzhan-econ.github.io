@@ -12,7 +12,7 @@ main:
     url: /CV/Yuyang Zhan CV.pdf
 
   - title: "Research"
-    url: /_Research/My Research.md
+    url: /Research
 
   - title: "Teaching"
-    url: /_teaching/teaching-1.md
+    url: /teaching
