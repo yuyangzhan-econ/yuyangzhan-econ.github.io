@@ -23,13 +23,13 @@ main:
   #  url: /year-archive/
     
   - title: "CV"
-    url: /CV/
+    url: /CV/Yuyang Zhan CV.pdf
 
   - title: "Research"
-    url: /_Research/
+    url: /_Research/My Research.md
 
   - title: "Teaching"
-    url: /_teaching/    
+    url: /_teaching/teaching-1.md
     
   # - title: "CV"
   #   url: /cv-json/
