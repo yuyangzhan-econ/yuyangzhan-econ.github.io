@@ -26,19 +26,18 @@ summary:hover {
   border-left: 3px solid #e0e0e0;
   margin-top: 5px;
   line-height: 1.6;
-  opacity: 0;
 }
 
 .abstract.fade-in {
-  animation: fadeIn 0.5s ease-in forwards;
+  animation: fadeIn 0.5s ease-in;
 }
 
 @keyframes fadeIn {
-  0% { 
-    opacity: 0; 
+  from { 
+    opacity: 0;
     transform: translateY(-10px);
   }
-  100% { 
+  to { 
     opacity: 1;
     transform: translateY(0);
   }
@@ -75,19 +74,35 @@ details {
   </div>
 </details>
 
+<!-- 添加更多论文示例 -->
+<!--
+<h3 class="paper-title">Second Paper Title</h3>
+<p class="paper-meta">Joint with Co-author Name</p>
+<p><em>Research question here</em></p>
+
+<details>
+  <summary>Abstract</summary>
+  <div class="abstract">
+    Abstract content here...
+  </div>
+</details>
+-->
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const detailsElements = document.querySelectorAll('details');
   
-  detailsElements.forEach(detail => {
+  detailsElements.forEach(function(detail) {
     detail.addEventListener('toggle', function() {
-      const abstract = this.querySelector('.abstract');
-      
       if (this.open) {
+        const abstract = this.querySelector('.abstract');
+        
         // 移除动画类
         abstract.classList.remove('fade-in');
-        // 强制重排以重启动画
+        
+        // 强制浏览器重排，这样动画会重新开始
         void abstract.offsetWidth;
+        
         // 重新添加动画类
         abstract.classList.add('fade-in');
       }
