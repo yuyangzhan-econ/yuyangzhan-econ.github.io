@@ -5,6 +5,7 @@ type: "Undergraduate course"
 venue: "Renmin University"
 date: 2025-10-12
 location: "Beijing"
+permalink: /teaching
 ---
 
 ## Renmin University of China
