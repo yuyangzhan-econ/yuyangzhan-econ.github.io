@@ -10,20 +10,18 @@ summary {
   cursor: pointer;
   font-weight: bold;
   padding: 10px;
-  background-color: #f5f5f5;
   border-left: 3px solid #0066cc;
   transition: all 0.3s ease;
 }
 
 summary:hover {
-  background-color: #e8f4f8;
   color: #0066cc;
+  border-left-width: 5px;
 }
 
 .abstract {
   padding: 15px;
-  background-color: #fafafa;
-  border-left: 3px solid #e0e0e0;
+  border-left: 3px solid rgba(128, 128, 128, 0.3);
   margin-top: 5px;
   line-height: 1.6;
   overflow: hidden;
@@ -77,7 +75,6 @@ details {
 
 <script>
 (function() {
-  // 等待DOM加载完成
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initAnimations);
   } else {
@@ -92,18 +89,12 @@ details {
         if (this.open) {
           const abstract = this.querySelector('.abstract');
           
-          // 先隐藏
           abstract.style.display = 'none';
           
-          // 立即显示并添加动画类
           setTimeout(function() {
             abstract.style.display = 'block';
             abstract.classList.remove('animate');
-            
-            // 强制重排
             abstract.offsetHeight;
-            
-            // 添加动画
             abstract.classList.add('animate');
           }, 10);
         }
