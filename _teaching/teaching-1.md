@@ -3,7 +3,7 @@ title: "Teaching experience"
 collection: teaching
 type: "Undergraduate course"
 venue: "Renmin University"
-date: 2025
+date: 2025-10-12
 location: "Beijing"
 ---
 
