@@ -7,13 +7,72 @@ author_profile: true
 <style>
 summary {
   cursor: pointer;
+  font-weight: bold;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  list-style: none;
+  user-select: none;
 }
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: '▼';
+  display: inline-block;
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+  font-size: 0.8em;
+}
+
+details[open] summary::before {
+  transform: rotate(180deg);
+}
+
 summary:hover {
-  color: #0066cc;  /* 可选：悬停时变色 */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* 内容包装器 */
+.details-content {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  animation: expandDown 0.5s ease-out;
+  transform-origin: top;
+}
+
+@keyframes expandDown {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.95) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+details {
+  margin-bottom: 25px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+details[open] {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
 }
 </style>
 
-#Research Papers
+
 ## Working Papers
 ### Strategic Land Supply and Booming Urban Greens in China (New Draft Coming Soon)
 Independent Research\
