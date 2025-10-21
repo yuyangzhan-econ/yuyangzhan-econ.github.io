@@ -1,0 +1,52 @@
+// About Me 页面特殊样式
+.page__content {
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6em;
+    color: #2c3e50;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-weight: 600;
+    
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.2em;
+      background: linear-gradient(135deg, #3498db, #2ecc71);
+      margin-right: 0.5em;
+      vertical-align: middle;
+    }
+  }
+  
+  // Current 部分的强调
+  em {
+    font-style: italic;
+    color: #e74c3c;
+    font-weight: 500;
+  }
+  
+  // 列表项优化
+  ul {
+    li {
+      margin-bottom: 0.5em;
+      line-height: 1.8;
+      
+      &::marker {
+        color: #3498db;
+      }
+    }
+  }
+}
+
+// 荣誉奖项部分的样式
+.page__content ul li {
+  padding-left: 0.5em;
+  position: relative;
+  
+  &:hover {
+    background: rgba(52, 152, 219, 0.05);
+    border-radius: 4px;
+    transition: background 0.3s ease;
+  }
+}
