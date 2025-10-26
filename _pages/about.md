@@ -11,7 +11,7 @@ redirect_from:
 *I am looking for a Ph.D. position in economics and predoctoral (pre-doc) positions.*
 
 ## Short Bio
-I am Yuyang Zhan (詹禹阳, [pronounciation](https://oluxiwen.github.io/pronouncing-chinese-names-guide/), a forth-year undergraduate student in the [School of Labor and Human Resources](http://slhr.ruc.edu.cn/En/index.htm) at [Renmin University of China](https://en.ruc.edu.cn/), majoring in Labor Economics.
+I am Yuyang Zhan (詹禹阳, [pronounciation](https://oluxiwen.github.io/pronouncing-chinese-names-guide/)), a forth-year undergraduate student in the [School of Labor and Human Resources](http://slhr.ruc.edu.cn/En/index.htm) at [Renmin University of China](https://en.ruc.edu.cn/), majoring in Labor Economics.
 
 I am interested in the intersections of Political Economy, Development Economics, and Behavioral Economics. I explore how individuals' beliefs, ideology, social norms, and cognitive biases interact with development and political outcomes.
 
