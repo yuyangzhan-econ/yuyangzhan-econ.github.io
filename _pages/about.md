@@ -21,9 +21,9 @@ I am interested in the intersections of Political Economy, Development Economics
 - July 2024: International Summer Institute, Oriel College, University of Oxford
 
 ## Honors and Awards
-- National Scholarship, Ministry of Education of PRC, 2024
+- National Scholarship (10,000 rmb, highest), Ministry of Education of PRC, 2024
 - Merit Student, RUC, 2023, 2024
-- International Exchange Scholarship, Dahua Education Fund, 2025
-- JD Future Scholars Scholarship, JD, 2025
+- International Exchange Scholarship (10,000 rmb, highest), RUC with Dahua Education Fund, 2025
+- Research and Innovation Scholarship (10,000 rmb, highest), RUC with JD.com, Inc., 2025
 
 
