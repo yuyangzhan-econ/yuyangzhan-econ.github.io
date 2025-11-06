@@ -27,5 +27,59 @@ layout: compress
 
     {% include scripts.html %}
 
+<script>
+(function() {
+  'use strict';
+  
+  // 滚动淡入观察器
+  function initScrollFade() {
+    // 选择需要添加淡入效果的元素
+    const elementsToFade = document.querySelectorAll(
+      '.page__content > h2, ' +
+      '.page__content > h3, ' +
+      '.page__content > p, ' +
+      '.page__content > ul, ' +
+      '.page__content > ol, ' +
+      '.archive__item, ' +
+      '.list__item, ' +
+      'section'
+    );
+    
+    // 为每个元素添加class
+    elementsToFade.forEach(el => {
+      el.classList.add('scroll-fade');
+    });
+    
+    // 创建观察器
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          // 可选：观察一次后就停止观察（避免重复触发）
+          // observer.unobserve(entry.target);
+        } else {
+          // 如果想要元素滚动离开视口后再次隐藏，保留这行
+          // entry.target.classList.remove('is-visible');
+        }
+      });
+    }, {
+      threshold: 0.1,  // 元素10%可见时触发
+      rootMargin: '0px 0px -50px 0px'  // 提前50px触发
+    });
+    
+    // 开始观察所有元素
+    elementsToFade.forEach(el => {
+      observer.observe(el);
+    });
+  }
+  
+  // 页面加载完成后初始化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollFade);
+  } else {
+    initScrollFade();
+  }
+})();
+</script>  
   </body>
 </html>
