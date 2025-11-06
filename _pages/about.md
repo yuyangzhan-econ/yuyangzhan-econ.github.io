@@ -13,7 +13,7 @@ redirect_from:
 ## Short Bio
 I am Yuyang Zhan (詹禹阳, [pronunciation](https://oluxiwen.github.io/pronouncing-chinese-names-guide/)), a forth-year undergraduate student in the [School of Labor and Human Resources](http://slhr.ruc.edu.cn/En/index.htm) at [Renmin University of China](https://en.ruc.edu.cn/), majoring in Labor Economics.
 
-I am interested in the intersections of Political Economy, Development Economics, and Behavioral Economics. I explore how individuals' beliefs, ideology, social norms, and cognitive biases interact with development and political outcomes.
+I am interested in the intersections of Political Economy, Development Economics, and Behavioral Economics. I explore how individuals' beliefs, ideology, social norms, and cognitive biases interact with development and political outcomes. Currently, I am particularly interested in how misperceptions about others' beliefs create economically meaningful impacts, and how information interventions can correct these biases.  Besides, I am also interested in probabilistic judgment.
 
 ## Education
 - Sept. 2022 - June 2026: Bachelor of Economics, Renmin University of China (expected)
