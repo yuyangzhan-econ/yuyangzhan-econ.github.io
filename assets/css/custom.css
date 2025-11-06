@@ -117,13 +117,13 @@ p a,
 li a,
 article a,
 .archive__item-title a {
-  color: #0066cc !important;
+  color: #0F4D92 !important;
   text-decoration: none !important;
   text-decoration-line: none !important;
   text-decoration-color: transparent !important;
   border-bottom: none !important;
   box-shadow: none !important;
-  background-image: linear-gradient(to right, #0066cc, #0066cc) !important;
+  background-image: linear-gradient(to right, #0F4D92, #0F4D92) !important;
   background-position: 0% 100% !important;
   background-repeat: no-repeat !important;
   background-size: 0% 2px !important;
@@ -335,13 +335,13 @@ body[class*="about"] .page__title {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); !important;
 }
 
 /* 显示状态 */
 .scroll-fade.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0); !important;
 }
 
 /* 为不同内容添加延迟效果 */
