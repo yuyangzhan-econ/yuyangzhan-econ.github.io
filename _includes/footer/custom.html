@@ -16,4 +16,71 @@
     await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
+<!-- 滚动淡入效果 -->
+<script>
+console.log('滚动淡入脚本已加载'); // 调试用
+
+(function() {
+  'use strict';
+  
+  function initScrollFade() {
+    console.log('初始化滚动淡入效果'); // 调试用
+    
+    // 获取所有需要淡入的元素
+    const selectors = [
+      '.page__content h2',
+      '.page__content h3',
+      '.page__content p',
+      '.page__content ul',
+      '.page__content ol',
+      '.page__content > div',
+      '.archive__item',
+      '.list__item'
+    ].join(', ');
+    
+    const elements = document.querySelectorAll(selectors);
+    console.log('找到元素数量：', elements.length); // 调试用
+    
+    if (elements.length === 0) {
+      console.log('没有找到需要淡入的元素');
+      return;
+    }
+    
+    // 添加初始class
+    elements.forEach(el => {
+      el.classList.add('scroll-fade');
+    });
+    
+    // 创建 Intersection Observer
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          console.log('元素进入视口：', entry.target.tagName); // 调试用
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, observerOptions);
+    
+    // 开始观察
+    elements.forEach(el => {
+      observer.observe(el);
+    });
+    
+    console.log('滚动淡入效果初始化完成');
+  }
+  
+  // 确保DOM加载完成后执行
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollFade);
+  } else {
+    initScrollFade();
+  }
+})();
+</script>
+
 <!-- end custom footer snippets -->
