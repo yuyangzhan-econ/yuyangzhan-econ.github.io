@@ -108,31 +108,83 @@ li {
   color: #4a5568;
 }
 
-/* ==================== 链接样式 ==================== */
-a {
-  color: #2c5f7c;
-  text-decoration: none;
-  position: relative;
-  transition: color 0.2s ease;
+/* ==================== 强制覆盖链接样式 ==================== */
+/* 覆盖所有可能的链接样式 */
+body a,
+.page__content a,
+#main a,
+.archive a,
+p a,
+li a,
+article a {
+  color: #2c5f7c !important;
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-color: transparent !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  position: relative !important;
+  transition: color 0.3s ease !important;
 }
 
-a::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 1px;
-  bottom: -2px;
-  left: 0;
-  background-color: #2c5f7c;
-  transition: width 0.3s ease;
+/* 强制移除所有状态下的下划线 */
+body a:link,
+body a:visited,
+body a:hover,
+body a:active,
+body a:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
 }
 
-a:hover {
-  color: #1a3d4f;
+/* 自定义下划线动画 */
+body a::after,
+.page__content a::after,
+#main a::after {
+  content: '' !important;
+  position: absolute !important;
+  width: 100% !important;
+  height: 2px !important;
+  bottom: -2px !important;
+  left: 0 !important;
+  background-color: #2c5f7c !important;
+  transform: scaleX(0) !important;
+  transform-origin: left !important;
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
-a:hover::after {
-  width: 100%;
+/* 鼠标移上：从左往右展开 */
+body a:hover::after,
+.page__content a:hover::after,
+#main a:hover::after {
+  transform: scaleX(1) !important;
+  transform-origin: left !important;
+}
+
+/* 鼠标移走：从右往左缩回 */
+body a:not(:hover)::after,
+.page__content a:not(:hover)::after,
+#main a:not(:hover)::after {
+  transform: scaleX(0) !important;
+  transform-origin: right !important;
+}
+
+body a:hover,
+.page__content a:hover,
+#main a:hover {
+  color: #1a3d4f !important;
+  text-decoration: none !important;
+}
+
+/* 特别处理侧边栏和导航链接 */
+.sidebar a,
+.nav a,
+.masthead a {
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 /* ==================== 强调文本 ==================== */
@@ -292,39 +344,23 @@ body[class*="about"] .page__title {
 
 
 /* ==================== 滚动淡入效果 ==================== */
-.fade-in-on-scroll {
+/* 初始状态：隐藏 */
+.scroll-fade {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.fade-in-on-scroll.visible {
+/* 显示状态 */
+.scroll-fade.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* 自动应用到主要内容元素 */
-.page__content > *,
-.archive__item,
-.list__item {
-  opacity: 0;
-  animation: fadeInScroll 0.6s ease forwards;
-}
-
-@keyframes fadeInScroll {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* 为不同元素添加延迟 */
-.page__content > *:nth-child(1) { animation-delay: 0.1s; }
-.page__content > *:nth-child(2) { animation-delay: 0.2s; }
-.page__content > *:nth-child(3) { animation-delay: 0.3s; }
-.page__content > *:nth-child(4) { animation-delay: 0.4s; }
-.page__content > *:nth-child(5) { animation-delay: 0.5s; }
+/* 为不同内容添加延迟效果 */
+.scroll-fade:nth-child(1) { transition-delay: 0s; }
+.scroll-fade:nth-child(2) { transition-delay: 0.1s; }
+.scroll-fade:nth-child(3) { transition-delay: 0.2s; }
+.scroll-fade:nth-child(4) { transition-delay: 0.3s; }
+.scroll-fade:nth-child(5) { transition-delay: 0.4s; }
