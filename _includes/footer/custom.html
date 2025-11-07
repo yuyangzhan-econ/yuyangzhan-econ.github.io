@@ -25,7 +25,6 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 
 .scroll-wrapper .dim-layer {
   opacity: 0.3;
-  transition: opacity 0.8s ease;
   display: block;
   visibility: visible;
 }
@@ -37,38 +36,16 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   right: 0;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(15px);
-  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0s 0.8s;
+  transform: translateY(0);
+  transition: opacity 0.8s ease, transform 0.8s ease;
   pointer-events: none;
   background: white;
 }
 
-
-.scroll-wrapper.active-down .bright-layer {
+.scroll-wrapper.show-bright .bright-layer {
   opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0s 0s;
   pointer-events: auto;
-}
-
-.scroll-wrapper.active-down .dim-layer {
-  opacity: 0.3;
-  visibility: visible;
-}
-
-
-.scroll-wrapper.active-up .bright-layer {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  transition: opacity 0.8s ease, visibility 0s 0s;
-  pointer-events: auto;
-}
-
-.scroll-wrapper.active-up .dim-layer {
-  opacity: 0.3;
-  visibility: visible;
 }
 </style>
 
@@ -106,6 +83,30 @@ wrapper.appendChild(clone);
 
 var wrappers = document.querySelectorAll('.scroll-wrapper');
 
+
+function isInMiddleZone(element) {
+var rect = element.getBoundingClientRect();
+var windowHeight = window.innerHeight;
+var topThreshold = windowHeight * 0.1;
+var bottomThreshold = windowHeight * 0.8;
+var elementCenter = rect.top + rect.height / 2;
+return elementCenter >= topThreshold && elementCenter <= bottomThreshold;
+}
+
+
+for (var m = 0; m < wrappers.length; m++) {
+var wrapper = wrappers[m];
+if (isInMiddleZone(wrapper)) {
+
+var brightLayer = wrapper.querySelector('.bright-layer');
+brightLayer.style.transition = 'none';
+brightLayer.style.opacity = '1';
+brightLayer.style.visibility = 'visible';
+wrapper.classList.add('show-bright');
+}
+}
+
+
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
@@ -122,8 +123,7 @@ brightLayer.style.opacity = '0';
 brightLayer.style.transform = 'translateY(15px)';
 void brightLayer.offsetHeight;
 brightLayer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-wrapper.classList.add('active-down');
-wrapper.classList.remove('active-up');
+wrapper.classList.add('show-bright');
 requestAnimationFrame(function() {
 brightLayer.style.opacity = '1';
 brightLayer.style.transform = 'translateY(0)';
@@ -136,19 +136,20 @@ brightLayer.style.transform = 'translateY(0)';
 brightLayer.style.opacity = '0';
 void brightLayer.offsetHeight;
 brightLayer.style.transition = 'opacity 0.8s ease';
-wrapper.classList.add('active-up');
-wrapper.classList.remove('active-down');
+wrapper.classList.add('show-bright');
 requestAnimationFrame(function() {
 brightLayer.style.opacity = '1';
 });
 }
 } else {
 
-wrapper.classList.remove('active-down', 'active-up');
-brightLayer.style.transition = 'opacity 0.8s ease, visibility 0s 0.8s';
+wrapper.classList.remove('show-bright');
+brightLayer.style.transition = 'opacity 0.8s ease';
 brightLayer.style.opacity = '0';
 setTimeout(function() {
+if (!wrapper.classList.contains('show-bright')) {
 brightLayer.style.visibility = 'hidden';
+}
 }, 800);
 }
 }
@@ -160,7 +161,7 @@ rootMargin: '-10% 0px -20% 0px'
 for (var k = 0; k < wrappers.length; k++) {
 observer.observe(wrappers[k]);
 }
-}, 200);
+}, 300);
 })();
 </script>
 
