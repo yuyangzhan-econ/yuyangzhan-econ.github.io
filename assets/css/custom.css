@@ -264,7 +264,7 @@ body.pattern-bg {
 }
 
 /* ==================== 链接样式优化 ==================== */
-a {
+/* a {
   color: #3498db;
   transition: color 0.3s ease;
 }
@@ -273,7 +273,7 @@ a:hover {
   color: #2980b9;
   text-decoration: none;
   border-bottom: 2px solid #3498db;
-}
+} */
 
 /* ==================== 响应式调整 ==================== */
 @media (max-width: 768px) {
