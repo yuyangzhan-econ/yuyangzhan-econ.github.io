@@ -1,5 +1,4 @@
 <!-- start custom footer snippets -->
-
 <a href="/sitemap/">Sitemap</a>
 
 <!-- Support for MatJax -->
@@ -16,24 +15,15 @@
     await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 滚动淡入效果 -->
+<!-- 滚动淡入效果（半透明版本，无位移） -->
 <script type="text/javascript">
 window.addEventListener('load', function() {
-  var lastScroll = window.pageYOffset || 0;
-  var direction = 'down';
-  
-  window.addEventListener('scroll', function() {
-    var currentScroll = window.pageYOffset || 0;
-    direction = currentScroll > lastScroll ? 'down' : 'up';
-    lastScroll = currentScroll;
-  }, { passive: true });
-  
   var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
   
+  // 设置初始状态：半透明
   for (var i = 0; i < items.length; i++) {
-    items[i].style.opacity = '0';
-    items[i].style.transform = 'translateY(30px)';
-    items[i].style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+    items[i].style.opacity = '0.3';
+    items[i].style.transition = 'opacity 0.8s ease';
   }
   
   var observer = new IntersectionObserver(function(entries) {
@@ -42,16 +32,9 @@ window.addEventListener('load', function() {
       var el = entry.target;
       
       if (entry.isIntersecting) {
-        el.style.transition = 'none';
-        el.style.opacity = '0';
-        el.style.transform = direction === 'down' ? 'translateY(30px)' : 'translateY(-30px)';
-        void el.offsetHeight;
-        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';  // 不透明
       } else {
-        el.style.opacity = '0';
-        el.style.transform = direction === 'down' ? 'translateY(30px)' : 'translateY(-30px)';
+        el.style.opacity = '0.3';  // 半透明
       }
     }
   }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
