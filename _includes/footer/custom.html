@@ -27,48 +27,34 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   opacity: 0.3;
   transition: opacity 0.8s ease;
   display: block;
-  position: relative;
-  z-index: 1;
 }
 
 .scroll-wrapper .bright-layer {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   opacity: 0;
-  transform: translateY(0);
+  transform: translateY(15px);
   transition: opacity 0.8s ease, transform 0.8s ease;
   pointer-events: none;
-  z-index: 2;
-  margin: 0 !important;
-  padding: 0 !important;
-
-  list-style-position: inherit !important;
-  padding-left: inherit !important;
-  margin-left: inherit !important;
+  background: white;
 }
 
-.scroll-wrapper .bright-layer * {
-  margin-left: inherit !important;
-  padding-left: inherit !important;
-}
-
-.scroll-wrapper.active-down .bright-layer {
+.scroll-wrapper.active .bright-layer {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.scroll-wrapper.active-up .bright-layer {
+.scroll-wrapper.active-no-move .bright-layer {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
 
-.scroll-wrapper.active-down .dim-layer,
-.scroll-wrapper.active-up .dim-layer {
+.scroll-wrapper.active .dim-layer,
+.scroll-wrapper.active-no-move .dim-layer {
   opacity: 0;
 }
 </style>
@@ -76,6 +62,7 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 <!-- 双层覆盖脚本 -->
 <script>
 (function(){
+setTimeout(function() {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
 
@@ -87,29 +74,27 @@ lastScroll = currentScroll;
 
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
 
+console.log('找到元素数量：', items.length);
+
 for (var i = 0; i < items.length; i++) {
 var el = items[i];
 var wrapper = document.createElement('div');
 wrapper.className = 'scroll-wrapper';
-wrapper.style.margin = window.getComputedStyle(el).margin;
-wrapper.style.padding = '0';
+var elStyle = window.getComputedStyle(el);
+wrapper.style.marginTop = elStyle.marginTop;
+wrapper.style.marginBottom = elStyle.marginBottom;
 el.parentNode.insertBefore(wrapper, el);
 var clone = el.cloneNode(true);
-var originalClass = el.className;
-el.className = originalClass + ' dim-layer';
-clone.className = originalClass + ' bright-layer';
-
-  
-var computedStyle = window.getComputedStyle(el);
-clone.style.marginLeft = computedStyle.marginLeft;
-clone.style.paddingLeft = computedStyle.paddingLeft;
-clone.style.textIndent = computedStyle.textIndent;
-
+el.style.margin = '0';
+clone.style.margin = '0';
+el.classList.add('dim-layer');
+clone.classList.add('bright-layer');
 wrapper.appendChild(el);
 wrapper.appendChild(clone);
 }
 
 var wrappers = document.querySelectorAll('.scroll-wrapper');
+console.log('创建wrapper数量：', wrappers.length);
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
@@ -117,26 +102,36 @@ var entry = entries[j];
 var wrapper = entry.target;
 
 if (entry.isIntersecting) {
-var brightLayer = wrapper.querySelector('.bright-layer');
+console.log('进入视口，滚动方向：', scrollingDown ? '下' : '上');
 if (scrollingDown) {
 
-brightLayer.style.transform = 'translateY(15px)';
+var brightLayer = wrapper.querySelector('.bright-layer');
+brightLayer.style.transition = 'none';
 brightLayer.style.opacity = '0';
+brightLayer.style.transform = 'translateY(15px)';
 void brightLayer.offsetHeight;
-wrapper.classList.add('active-down');
-wrapper.classList.remove('active-up');
+brightLayer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+requestAnimationFrame(function() {
+brightLayer.style.opacity = '1';
+brightLayer.style.transform = 'translateY(0)';
+});
+wrapper.classList.add('active');
+wrapper.classList.remove('active-no-move');
 } else {
 
+var brightLayer = wrapper.querySelector('.bright-layer');
 brightLayer.style.transition = 'opacity 0.8s ease';
 brightLayer.style.transform = 'translateY(0)';
 brightLayer.style.opacity = '0';
 void brightLayer.offsetHeight;
-brightLayer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-wrapper.classList.add('active-up');
-wrapper.classList.remove('active-down');
+requestAnimationFrame(function() {
+brightLayer.style.opacity = '1';
+});
+wrapper.classList.add('active-no-move');
+wrapper.classList.remove('active');
 }
 } else {
-wrapper.classList.remove('active-down', 'active-up');
+wrapper.classList.remove('active', 'active-no-move');
 }
 }
 }, { 
@@ -147,6 +142,9 @@ rootMargin: '-10% 0px -20% 0px'
 for (var k = 0; k < wrappers.length; k++) {
 observer.observe(wrappers[k]);
 }
+
+console.log('双层覆盖效果初始化完成');
+}, 200);
 })();
 </script>
 
