@@ -16,144 +16,50 @@
     await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 超级强制版滚动淡入 -->
-<script>
-(function() {
-  'use strict';
+<!-- 滚动淡入效果 -->
+<script type="text/javascript">
+window.addEventListener('load', function() {
+  var lastScroll = window.pageYOffset || 0;
+  var direction = 'down';
   
-  console.log('=== 滚动淡入脚本开始加载 ===');
+  window.addEventListener('scroll', function() {
+    var currentScroll = window.pageYOffset || 0;
+    direction = currentScroll > lastScroll ? 'down' : 'up';
+    lastScroll = currentScroll;
+  }, { passive: true });
   
-  // 强制等待DOM完全加载
-  function forceInit() {
-    console.log('>>> 尝试初始化，readyState:', document.readyState);
-    
-    // 等待直到能找到元素
-    let attempts = 0;
-    const maxAttempts = 10;
-    
-    function tryInit() {
-      attempts++;
-      console.log('>>> 尝试次数:', attempts);
+  var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
+  
+  for (var i = 0; i < items.length; i++) {
+    items[i].style.opacity = '0';
+    items[i].style.transform = 'translateY(30px)';
+    items[i].style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+  }
+  
+  var observer = new IntersectionObserver(function(entries) {
+    for (var j = 0; j < entries.length; j++) {
+      var entry = entries[j];
+      var el = entry.target;
       
-      const elements = document.querySelectorAll(
-        '.page__content h1, .page__content h2, .page__content h3, ' +
-        '.page__content p, .page__content ul, .page__content ol, ' +
-        '.page__content div, ' +
-        '.archive__item, .list__item'
-      );
-      
-      console.log('>>> 找到元素数量:', elements.length);
-      
-      if (elements.length === 0 && attempts < maxAttempts) {
-        console.log('>>> 没有找到元素，500ms后重试');
-        setTimeout(tryInit, 500);
-        return;
-      }
-      
-      if (elements.length === 0) {
-        console.log('!!! 最终没有找到任何元素');
-        return;
-      }
-      
-      console.log('>>> 开始设置动画');
-      
-      // 滚动方向追踪
-      let lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      let scrollDirection = 'down';
-      
-      window.addEventListener('scroll', function() {
-        const st = window.pageYOffset || document.documentElement.scrollTop;
-        scrollDirection = st > lastScrollTop ? 'down' : 'up';
-        lastScrollTop = st;
-      }, { passive: true });
-      
-      // 设置初始样式
-      let successCount = 0;
-      elements.forEach(function(el, index) {
-        try {
-          el.style.setProperty('opacity', '0', 'important');
-          el.style.setProperty('transform', 'translateY(30px)', 'important');
-          el.style.setProperty('transition', 'opacity 0.8s ease, transform 0.8s ease', 'important');
-          successCount++;
-        } catch(e) {
-          console.error('设置样式失败:', e);
-        }
-      });
-      
-      console.log('>>> 成功设置样式的元素:', successCount);
-      
-      // 创建观察器
-      try {
-        const observer = new IntersectionObserver(function(entries) {
-          entries.forEach(function(entry) {
-            const el = entry.target;
-            
-            if (entry.isIntersecting) {
-              console.log('>>> 元素进入视口:', el.tagName, 'direction:', scrollDirection);
-              
-              // 设置起始位置
-              el.style.setProperty('transition', 'none', 'important');
-              el.style.setProperty('opacity', '0', 'important');
-              
-              if (scrollDirection === 'down') {
-                el.style.setProperty('transform', 'translateY(30px)', 'important');
-              } else {
-                el.style.setProperty('transform', 'translateY(-30px)', 'important');
-              }
-              
-              // 强制重绘
-              void el.offsetHeight;
-              
-              // 开始动画
-              requestAnimationFrame(function() {
-                el.style.setProperty('transition', 'opacity 0.8s ease, transform 0.8s ease', 'important');
-                el.style.setProperty('opacity', '1', 'important');
-                el.style.setProperty('transform', 'translateY(0)', 'important');
-              });
-              
-            } else {
-              el.style.setProperty('opacity', '0', 'important');
-              if (scrollDirection === 'down') {
-                el.style.setProperty('transform', 'translateY(30px)', 'important');
-              } else {
-                el.style.setProperty('transform', 'translateY(-30px)', 'important');
-              }
-            }
-          });
-        }, {
-          threshold: 0.15,
-          rootMargin: '0px 0px -100px 0px'
-        });
-        
-        elements.forEach(function(el) {
-          observer.observe(el);
-        });
-        
-        console.log('=== ✅ 滚动淡入初始化成功 ===');
-        
-      } catch(e) {
-        console.error('!!! 创建观察器失败:', e);
+      if (entry.isIntersecting) {
+        el.style.transition = 'none';
+        el.style.opacity = '0';
+        el.style.transform = direction === 'down' ? 'translateY(30px)' : 'translateY(-30px)';
+        void el.offsetHeight;
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      } else {
+        el.style.opacity = '0';
+        el.style.transform = direction === 'down' ? 'translateY(30px)' : 'translateY(-30px)';
       }
     }
-    
-    tryInit();
+  }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
+  
+  for (var k = 0; k < items.length; k++) {
+    observer.observe(items[k]);
   }
-  
-  // 多种方式确保执行
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', forceInit);
-  } else {
-    forceInit();
-  }
-  
-  window.addEventListener('load', function() {
-    setTimeout(forceInit, 300);
-  });
-  
-  // 极端情况：3秒后强制执行
-  setTimeout(forceInit, 3000);
-  
-})();
+});
 </script>
 
 <!-- end custom footer snippets -->
