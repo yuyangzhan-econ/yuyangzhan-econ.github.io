@@ -109,6 +109,7 @@ li {
 }
 
 /* ==================== 链接样式（支持换行 + 明显颜色） ==================== */
+/* ==================== 链接样式（耶鲁蓝配色） ==================== */
 body a,
 .page__content a,
 #main a,
@@ -117,7 +118,7 @@ p a,
 li a,
 article a,
 .archive__item-title a {
-  color: #0F4D92 !important;
+  color: #0F4D92 !important;  /* 耶鲁蓝 */
   text-decoration: none !important;
   text-decoration-line: none !important;
   text-decoration-color: transparent !important;
@@ -144,7 +145,7 @@ body a:hover,
 .page__content a:hover,
 #main a:hover,
 .archive__item-title a:hover {
-  color: #004499 !important;
+  color: #0A3A75 !important;  /* 更深的耶鲁蓝 */
   background-size: 100% 2px !important;
   text-decoration: none !important;
 }
@@ -163,13 +164,13 @@ body a:hover,
   body a,
   .page__content a,
   #main a {
-    color: #66b3ff !important;
-    background-image: linear-gradient(to right, #66b3ff, #66b3ff) !important;
+    color: #5B9BD5 !important;  /* 深色模式下适中的亮度 */
+    background-image: linear-gradient(to right, #5B9BD5, #5B9BD5) !important;
   }
   
   body a:hover,
   .page__content a:hover {
-    color: #99ccff !important;
+    color: #7BAFD4 !important;
   }
 }
 
