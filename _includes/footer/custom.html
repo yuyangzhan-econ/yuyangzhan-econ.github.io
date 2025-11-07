@@ -16,26 +16,53 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 滚动淡入效果（屏幕中间区域触发） -->
+<!-- 滚动淡入效果（半透明 + 向下滚动位移） -->
 <script>
 (function(){
+var lastScroll = window.pageYOffset || 0;
+var scrollingDown = true;
+
+window.addEventListener('scroll', function() {
+var currentScroll = window.pageYOffset || 0;
+scrollingDown = currentScroll > lastScroll;
+lastScroll = currentScroll;
+}, { passive: true });
+
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
+
 for (var i = 0; i < items.length; i++) {
 items[i].style.opacity = '0.3';
-items[i].style.transition = 'opacity 0.8s ease';
+items[i].style.transform = 'translateY(0)';
+items[i].style.transition = 'opacity 0.8s ease, transform 0.8s ease';
 }
+
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
-if (entries[j].isIntersecting) {
-entries[j].target.style.opacity = '1';
+var entry = entries[j];
+var el = entry.target;
+
+if (entry.isIntersecting) {
+if (scrollingDown) {
+el.style.transition = 'none';
+el.style.transform = 'translateY(30px)';
+void el.offsetHeight;
+el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+el.style.opacity = '1';
+el.style.transform = 'translateY(0)';
 } else {
-entries[j].target.style.opacity = '0.3';
+el.style.opacity = '1';
+el.style.transform = 'translateY(0)';
+}
+} else {
+el.style.opacity = '0.3';
+el.style.transform = 'translateY(0)';
 }
 }
 }, { 
 threshold: 0.5,
 rootMargin: '-10% 0px -20% 0px'
 });
+
 for (var k = 0; k < items.length; k++) {
 observer.observe(items[k]);
 }
