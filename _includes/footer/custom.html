@@ -16,34 +16,36 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 双层覆盖效果CSS -->
+<!-- 双层覆盖样式 -->
 <style>
-.fade-element {
+.scroll-wrapper {
   position: relative;
 }
 
-.fade-element.dim-state {
+.scroll-wrapper .dim-layer {
   opacity: 0.3;
+  transition: opacity 0.8s ease;
 }
 
-.fade-element.bright-state {
+.scroll-wrapper .bright-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
+}
+
+.scroll-wrapper.active .bright-layer {
   opacity: 1;
-  animation: slideUpFade 0.8s ease-out;
-}
-
-@keyframes slideUpFade {
-  from {
-    transform: translateY(30px);
-    opacity: 0.3;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  transform: translateY(0);
+  pointer-events: auto;
 }
 </style>
 
-<!-- 滚动淡入效果（双层覆盖） -->
+<!-- 双层覆盖脚本 -->
 <script>
 (function(){
 var lastScroll = window.pageYOffset || 0;
@@ -58,30 +60,30 @@ lastScroll = currentScroll;
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
 
 for (var i = 0; i < items.length; i++) {
-items[i].classList.add('fade-element', 'dim-state');
+var el = items[i];
+var wrapper = document.createElement('div');
+wrapper.className = 'scroll-wrapper';
+el.parentNode.insertBefore(wrapper, el);
+var clone = el.cloneNode(true);
+el.className = el.className + ' dim-layer';
+clone.className = clone.className + ' bright-layer';
+wrapper.appendChild(el);
+wrapper.appendChild(clone);
 }
+
+var wrappers = document.querySelectorAll('.scroll-wrapper');
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
-var el = entry.target;
+var wrapper = entry.target;
 
 if (entry.isIntersecting) {
-if (scrollingDown && el.classList.contains('dim-state')) {
-el.classList.remove('dim-state');
-el.classList.add('bright-state');
-} else if (!scrollingDown && el.classList.contains('dim-state')) {
-el.style.transition = 'opacity 0.8s ease';
-el.classList.remove('dim-state');
-el.classList.add('bright-state');
+if (scrollingDown || !wrapper.classList.contains('active')) {
+wrapper.classList.add('active');
 }
 } else {
-if (el.classList.contains('bright-state')) {
-el.style.animation = 'none';
-el.style.transition = 'opacity 0.8s ease';
-el.classList.remove('bright-state');
-el.classList.add('dim-state');
-}
+wrapper.classList.remove('active');
 }
 }
 }, { 
@@ -89,8 +91,8 @@ threshold: 0.5,
 rootMargin: '-10% 0px -20% 0px'
 });
 
-for (var k = 0; k < items.length; k++) {
-observer.observe(items[k]);
+for (var k = 0; k < wrappers.length; k++) {
+observer.observe(wrappers[k]);
 }
 })();
 </script>
