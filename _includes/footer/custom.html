@@ -44,7 +44,7 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   z-index: 2;
   margin: 0 !important;
   padding: 0 !important;
-  /* 确保列表样式完全一致 */
+
   list-style-position: inherit !important;
   padding-left: inherit !important;
   margin-left: inherit !important;
@@ -99,7 +99,7 @@ var originalClass = el.className;
 el.className = originalClass + ' dim-layer';
 clone.className = originalClass + ' bright-layer';
 
-// 复制所有计算样式到clone，确保完全一致
+  
 var computedStyle = window.getComputedStyle(el);
 clone.style.marginLeft = computedStyle.marginLeft;
 clone.style.paddingLeft = computedStyle.paddingLeft;
@@ -119,14 +119,14 @@ var wrapper = entry.target;
 if (entry.isIntersecting) {
 var brightLayer = wrapper.querySelector('.bright-layer');
 if (scrollingDown) {
-// 向下滚动：有位移动画
+
 brightLayer.style.transform = 'translateY(15px)';
 brightLayer.style.opacity = '0';
 void brightLayer.offsetHeight;
 wrapper.classList.add('active-down');
 wrapper.classList.remove('active-up');
 } else {
-// 向上滚动：无位移，只有淡入
+
 brightLayer.style.transition = 'opacity 0.8s ease';
 brightLayer.style.transform = 'translateY(0)';
 brightLayer.style.opacity = '0';
