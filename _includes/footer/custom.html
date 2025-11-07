@@ -16,38 +16,44 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 双层覆盖样式 -->
+<!-- 完美重叠样式 -->
 <style>
-.scroll-wrapper {
+.scroll-container {
   position: relative;
 }
 
-.scroll-wrapper .dim-layer {
+.scroll-container .original-content {
   opacity: 0.3;
-  transition: opacity 0.8s ease;
 }
 
-.scroll-wrapper .bright-layer {
+.scroll-container .overlay-content {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
   pointer-events: none;
+  background: inherit;
 }
 
-.scroll-wrapper.active .bright-layer {
+.scroll-container.revealed .overlay-content {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
+
+.scroll-container.revealed .original-content {
+  opacity: 0;
+}
 </style>
 
-<!-- 双层覆盖脚本 -->
+<!-- 完美重叠脚本 -->
 <script>
 (function(){
+setTimeout(function() {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
 
@@ -57,33 +63,41 @@ scrollingDown = currentScroll > lastScroll;
 lastScroll = currentScroll;
 }, { passive: true });
 
-var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
+var items = document.querySelectorAll('.page__content > h2, .page__content > h3, .page__content > p, .page__content > ul, .page__content > ol, .archive__item, .list__item');
 
 for (var i = 0; i < items.length; i++) {
 var el = items[i];
-var wrapper = document.createElement('div');
-wrapper.className = 'scroll-wrapper';
-el.parentNode.insertBefore(wrapper, el);
-var clone = el.cloneNode(true);
-el.className = el.className + ' dim-layer';
-clone.className = clone.className + ' bright-layer';
-wrapper.appendChild(el);
-wrapper.appendChild(clone);
+var container = document.createElement('div');
+container.className = 'scroll-container';
+container.style.cssText = 'position:relative;margin:' + window.getComputedStyle(el).margin + ';';
+el.style.margin = '0';
+el.parentNode.insertBefore(container, el);
+var overlay = el.cloneNode(true);
+el.className = (el.className || '') + ' original-content';
+overlay.className = (overlay.className || '').replace('original-content', '') + ' overlay-content';
+overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:auto;margin:0;';
+container.appendChild(el);
+container.appendChild(overlay);
 }
 
-var wrappers = document.querySelectorAll('.scroll-wrapper');
+var containers = document.querySelectorAll('.scroll-container');
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
-var wrapper = entry.target;
+var container = entry.target;
 
 if (entry.isIntersecting) {
-if (scrollingDown || !wrapper.classList.contains('active')) {
-wrapper.classList.add('active');
+if (scrollingDown) {
+container.classList.add('revealed');
+} else {
+var overlay = container.querySelector('.overlay-content');
+overlay.style.transform = 'translateY(0)';
+overlay.style.transition = 'opacity 0.8s ease';
+container.classList.add('revealed');
 }
 } else {
-wrapper.classList.remove('active');
+container.classList.remove('revealed');
 }
 }
 }, { 
@@ -91,9 +105,10 @@ threshold: 0.5,
 rootMargin: '-10% 0px -20% 0px'
 });
 
-for (var k = 0; k < wrappers.length; k++) {
-observer.observe(wrappers[k]);
+for (var k = 0; k < containers.length; k++) {
+observer.observe(containers[k]);
 }
+}, 100);
 })();
 </script>
 
