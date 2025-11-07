@@ -23,13 +23,11 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   display: block;
 }
 
-.scroll-wrapper .content-layer {
-  position: relative;
-  z-index: 1;
-}
-
 .scroll-wrapper .dim-layer {
   opacity: 0.3;
+  transition: opacity 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .scroll-wrapper .bright-layer {
@@ -40,6 +38,7 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
+  pointer-events: none;
   z-index: 2;
   background: white;
 }
@@ -47,16 +46,18 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 .scroll-wrapper.active .bright-layer {
   opacity: 1;
   transform: translateY(0);
+  pointer-events: auto;
 }
 
 .scroll-wrapper.active .dim-layer {
-  visibility: hidden;
+  opacity: 0;
 }
 </style>
 
 <!-- 双层覆盖脚本 -->
 <script>
 (function(){
+setTimeout(function() {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
 
@@ -66,19 +67,19 @@ scrollingDown = currentScroll > lastScroll;
 lastScroll = currentScroll;
 }, { passive: true });
 
-var items = document.querySelectorAll('.page__content > h2, .page__content > h3, .page__content > p, .page__content > ul, .page__content > ol, .archive__item, .list__item');
+var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
 
 for (var i = 0; i < items.length; i++) {
 var el = items[i];
 var wrapper = document.createElement('div');
 wrapper.className = 'scroll-wrapper';
-wrapper.style.marginBottom = window.getComputedStyle(el).marginBottom;
-wrapper.style.marginTop = window.getComputedStyle(el).marginTop;
+wrapper.style.margin = window.getComputedStyle(el).margin;
 el.style.margin = '0';
 el.parentNode.insertBefore(wrapper, el);
 var clone = el.cloneNode(true);
-el.className = (el.className || '') + ' content-layer dim-layer';
-clone.className = (clone.className || '').replace('content-layer', '').replace('dim-layer', '') + ' content-layer bright-layer';
+clone.style.margin = '0';
+el.className = (el.className || '') + ' dim-layer';
+clone.className = clone.className.replace('dim-layer', '') + ' bright-layer';
 wrapper.appendChild(el);
 wrapper.appendChild(clone);
 }
@@ -90,12 +91,15 @@ for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
 var wrapper = entry.target;
 
-if (entry.isIntersecting && scrollingDown) {
+if (entry.isIntersecting) {
+if (scrollingDown) {
 wrapper.classList.add('active');
-} else if (entry.isIntersecting && !scrollingDown) {
-wrapper.querySelector('.bright-layer').style.transition = 'opacity 0.8s ease';
-wrapper.querySelector('.bright-layer').style.transform = 'translateY(0)';
+} else {
+var brightLayer = wrapper.querySelector('.bright-layer');
+brightLayer.style.transform = 'translateY(0)';
+brightLayer.style.transition = 'opacity 0.8s ease';
 wrapper.classList.add('active');
+}
 } else {
 wrapper.classList.remove('active');
 }
@@ -108,6 +112,7 @@ rootMargin: '-10% 0px -20% 0px'
 for (var k = 0; k < wrappers.length; k++) {
 observer.observe(wrappers[k]);
 }
+}, 200);
 })();
 </script>
 
