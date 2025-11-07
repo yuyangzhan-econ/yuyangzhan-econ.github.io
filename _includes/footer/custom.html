@@ -1,4 +1,5 @@
 <!-- start custom footer snippets -->
+
 <a href="/sitemap/">Sitemap</a>
 
 <!-- Support for MatJax -->
@@ -10,39 +11,32 @@
 
 <!-- Support for Mermaid -->
 <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-    mermaid.initialize({startOnLoad:true, theme:'default'});
-    await mermaid.run({querySelector:'code.language-mermaid'});
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+mermaid.initialize({startOnLoad:true, theme:'default'});
+await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 滚动淡入效果（半透明版本，无位移） -->
-<script type="text/javascript">
-window.addEventListener('load', function() {
-  var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
-  
-  // 设置初始状态：半透明
-  for (var i = 0; i < items.length; i++) {
-    items[i].style.opacity = '0.3';
-    items[i].style.transition = 'opacity 0.8s ease';
-  }
-  
-  var observer = new IntersectionObserver(function(entries) {
-    for (var j = 0; j < entries.length; j++) {
-      var entry = entries[j];
-      var el = entry.target;
-      
-      if (entry.isIntersecting) {
-        el.style.opacity = '1';  // 不透明
-      } else {
-        el.style.opacity = '0.3';  // 半透明
-      }
-    }
-  }, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
-  
-  for (var k = 0; k < items.length; k++) {
-    observer.observe(items[k]);
-  }
-});
+<!-- 滚动淡入效果 -->
+<script>
+(function(){
+var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
+for (var i = 0; i < items.length; i++) {
+items[i].style.opacity = '0.3';
+items[i].style.transition = 'opacity 0.8s ease';
+}
+var observer = new IntersectionObserver(function(entries) {
+for (var j = 0; j < entries.length; j++) {
+if (entries[j].isIntersecting) {
+entries[j].target.style.opacity = '1';
+} else {
+entries[j].target.style.opacity = '0.3';
+}
+}
+}, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
+for (var k = 0; k < items.length; k++) {
+observer.observe(items[k]);
+}
+})();
 </script>
 
 <!-- end custom footer snippets -->
