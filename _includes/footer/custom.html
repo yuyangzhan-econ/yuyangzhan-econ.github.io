@@ -2,152 +2,99 @@
 
 <a href="/sitemap/">Sitemap</a>
 
-<!-- Support for MatJax -->
 <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
 
-<!-- Support for Plotly -->
 <script defer src='https://cdnjs.cloudflare.com/ajax/libs/plotly.js/3.0.1/plotly.min.js'></script>
 
-<!-- Support for Mermaid -->
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 双层覆盖样式 -->
 <style>
 .scroll-wrapper {
   position: relative;
   display: block;
 }
-
 .scroll-wrapper .dim-layer {
   opacity: 0.3;
   transition: opacity 0.8s ease;
-  display: block;
-  position: relative;
-  z-index: 1;
 }
-
 .scroll-wrapper .bright-layer {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   opacity: 0;
   transform: translateY(0);
   transition: opacity 0.8s ease, transform 0.8s ease;
   pointer-events: none;
-  z-index: 2;
-  margin: 0 !important;
-  padding: 0 !important;
-  /* 确保列表样式完全一致 */
-  list-style-position: inherit !important;
-  padding-left: inherit !important;
-  margin-left: inherit !important;
 }
-
-.scroll-wrapper .bright-layer * {
-  margin-left: inherit !important;
-  padding-left: inherit !important;
-}
-
-.scroll-wrapper.active-down .bright-layer {
+.scroll-wrapper.active .bright-layer {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
-
-.scroll-wrapper.active-up .bright-layer {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.scroll-wrapper.active-down .dim-layer,
-.scroll-wrapper.active-up .dim-layer {
+.scroll-wrapper.active .dim-layer {
   opacity: 0;
 }
 </style>
 
-<!-- 双层覆盖脚本 -->
 <script>
-(function(){
-var lastScroll = window.pageYOffset || 0;
-var scrollingDown = true;
-
-window.addEventListener('scroll', function() {
-var currentScroll = window.pageYOffset || 0;
-scrollingDown = currentScroll > lastScroll;
-lastScroll = currentScroll;
-}, { passive: true });
-
-var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
-
-for (var i = 0; i < items.length; i++) {
+setTimeout(function(){
+var lastScroll = 0;
+var isDown = true;
+window.addEventListener('scroll', function(){
+var curr = window.pageYOffset || 0;
+isDown = curr > lastScroll;
+lastScroll = curr;
+}, {passive: true});
+var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol');
+for(var i=0; i<items.length; i++){
 var el = items[i];
-var wrapper = document.createElement('div');
-wrapper.className = 'scroll-wrapper';
-wrapper.style.margin = window.getComputedStyle(el).margin;
-wrapper.style.padding = '0';
-el.parentNode.insertBefore(wrapper, el);
+var wrap = document.createElement('div');
+wrap.className = 'scroll-wrapper';
+var style = window.getComputedStyle(el);
+wrap.style.margin = style.margin;
+el.parentNode.insertBefore(wrap, el);
 var clone = el.cloneNode(true);
-var originalClass = el.className;
-el.className = originalClass + ' dim-layer';
-clone.className = originalClass + ' bright-layer';
-
-// 复制所有计算样式到clone，确保完全一致
-var computedStyle = window.getComputedStyle(el);
-clone.style.marginLeft = computedStyle.marginLeft;
-clone.style.paddingLeft = computedStyle.paddingLeft;
-clone.style.textIndent = computedStyle.textIndent;
-
-wrapper.appendChild(el);
-wrapper.appendChild(clone);
+el.style.margin = '0';
+clone.style.margin = '0';
+el.className = el.className + ' dim-layer';
+clone.className = clone.className + ' bright-layer';
+wrap.appendChild(el);
+wrap.appendChild(clone);
 }
-
-var wrappers = document.querySelectorAll('.scroll-wrapper');
-
-var observer = new IntersectionObserver(function(entries) {
-for (var j = 0; j < entries.length; j++) {
-var entry = entries[j];
-var wrapper = entry.target;
-
-if (entry.isIntersecting) {
-var brightLayer = wrapper.querySelector('.bright-layer');
-if (scrollingDown) {
-// 向下滚动：有位移动画
-brightLayer.style.transform = 'translateY(15px)';
-brightLayer.style.opacity = '0';
-void brightLayer.offsetHeight;
-wrapper.classList.add('active-down');
-wrapper.classList.remove('active-up');
-} else {
-// 向上滚动：无位移，只有淡入
-brightLayer.style.transition = 'opacity 0.8s ease';
-brightLayer.style.transform = 'translateY(0)';
-brightLayer.style.opacity = '0';
-void brightLayer.offsetHeight;
-brightLayer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-wrapper.classList.add('active-up');
-wrapper.classList.remove('active-down');
+var wraps = document.querySelectorAll('.scroll-wrapper');
+var obs = new IntersectionObserver(function(entries){
+for(var j=0; j<entries.length; j++){
+var e = entries[j];
+var w = e.target;
+if(e.isIntersecting){
+var b = w.querySelector('.bright-layer');
+if(isDown){
+b.style.transform = 'translateY(15px)';
+b.style.opacity = '0';
+void b.offsetHeight;
+b.style.transform = 'translateY(0)';
+b.style.opacity = '1';
+}else{
+b.style.transition = 'opacity 0.8s ease';
+b.style.transform = 'translateY(0)';
+b.style.opacity = '1';
 }
-} else {
-wrapper.classList.remove('active-down', 'active-up');
+w.classList.add('active');
+}else{
+w.classList.remove('active');
 }
 }
-}, { 
-threshold: 0.5,
-rootMargin: '-10% 0px -20% 0px'
-});
-
-for (var k = 0; k < wrappers.length; k++) {
-observer.observe(wrappers[k]);
+}, {threshold: 0.5, rootMargin: '-10% 0px -20% 0px'});
+for(var k=0; k<wraps.length; k++){
+obs.observe(wraps[k]);
 }
-})();
+}, 200);
 </script>
 
 <!-- end custom footer snippets -->
