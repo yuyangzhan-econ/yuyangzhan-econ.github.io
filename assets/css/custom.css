@@ -118,13 +118,13 @@ p a,
 li a,
 article a,
 .archive__item-title a {
-  color: #0F4D92 !important;  /* 耶鲁蓝 */
+  color: #0A3A75 !important;  /* 耶鲁蓝 */
   text-decoration: none !important;
   text-decoration-line: none !important;
   text-decoration-color: transparent !important;
   border-bottom: none !important;
   box-shadow: none !important;
-  background-image: linear-gradient(to right, #0F4D92, #0F4D92) !important;
+  background-image: linear-gradient(to right, #0A3A75, #0A3A75) !important;
   background-position: 0% 100% !important;
   background-repeat: no-repeat !important;
   background-size: 0% 2px !important;
