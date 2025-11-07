@@ -27,6 +27,7 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   opacity: 0.3;
   transition: opacity 0.8s ease;
   display: block;
+  visibility: visible;
 }
 
 .scroll-wrapper .bright-layer {
@@ -35,27 +36,39 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   left: 0;
   right: 0;
   opacity: 0;
+  visibility: hidden;
   transform: translateY(15px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0s 0.8s;
   pointer-events: none;
   background: white;
 }
 
-.scroll-wrapper.active .bright-layer {
+
+.scroll-wrapper.active-down .bright-layer {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
+  transition: opacity 0.8s ease, transform 0.8s ease, visibility 0s 0s;
   pointer-events: auto;
 }
 
-.scroll-wrapper.active-no-move .bright-layer {
+.scroll-wrapper.active-down .dim-layer {
+  opacity: 0.3;
+  visibility: visible;
+}
+
+
+.scroll-wrapper.active-up .bright-layer {
   opacity: 1;
+  visibility: visible;
   transform: translateY(0);
+  transition: opacity 0.8s ease, visibility 0s 0s;
   pointer-events: auto;
 }
 
-.scroll-wrapper.active .dim-layer,
-.scroll-wrapper.active-no-move .dim-layer {
-  opacity: 0;
+.scroll-wrapper.active-up .dim-layer {
+  opacity: 0.3;
+  visibility: visible;
 }
 </style>
 
@@ -73,8 +86,6 @@ lastScroll = currentScroll;
 }, { passive: true });
 
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
-
-console.log('找到元素数量：', items.length);
 
 for (var i = 0; i < items.length; i++) {
 var el = items[i];
@@ -94,44 +105,51 @@ wrapper.appendChild(clone);
 }
 
 var wrappers = document.querySelectorAll('.scroll-wrapper');
-console.log('创建wrapper数量：', wrappers.length);
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
 var wrapper = entry.target;
+var brightLayer = wrapper.querySelector('.bright-layer');
 
 if (entry.isIntersecting) {
-console.log('进入视口，滚动方向：', scrollingDown ? '下' : '上');
+
 if (scrollingDown) {
 
-var brightLayer = wrapper.querySelector('.bright-layer');
 brightLayer.style.transition = 'none';
+brightLayer.style.visibility = 'visible';
 brightLayer.style.opacity = '0';
 brightLayer.style.transform = 'translateY(15px)';
 void brightLayer.offsetHeight;
 brightLayer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+wrapper.classList.add('active-down');
+wrapper.classList.remove('active-up');
 requestAnimationFrame(function() {
 brightLayer.style.opacity = '1';
 brightLayer.style.transform = 'translateY(0)';
 });
-wrapper.classList.add('active');
-wrapper.classList.remove('active-no-move');
 } else {
 
-var brightLayer = wrapper.querySelector('.bright-layer');
-brightLayer.style.transition = 'opacity 0.8s ease';
+brightLayer.style.transition = 'none';
+brightLayer.style.visibility = 'visible';
 brightLayer.style.transform = 'translateY(0)';
 brightLayer.style.opacity = '0';
 void brightLayer.offsetHeight;
+brightLayer.style.transition = 'opacity 0.8s ease';
+wrapper.classList.add('active-up');
+wrapper.classList.remove('active-down');
 requestAnimationFrame(function() {
 brightLayer.style.opacity = '1';
 });
-wrapper.classList.add('active-no-move');
-wrapper.classList.remove('active');
 }
 } else {
-wrapper.classList.remove('active', 'active-no-move');
+
+wrapper.classList.remove('active-down', 'active-up');
+brightLayer.style.transition = 'opacity 0.8s ease, visibility 0s 0.8s';
+brightLayer.style.opacity = '0';
+setTimeout(function() {
+brightLayer.style.visibility = 'hidden';
+}, 800);
 }
 }
 }, { 
@@ -142,8 +160,6 @@ rootMargin: '-10% 0px -20% 0px'
 for (var k = 0; k < wrappers.length; k++) {
 observer.observe(wrappers[k]);
 }
-
-console.log('双层覆盖效果初始化完成');
 }, 200);
 })();
 </script>
