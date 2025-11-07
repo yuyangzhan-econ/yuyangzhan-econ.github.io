@@ -316,7 +316,7 @@ a:hover {
 body.about-page,
 body[class*="about"] {
   /* background: url('YOUR_IMAGE_URL_HERE.jpg') center/cover no-repeat fixed !important; */
-  background: #ffffff !important;
+  background: #fefdf9 !important;
   /* 如果不想用图片，改成: background: #ffffff !important; */
 }
 
