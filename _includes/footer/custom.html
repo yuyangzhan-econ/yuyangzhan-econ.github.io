@@ -16,7 +16,7 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 滚动淡入效果（半透明 + 向下滚动位移） -->
+<!-- 滚动淡入效果（不透明从下浮现） -->
 <script>
 (function(){
 var lastScroll = window.pageYOffset || 0;
@@ -34,28 +34,42 @@ for (var i = 0; i < items.length; i++) {
 items[i].style.opacity = '0.3';
 items[i].style.transform = 'translateY(0)';
 items[i].style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+items[i].setAttribute('data-state', 'dim');
 }
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
 var el = entry.target;
+var currentState = el.getAttribute('data-state');
 
 if (entry.isIntersecting) {
-if (scrollingDown) {
+if (scrollingDown && currentState === 'dim') {
 el.style.transition = 'none';
+el.style.opacity = '0.3';
 el.style.transform = 'translateY(30px)';
 void el.offsetHeight;
 el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+requestAnimationFrame(function() {
 el.style.opacity = '1';
 el.style.transform = 'translateY(0)';
-} else {
+});
+el.setAttribute('data-state', 'bright');
+} else if (!scrollingDown && currentState === 'dim') {
 el.style.opacity = '1';
 el.style.transform = 'translateY(0)';
+el.setAttribute('data-state', 'bright');
 }
 } else {
+if (currentState === 'bright') {
+el.style.transition = 'opacity 0.8s ease';
 el.style.opacity = '0.3';
 el.style.transform = 'translateY(0)';
+el.setAttribute('data-state', 'dim');
+setTimeout(function() {
+el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+}, 800);
+}
 }
 }
 }, { 
