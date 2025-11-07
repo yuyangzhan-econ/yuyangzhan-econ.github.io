@@ -16,7 +16,7 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 滚动淡入效果 -->
+<!-- 滚动淡入效果（屏幕中间区域触发） -->
 <script>
 (function(){
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
@@ -32,7 +32,10 @@ entries[j].target.style.opacity = '1';
 entries[j].target.style.opacity = '0.3';
 }
 }
-}, { threshold: 0.15, rootMargin: '0px 0px -100px 0px' });
+}, { 
+threshold: 0.5,
+rootMargin: '-25% 0px -25% 0px'
+});
 for (var k = 0; k < items.length; k++) {
 observer.observe(items[k]);
 }
