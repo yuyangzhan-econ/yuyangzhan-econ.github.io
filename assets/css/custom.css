@@ -151,12 +151,27 @@ body a:hover,
 }
 
 /* 侧边栏链接 */
+/* 侧边栏和导航栏链接 - 应用相同的动画 */
 .sidebar a,
 .nav a,
 .masthead a,
 .author__urls a {
   text-decoration: none !important;
   border-bottom: none !important;
+  background-image: linear-gradient(to right, #0F4D92, #0F4D92) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              color 0.3s ease !important;
+  padding-bottom: 2px !important;
+}
+
+.sidebar a:hover,
+.nav a:hover,
+.masthead a:hover,
+.author__urls a:hover {
+  background-size: 100% 2px !important;
 }
 
 /* 深色模式 */
