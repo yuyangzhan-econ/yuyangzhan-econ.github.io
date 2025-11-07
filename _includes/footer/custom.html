@@ -38,7 +38,7 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   right: 0 !important;
   width: 100% !important;
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(15px);  /* 缩短距离：从30px改为15px */
   transition: opacity 0.8s ease, transform 0.8s ease;
   pointer-events: none;
   z-index: 2;
@@ -46,9 +46,16 @@ await mermaid.run({querySelector:'code.language-mermaid'});
   padding: 0 !important;
 }
 
-.scroll-wrapper .bright-layer > * {
-  margin: inherit;
-  padding: inherit;
+/* 确保列表项样式一致 */
+.scroll-wrapper .bright-layer ul,
+.scroll-wrapper .bright-layer ol {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+  list-style-position: inherit !important;
+}
+
+.scroll-wrapper .bright-layer li {
+  margin-left: 0 !important;
 }
 
 .scroll-wrapper.active .bright-layer {
@@ -83,12 +90,28 @@ wrapper.className = 'scroll-wrapper';
 wrapper.style.margin = window.getComputedStyle(el).margin;
 wrapper.style.padding = '0';
 el.parentNode.insertBefore(wrapper, el);
+
 var clone = el.cloneNode(true);
 var originalClass = el.className;
 el.className = originalClass + ' dim-layer';
 clone.className = originalClass + ' bright-layer';
+
+// 复制关键样式属性
 var computedStyle = window.getComputedStyle(el);
-clone.style.cssText = el.style.cssText;
+var stylesToCopy = ['padding', 'paddingLeft', 'paddingRight', 'paddingTop', 'paddingBottom', 
+                     'marginLeft', 'marginRight', 'textIndent', 'listStylePosition'];
+                     
+for (var s = 0; s < stylesToCopy.length; s++) {
+  clone.style[stylesToCopy[s]] = computedStyle[stylesToCopy[s]];
+}
+
+// 特别处理列表项
+if (el.tagName === 'UL' || el.tagName === 'OL') {
+  clone.style.paddingLeft = computedStyle.paddingLeft;
+  clone.style.marginLeft = computedStyle.marginLeft;
+  clone.style.listStylePosition = computedStyle.listStylePosition;
+}
+
 wrapper.appendChild(el);
 wrapper.appendChild(clone);
 }
