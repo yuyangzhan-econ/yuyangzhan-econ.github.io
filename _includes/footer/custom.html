@@ -25,22 +25,30 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 
 .scroll-wrapper .dim-layer {
   opacity: 0.3;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.8s ease;
+  display: block;
   position: relative;
   z-index: 1;
 }
 
 .scroll-wrapper .bright-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
   pointer-events: none;
   z-index: 2;
-  background: white;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.scroll-wrapper .bright-layer > * {
+  margin: inherit;
+  padding: inherit;
 }
 
 .scroll-wrapper.active .bright-layer {
@@ -57,7 +65,6 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 <!-- 双层覆盖脚本 -->
 <script>
 (function(){
-setTimeout(function() {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
 
@@ -74,12 +81,14 @@ var el = items[i];
 var wrapper = document.createElement('div');
 wrapper.className = 'scroll-wrapper';
 wrapper.style.margin = window.getComputedStyle(el).margin;
-el.style.margin = '0';
+wrapper.style.padding = '0';
 el.parentNode.insertBefore(wrapper, el);
 var clone = el.cloneNode(true);
-clone.style.margin = '0';
-el.className = (el.className || '') + ' dim-layer';
-clone.className = clone.className.replace('dim-layer', '') + ' bright-layer';
+var originalClass = el.className;
+el.className = originalClass + ' dim-layer';
+clone.className = originalClass + ' bright-layer';
+var computedStyle = window.getComputedStyle(el);
+clone.style.cssText = el.style.cssText;
 wrapper.appendChild(el);
 wrapper.appendChild(clone);
 }
@@ -92,12 +101,7 @@ var entry = entries[j];
 var wrapper = entry.target;
 
 if (entry.isIntersecting) {
-if (scrollingDown) {
-wrapper.classList.add('active');
-} else {
-var brightLayer = wrapper.querySelector('.bright-layer');
-brightLayer.style.transform = 'translateY(0)';
-brightLayer.style.transition = 'opacity 0.8s ease';
+if (scrollingDown || !wrapper.classList.contains('active')) {
 wrapper.classList.add('active');
 }
 } else {
@@ -112,7 +116,6 @@ rootMargin: '-10% 0px -20% 0px'
 for (var k = 0; k < wrappers.length; k++) {
 observer.observe(wrappers[k]);
 }
-}, 200);
 })();
 </script>
 
