@@ -16,43 +16,9 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 双层覆盖样式 -->
-<style>
-.scroll-wrapper {
-  position: relative;
-  display: block;
-}
-
-.scroll-wrapper .dim-layer {
-  opacity: 0.3;
-  display: block;
-  visibility: visible;
-}
-
-.scroll-wrapper .bright-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(0);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  pointer-events: none;
-  background: white;
-}
-
-.scroll-wrapper.show-bright .bright-layer {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-</style>
-
-<!-- 双层覆盖脚本 -->
+<!-- 简单滚动淡入效果 -->
 <script>
-(function(){
-setTimeout(function() {
+window.addEventListener('load', function() {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
 
@@ -64,45 +30,30 @@ lastScroll = currentScroll;
 
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
 
+
+function isInViewport(el) {
+var rect = el.getBoundingClientRect();
+var windowHeight = window.innerHeight;
+var top = windowHeight * 0.1;
+var bottom = windowHeight * 0.8;
+var elCenter = rect.top + rect.height / 2;
+return elCenter >= top && elCenter <= bottom;
+}
+
+
 for (var i = 0; i < items.length; i++) {
 var el = items[i];
-var wrapper = document.createElement('div');
-wrapper.className = 'scroll-wrapper';
-var elStyle = window.getComputedStyle(el);
-wrapper.style.marginTop = elStyle.marginTop;
-wrapper.style.marginBottom = elStyle.marginBottom;
-el.parentNode.insertBefore(wrapper, el);
-var clone = el.cloneNode(true);
-el.style.margin = '0';
-clone.style.margin = '0';
-el.classList.add('dim-layer');
-clone.classList.add('bright-layer');
-wrapper.appendChild(el);
-wrapper.appendChild(clone);
-}
+if (isInViewport(el)) {
 
-var wrappers = document.querySelectorAll('.scroll-wrapper');
+el.style.opacity = '1';
+el.style.transform = 'translateY(0)';
+el.setAttribute('data-state', 'bright');
+} else {
 
-
-function isInMiddleZone(element) {
-var rect = element.getBoundingClientRect();
-var windowHeight = window.innerHeight;
-var topThreshold = windowHeight * 0.1;
-var bottomThreshold = windowHeight * 0.8;
-var elementCenter = rect.top + rect.height / 2;
-return elementCenter >= topThreshold && elementCenter <= bottomThreshold;
-}
-
-
-for (var m = 0; m < wrappers.length; m++) {
-var wrapper = wrappers[m];
-if (isInMiddleZone(wrapper)) {
-
-var brightLayer = wrapper.querySelector('.bright-layer');
-brightLayer.style.transition = 'none';
-brightLayer.style.opacity = '1';
-brightLayer.style.visibility = 'visible';
-wrapper.classList.add('show-bright');
+el.style.opacity = '0.3';
+el.style.transform = 'translateY(0)';
+el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+el.setAttribute('data-state', 'dim');
 }
 }
 
@@ -110,47 +61,39 @@ wrapper.classList.add('show-bright');
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
-var wrapper = entry.target;
-var brightLayer = wrapper.querySelector('.bright-layer');
+var el = entry.target;
+var state = el.getAttribute('data-state');
 
 if (entry.isIntersecting) {
 
+if (state === 'dim') {
 if (scrollingDown) {
 
-brightLayer.style.transition = 'none';
-brightLayer.style.visibility = 'visible';
-brightLayer.style.opacity = '0';
-brightLayer.style.transform = 'translateY(15px)';
-void brightLayer.offsetHeight;
-brightLayer.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-wrapper.classList.add('show-bright');
-requestAnimationFrame(function() {
-brightLayer.style.opacity = '1';
-brightLayer.style.transform = 'translateY(0)';
-});
-} else {
-
-brightLayer.style.transition = 'none';
-brightLayer.style.visibility = 'visible';
-brightLayer.style.transform = 'translateY(0)';
-brightLayer.style.opacity = '0';
-void brightLayer.offsetHeight;
-brightLayer.style.transition = 'opacity 0.8s ease';
-wrapper.classList.add('show-bright');
-requestAnimationFrame(function() {
-brightLayer.style.opacity = '1';
-});
-}
-} else {
-
-wrapper.classList.remove('show-bright');
-brightLayer.style.transition = 'opacity 0.8s ease';
-brightLayer.style.opacity = '0';
+el.style.transition = 'none';
+el.style.opacity = '0.3';
+el.style.transform = 'translateY(15px)';
+void el.offsetHeight;
+el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
 setTimeout(function() {
-if (!wrapper.classList.contains('show-bright')) {
-brightLayer.style.visibility = 'hidden';
+el.style.opacity = '1';
+el.style.transform = 'translateY(0)';
+}, 10);
+} else {
+
+el.style.transform = 'translateY(0)';
+el.style.transition = 'opacity 0.8s ease';
+el.style.opacity = '1';
 }
-}, 800);
+el.setAttribute('data-state', 'bright');
+}
+} else {
+
+if (state === 'bright') {
+el.style.transition = 'opacity 0.8s ease';
+el.style.opacity = '0.3';
+el.style.transform = 'translateY(0)';
+el.setAttribute('data-state', 'dim');
+}
 }
 }
 }, { 
@@ -158,11 +101,11 @@ threshold: 0.5,
 rootMargin: '-10% 0px -20% 0px'
 });
 
-for (var k = 0; k < wrappers.length; k++) {
-observer.observe(wrappers[k]);
+
+for (var k = 0; k < items.length; k++) {
+observer.observe(items[k]);
 }
-}, 300);
-})();
+});
 </script>
 
 <!-- end custom footer snippets -->
