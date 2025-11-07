@@ -326,7 +326,7 @@ body[class*="about"] .page__content {
   background: rgba(255, 255, 255, 0.95) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
-  margin-top: 80px !important; /* 顶部留空 */
+  margin-top: 100px !important; /* 顶部留空 */
   margin-bottom: 80px !important; /* 底部留空 */
   padding: 3em !important;
   border-radius: 0 !important;
