@@ -16,7 +16,34 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 滚动淡入效果（不透明从下浮现） -->
+<!-- 双层覆盖效果CSS -->
+<style>
+.fade-element {
+  position: relative;
+}
+
+.fade-element.dim-state {
+  opacity: 0.3;
+}
+
+.fade-element.bright-state {
+  opacity: 1;
+  animation: slideUpFade 0.8s ease-out;
+}
+
+@keyframes slideUpFade {
+  from {
+    transform: translateY(30px);
+    opacity: 0.3;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+</style>
+
+<!-- 滚动淡入效果（双层覆盖） -->
 <script>
 (function(){
 var lastScroll = window.pageYOffset || 0;
@@ -31,44 +58,29 @@ lastScroll = currentScroll;
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
 
 for (var i = 0; i < items.length; i++) {
-items[i].style.opacity = '0.3';
-items[i].style.transform = 'translateY(0)';
-items[i].style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-items[i].setAttribute('data-state', 'dim');
+items[i].classList.add('fade-element', 'dim-state');
 }
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
 var el = entry.target;
-var currentState = el.getAttribute('data-state');
 
 if (entry.isIntersecting) {
-if (scrollingDown && currentState === 'dim') {
-el.style.transition = 'none';
-el.style.opacity = '0.3';
-el.style.transform = 'translateY(30px)';
-void el.offsetHeight;
-el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-requestAnimationFrame(function() {
-el.style.opacity = '1';
-el.style.transform = 'translateY(0)';
-});
-el.setAttribute('data-state', 'bright');
-} else if (!scrollingDown && currentState === 'dim') {
-el.style.opacity = '1';
-el.style.transform = 'translateY(0)';
-el.setAttribute('data-state', 'bright');
+if (scrollingDown && el.classList.contains('dim-state')) {
+el.classList.remove('dim-state');
+el.classList.add('bright-state');
+} else if (!scrollingDown && el.classList.contains('dim-state')) {
+el.style.transition = 'opacity 0.8s ease';
+el.classList.remove('dim-state');
+el.classList.add('bright-state');
 }
 } else {
-if (currentState === 'bright') {
+if (el.classList.contains('bright-state')) {
+el.style.animation = 'none';
 el.style.transition = 'opacity 0.8s ease';
-el.style.opacity = '0.3';
-el.style.transform = 'translateY(0)';
-el.setAttribute('data-state', 'dim');
-setTimeout(function() {
-el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-}, 800);
+el.classList.remove('bright-state');
+el.classList.add('dim-state');
 }
 }
 }
