@@ -152,84 +152,59 @@ window.addEventListener('load', function() {
     var body = document.body;
     var isDark = body.classList.contains('dark-mode');
     
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;background:transparent;';
     
-    var img = new Image();
-    img.onload = function() {
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      document.body.appendChild(canvas);
+    var lineDiv = document.createElement('div');
+    lineDiv.style.cssText = 'position:absolute;top:0;width:8px;height:100%;z-index:2;';
+    lineDiv.style.background = isDark ? '#58a6ff' : '#c678dd';
+    lineDiv.style.left = isDark ? '100%' : '0';
+    
+    var maskDiv = document.createElement('div');
+    maskDiv.style.cssText = 'position:absolute;top:0;height:100%;z-index:1;';
+    
+    if (isDark) {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+      body.classList.add('theme-transitioning-to-light');
       
-      var startTime = Date.now();
-      var duration = 1200;
-      var lineColor = isDark ? '#58a6ff' : '#c678dd';
+      maskDiv.style.cssText += 'right:0;width:0;background:#0d1117;';
+    } else {
+      body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+      body.classList.add('theme-transitioning-to-dark');
       
-      function animate() {
-        var elapsed = Date.now() - startTime;
-        var progress = Math.min(elapsed / duration, 1);
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
-        var lineX = isDark ? canvas.width * (1 - progress) : canvas.width * progress;
-        
-        if (isDark) {
-          ctx.clearRect(lineX, 0, canvas.width - lineX, canvas.height);
-        } else {
-          ctx.clearRect(0, 0, lineX, canvas.height);
-        }
-        
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = 8;
-        ctx.beginPath();
-        ctx.moveTo(lineX, 0);
-        ctx.lineTo(lineX, canvas.height);
-        ctx.stroke();
-        
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          if (canvas.parentNode) {
-            canvas.parentNode.removeChild(canvas);
-          }
-          body.classList.remove('theme-transitioning-to-dark');
-          body.classList.remove('theme-transitioning-to-light');
-        }
-      }
+      maskDiv.style.cssText += 'left:0;width:0;background:#ffffff;';
+    }
+    
+    overlay.appendChild(maskDiv);
+    overlay.appendChild(lineDiv);
+    document.body.appendChild(overlay);
+    
+    setTimeout(function() {
+      lineDiv.style.transition = 'left 1.2s cubic-bezier(0.65, 0, 0.35, 1), right 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
+      maskDiv.style.transition = 'width 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
       
       if (isDark) {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-        body.classList.add('theme-transitioning-to-light');
+        lineDiv.style.left = '0';
+        maskDiv.style.width = '100%';
       } else {
-        body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
-        body.classList.add('theme-transitioning-to-dark');
+        lineDiv.style.left = '100%';
+        maskDiv.style.width = '100%';
       }
-      
-      setTimeout(function() {
-        requestAnimationFrame(animate);
-      }, 10);
-    };
+    }, 50);
     
-    var svgString = '<svg xmlns="http://www.w3.org/2000/svg" width="' + canvas.width + '" height="' + canvas.height + '">' +
-      '<foreignObject width="100%" height="100%">' +
-      '<div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">' +
-      document.documentElement.outerHTML +
-      '</div>' +
-      '</foreignObject>' +
-      '</svg>';
-    
-    var blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
-    var url = URL.createObjectURL(blob);
-    img.src = url;
+    setTimeout(function() {
+      if (overlay && overlay.parentNode) {
+        overlay.parentNode.removeChild(overlay);
+      }
+      body.classList.remove('theme-transitioning-to-dark');
+      body.classList.remove('theme-transitioning-to-light');
+    }, 1300);
   }
 
   window.addEventListener('DOMContentLoaded', function() {
-    var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"], .greedy-nav__toggle, button[aria-label*="dark"], button[aria-label*="theme"]');
+    var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"]');
     
     if (themeToggle) {
       themeToggle.addEventListener('click', function(e) {
