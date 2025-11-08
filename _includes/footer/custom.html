@@ -16,13 +16,19 @@ mermaid.initialize({startOnLoad:true, theme:'default'});
 await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- 简单滚动淡入效果 -->
+<!-- 简化的滚动淡入效果（性能优化） -->
 <script>
 window.addEventListener('load', function() {
+  document.getElementById('page-loader').style.opacity = '0';
+  setTimeout(function() {
+    document.getElementById('page-loader').style.display = 'none';
+  }, 500);
+
   try {
     var lastScroll = window.pageYOffset || 0;
     var scrollingDown = true;
     var elementStates = new WeakMap();
+    var ticking = false;
 
     window.addEventListener('scroll', function() {
       var currentScroll = window.pageYOffset || 0;
@@ -50,7 +56,7 @@ window.addEventListener('load', function() {
       } else {
         el.style.opacity = '0.3';
         el.style.transform = 'translateY(0)';
-        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         el.setAttribute('data-state', 'dim');
       }
       elementStates.set(el, {
@@ -60,71 +66,79 @@ window.addEventListener('load', function() {
       });
     }
 
-    var observer = new IntersectionObserver(function(entries) {
-      for (var j = 0; j < entries.length; j++) {
-        var entry = entries[j];
-        var el = entry.target;
-        var state = el.getAttribute('data-state');
-        var now = Date.now();
-        var currentScrollPos = window.pageYOffset || 0;
-        var elState = elementStates.get(el);
-
-        if (!elState) {
-          elementStates.set(el, {
-            lastToggleTime: 0,
-            lastScrollPos: currentScrollPos,
-            toggleCount: 0
-          });
-          elState = elementStates.get(el);
-        }
-
-        var timeSinceLastToggle = now - elState.lastToggleTime;
-        var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
-
-        if (timeSinceLastToggle < 200 && scrollDistance < 50) {
-          elState.toggleCount++;
-          if (elState.toggleCount > 2) {
-            continue;
-          }
-        } else {
-          elState.toggleCount = 0;
-        }
-
-        elState.lastToggleTime = now;
-        elState.lastScrollPos = currentScrollPos;
-
-        if (entry.isIntersecting) {
-          if (state === 'dim') {
-            if (scrollingDown) {
-              el.style.transition = 'none';
-              el.style.opacity = '0.3';
-              el.style.transform = 'translateY(15px)';
-              void el.offsetHeight;
-              el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-              setTimeout(function() {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-              }, 10);
-            } else {
-              el.style.transform = 'translateY(0)';
-              el.style.transition = 'opacity 0.8s ease';
-              el.style.opacity = '1';
-            }
-            el.setAttribute('data-state', 'bright');
-          }
-        } else {
-          if (state === 'bright') {
-            el.style.transition = 'opacity 0.8s ease';
-            el.style.opacity = '0.3';
-            el.style.transform = 'translateY(0)';
-            el.setAttribute('data-state', 'dim');
-          }
-        }
-      }
-    }, { 
+    var observerOptions = { 
       threshold: 0.5,
       rootMargin: '-10% 0px -20% 0px'
-    });
+    };
+
+    var observer = new IntersectionObserver(function(entries) {
+      if (!ticking) {
+        window.requestAnimationFrame(function() {
+          for (var j = 0; j < entries.length; j++) {
+            var entry = entries[j];
+            var el = entry.target;
+            var state = el.getAttribute('data-state');
+            var now = Date.now();
+            var currentScrollPos = window.pageYOffset || 0;
+            var elState = elementStates.get(el);
+
+            if (!elState) {
+              elementStates.set(el, {
+                lastToggleTime: 0,
+                lastScrollPos: currentScrollPos,
+                toggleCount: 0
+              });
+              elState = elementStates.get(el);
+            }
+
+            var timeSinceLastToggle = now - elState.lastToggleTime;
+            var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
+
+            if (timeSinceLastToggle < 200 && scrollDistance < 50) {
+              elState.toggleCount++;
+              if (elState.toggleCount > 2) {
+                continue;
+              }
+            } else {
+              elState.toggleCount = 0;
+            }
+
+            elState.lastToggleTime = now;
+            elState.lastScrollPos = currentScrollPos;
+
+            if (entry.isIntersecting) {
+              if (state === 'dim') {
+                if (scrollingDown) {
+                  el.style.transition = 'none';
+                  el.style.opacity = '0.3';
+                  el.style.transform = 'translateY(15px)';
+                  void el.offsetHeight;
+                  el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                  setTimeout(function() {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                  }, 10);
+                } else {
+                  el.style.transform = 'translateY(0)';
+                  el.style.transition = 'opacity 0.5s ease';
+                  el.style.opacity = '1';
+                }
+                el.setAttribute('data-state', 'bright');
+              }
+            } else {
+              if (state === 'bright') {
+                el.style.transition = 'opacity 0.5s ease';
+                el.style.opacity = '0.3';
+                el.style.transform = 'translateY(0)';
+                el.setAttribute('data-state', 'dim');
+              }
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, observerOptions);
 
     for (var k = 0; k < items.length; k++) {
       observer.observe(items[k]);
