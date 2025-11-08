@@ -69,7 +69,6 @@ var now = Date.now();
 var currentScrollPos = window.pageYOffset || 0;
 var elState = elementStates.get(el);
 
-
 if (!elState) {
 elementStates.set(el, {
 lastToggleTime: 0,
@@ -131,12 +130,10 @@ for (var k = 0; k < items.length; k++) {
 observer.observe(items[k]);
 }
 } catch(e) {
-
 console.error('Scroll animation error:', e);
 }
 });
 </script>
-
 
 <!-- 黑暗模式切换脚本 -->
 <script>
@@ -144,7 +141,6 @@ console.error('Scroll animation error:', e);
   
   var currentTheme = localStorage.getItem('theme');
   if (!currentTheme) {
-   
     localStorage.setItem('theme', 'light');
     currentTheme = 'light';
   }
@@ -159,10 +155,8 @@ console.error('Scroll animation error:', e);
     var body = document.body;
     var isDark = body.classList.contains('dark-mode');
     
-
     if (isDark) {
       body.classList.add('theme-transitioning-to-light');
-  
       setTimeout(function() {
         body.classList.remove('dark-mode');
         localStorage.setItem('theme', 'light');
@@ -175,34 +169,14 @@ console.error('Scroll animation error:', e);
       }, 50);
     }
     
-
     setTimeout(function() {
       body.classList.remove('theme-transitioning-to-dark');
       body.classList.remove('theme-transitioning-to-light');
     }, 850);
   }
-    
-   
-    setTimeout(function() {
-      if (isDark) {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-      } else {
-        body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
-      }
-    }, 400);
-    
-    
-    setTimeout(function() {
-      body.classList.remove('theme-transitioning-to-dark');
-      body.classList.remove('theme-transitioning-to-light');
-    }, 800);
-  }
 
   
   window.addEventListener('DOMContentLoaded', function() {
-   
     var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"]');
     
     if (themeToggle) {
@@ -211,8 +185,7 @@ console.error('Scroll animation error:', e);
         toggleTheme();
       });
     } else {
-     
-      console.warn('Theme toggle button not found. Add class="theme-toggle" to your button.');
+      console.warn('Theme toggle button not found.');
     }
   });
 })();
