@@ -396,6 +396,29 @@ body[class*="about"] .page__title {
 
 
 /* ==================== 黑暗模式转场动画 ==================== */
+/* 转场覆盖层增强样式 */
+#theme-transition-overlay {
+  will-change: clip-path;
+}
+
+#theme-transition-overlay html,
+#theme-transition-overlay body {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+
+/* 隐藏克隆层中可能导致布局问题的元素 */
+#theme-transition-overlay .page__footer,
+#theme-transition-overlay footer,
+#theme-transition-overlay .site-footer {
+  display: none !important;
+}
+
+/* 确保克隆层只显示可视区域 */
+#theme-transition-overlay * {
+  pointer-events: none !important;
+  user-select: none !important;
+}
 
 /* 覆盖层样式（旧内容） */
 #theme-transition-overlay {
