@@ -1,6 +1,10 @@
 /* ==================== 方案6：Georgia + Helvetica ==================== */
 /* 系统自带字体，无需加载，加载最快 */
 
+/* 为转场优化性能 */
+body {
+  transition: background-color 0s, color 0s;
+}
 /* ==================== 字体平滑渲染 ==================== */
 body {
   -webkit-font-smoothing: antialiased;
@@ -391,102 +395,20 @@ body[class*="about"] .page__title {
 
 
 
-/* ==================== 黑暗模式转场动画（真实内容过渡） ==================== */
+/* ==================== 黑暗模式转场动画 ==================== */
 
-/* 白转黑：旧内容（白色模式）被遮罩逐渐覆盖，揭示下方新内容（黑色模式） */
-body.theme-transitioning-to-dark::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 5px;  /* 加粗线宽 */
-  height: 100%;
-  background: #c678dd;  /* 紫色分界线 */
-  z-index: 10001;
-  pointer-events: none;
-  animation: lineMoveRight 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;  /* 减速 */
+/* 覆盖层样式（旧内容） */
+#theme-transition-overlay {
+  will-change: clip-path;
 }
 
-body.theme-transitioning-to-dark::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: transparent;
-  box-shadow: -5000px 0 0 5000px rgba(255, 255, 255, 1);  /* 白色遮罩 */
-  z-index: 10000;
-  pointer-events: none;
-  animation: maskMoveRight 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+/* 确保克隆的内容不可交互 */
+#theme-transition-overlay * {
+  pointer-events: none !important;
+  user-select: none !important;
 }
 
-/* 黑转白：旧内容（黑色模式）被遮罩逐渐覆盖，揭示下方新内容（白色模式） */
-body.theme-transitioning-to-light::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 5px;  /* 加粗线宽 */
-  height: 100%;
-  background: #58a6ff;  /* 淡蓝色分界线 */
-  z-index: 10001;
-  pointer-events: none;
-  animation: lineMoveLeft 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-
-body.theme-transitioning-to-light::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 100%;
-  background: transparent;
-  box-shadow: 5000px 0 0 5000px rgba(13, 17, 23, 1);  /* 黑色遮罩 */
-  z-index: 10000;
-  pointer-events: none;
-  animation: maskMoveLeft 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-
-/* 动画定义 */
-@keyframes lineMoveRight {
-  0% {
-    left: 0;
-  }
-  100% {
-    left: calc(100% - 5px);
-  }
-}
-
-@keyframes maskMoveRight {
-  0% {
-    left: 0;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-@keyframes lineMoveLeft {
-  0% {
-    right: 0;
-  }
-  100% {
-    right: calc(100% - 5px);
-  }
-}
-
-@keyframes maskMoveLeft {
-  0% {
-    right: 0;
-  }
-  100% {
-    right: 100%;
-  }
-}
-
-/* 防止转场时的溢出 */
+/* 转场期间防止页面滚动和闪烁 */
 body.theme-transitioning-to-dark,
 body.theme-transitioning-to-light {
   overflow: hidden;
