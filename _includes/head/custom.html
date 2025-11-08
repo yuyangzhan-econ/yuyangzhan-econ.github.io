@@ -22,4 +22,86 @@
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}">
 
+<style>
+#page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+.loader-content {
+  text-align: center;
+}
+
+.loader-text {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.5em;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-style: italic;
+}
+
+.cube-loader {
+  display: grid;
+  grid-template-columns: repeat(3, 30px);
+  grid-template-rows: repeat(3, 30px);
+  gap: 5px;
+  margin: 0 auto;
+}
+
+.cube {
+  width: 30px;
+  height: 30px;
+  background: #3e67b1;
+  border-radius: 3px;
+  animation: cubeRotate 1.5s ease-in-out infinite;
+}
+
+.cube1 { animation-delay: 0s; }
+.cube2 { animation-delay: 0.1s; }
+.cube3 { animation-delay: 0.2s; }
+.cube4 { animation-delay: 0.3s; }
+.cube5 { animation-delay: 0.4s; }
+.cube6 { animation-delay: 0.5s; }
+.cube7 { animation-delay: 0.6s; }
+.cube8 { animation-delay: 0.7s; }
+.cube9 { animation-delay: 0.8s; }
+
+@keyframes cubeRotate {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.5) rotate(90deg);
+    opacity: 0.5;
+  }
+}
+</style>
+
+<div id="page-loader">
+  <div class="loader-content">
+    <div class="loader-text">loading...</div>
+    <div class="cube-loader">
+      <div class="cube cube1"></div>
+      <div class="cube cube2"></div>
+      <div class="cube cube3"></div>
+      <div class="cube cube4"></div>
+      <div class="cube cube5"></div>
+      <div class="cube cube6"></div>
+      <div class="cube cube7"></div>
+      <div class="cube cube8"></div>
+      <div class="cube cube9"></div>
+    </div>
+  </div>
+</div>
+
 <!-- end custom head snippets -->
