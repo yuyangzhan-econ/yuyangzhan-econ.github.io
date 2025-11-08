@@ -392,6 +392,22 @@ body[class*="about"] .page__title {
 
 
 /* ==================== 黑暗模式转场动画 ==================== */
+#theme-transition-container #old-theme-content,
+#theme-transition-container #new-theme-content {
+  will-change: clip-path;
+}
+
+#theme-transition-container #old-theme-content.dark-mode,
+#theme-transition-container #new-theme-content.dark-mode {
+  background: #0d1117;
+  color: #c9d1d9;
+}
+
+#theme-transition-container #old-theme-content.dark-mode *,
+#theme-transition-container #new-theme-content.dark-mode * {
+  color: #c9d1d9;
+}
+
 body.theme-transitioning-to-dark,
 body.theme-transitioning-to-light {
   overflow: hidden;
