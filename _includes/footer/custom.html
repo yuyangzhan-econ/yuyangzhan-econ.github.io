@@ -19,181 +19,167 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 <!-- 简单滚动淡入效果 -->
 <script>
 window.addEventListener('load', function() {
-try {
-var lastScroll = window.pageYOffset || 0;
-var scrollingDown = true;
-var elementStates = new WeakMap();
+  try {
+    var lastScroll = window.pageYOffset || 0;
+    var scrollingDown = true;
+    var elementStates = new WeakMap();
 
-window.addEventListener('scroll', function() {
-var currentScroll = window.pageYOffset || 0;
-scrollingDown = currentScroll > lastScroll;
-lastScroll = currentScroll;
-}, { passive: true });
+    window.addEventListener('scroll', function() {
+      var currentScroll = window.pageYOffset || 0;
+      scrollingDown = currentScroll > lastScroll;
+      lastScroll = currentScroll;
+    }, { passive: true });
 
-var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
+    var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
 
-function isInViewport(el) {
-var rect = el.getBoundingClientRect();
-var windowHeight = window.innerHeight;
-var top = windowHeight * 0.1;
-var bottom = windowHeight * 0.8;
-var elCenter = rect.top + rect.height / 2;
-return elCenter >= top && elCenter <= bottom;
-}
+    function isInViewport(el) {
+      var rect = el.getBoundingClientRect();
+      var windowHeight = window.innerHeight;
+      var top = windowHeight * 0.1;
+      var bottom = windowHeight * 0.8;
+      var elCenter = rect.top + rect.height / 2;
+      return elCenter >= top && elCenter <= bottom;
+    }
 
-for (var i = 0; i < items.length; i++) {
-var el = items[i];
-if (isInViewport(el)) {
-el.style.opacity = '1';
-el.style.transform = 'translateY(0)';
-el.setAttribute('data-state', 'bright');
-} else {
-el.style.opacity = '0.3';
-el.style.transform = 'translateY(0)';
-el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-el.setAttribute('data-state', 'dim');
-}
-elementStates.set(el, {
-lastToggleTime: 0,
-lastScrollPos: lastScroll,
-toggleCount: 0
-});
-}
+    for (var i = 0; i < items.length; i++) {
+      var el = items[i];
+      if (isInViewport(el)) {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+        el.setAttribute('data-state', 'bright');
+      } else {
+        el.style.opacity = '0.3';
+        el.style.transform = 'translateY(0)';
+        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        el.setAttribute('data-state', 'dim');
+      }
+      elementStates.set(el, {
+        lastToggleTime: 0,
+        lastScrollPos: lastScroll,
+        toggleCount: 0
+      });
+    }
 
-var observer = new IntersectionObserver(function(entries) {
-for (var j = 0; j < entries.length; j++) {
-var entry = entries[j];
-var el = entry.target;
-var state = el.getAttribute('data-state');
-var now = Date.now();
-var currentScrollPos = window.pageYOffset || 0;
-var elState = elementStates.get(el);
+    var observer = new IntersectionObserver(function(entries) {
+      for (var j = 0; j < entries.length; j++) {
+        var entry = entries[j];
+        var el = entry.target;
+        var state = el.getAttribute('data-state');
+        var now = Date.now();
+        var currentScrollPos = window.pageYOffset || 0;
+        var elState = elementStates.get(el);
 
-if (!elState) {
-elementStates.set(el, {
-lastToggleTime: 0,
-lastScrollPos: currentScrollPos,
-toggleCount: 0
-});
-elState = elementStates.get(el);
-}
+        if (!elState) {
+          elementStates.set(el, {
+            lastToggleTime: 0,
+            lastScrollPos: currentScrollPos,
+            toggleCount: 0
+          });
+          elState = elementStates.get(el);
+        }
 
-var timeSinceLastToggle = now - elState.lastToggleTime;
-var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
+        var timeSinceLastToggle = now - elState.lastToggleTime;
+        var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
 
-if (timeSinceLastToggle < 200 && scrollDistance < 50) {
-elState.toggleCount++;
-if (elState.toggleCount > 2) {
-continue;
-}
-} else {
-elState.toggleCount = 0;
-}
+        if (timeSinceLastToggle < 200 && scrollDistance < 50) {
+          elState.toggleCount++;
+          if (elState.toggleCount > 2) {
+            continue;
+          }
+        } else {
+          elState.toggleCount = 0;
+        }
 
-elState.lastToggleTime = now;
-elState.lastScrollPos = currentScrollPos;
+        elState.lastToggleTime = now;
+        elState.lastScrollPos = currentScrollPos;
 
-if (entry.isIntersecting) {
-if (state === 'dim') {
-if (scrollingDown) {
-el.style.transition = 'none';
-el.style.opacity = '0.3';
-el.style.transform = 'translateY(15px)';
-void el.offsetHeight;
-el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-setTimeout(function() {
-el.style.opacity = '1';
-el.style.transform = 'translateY(0)';
-}, 10);
-} else {
-el.style.transform = 'translateY(0)';
-el.style.transition = 'opacity 0.8s ease';
-el.style.opacity = '1';
-}
-el.setAttribute('data-state', 'bright');
-}
-} else {
-if (state === 'bright') {
-el.style.transition = 'opacity 0.8s ease';
-el.style.opacity = '0.3';
-el.style.transform = 'translateY(0)';
-el.setAttribute('data-state', 'dim');
-}
-}
-}
-}, { 
-threshold: 0.5,
-rootMargin: '-10% 0px -20% 0px'
-});
+        if (entry.isIntersecting) {
+          if (state === 'dim') {
+            if (scrollingDown) {
+              el.style.transition = 'none';
+              el.style.opacity = '0.3';
+              el.style.transform = 'translateY(15px)';
+              void el.offsetHeight;
+              el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+              setTimeout(function() {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+              }, 10);
+            } else {
+              el.style.transform = 'translateY(0)';
+              el.style.transition = 'opacity 0.8s ease';
+              el.style.opacity = '1';
+            }
+            el.setAttribute('data-state', 'bright');
+          }
+        } else {
+          if (state === 'bright') {
+            el.style.transition = 'opacity 0.8s ease';
+            el.style.opacity = '0.3';
+            el.style.transform = 'translateY(0)';
+            el.setAttribute('data-state', 'dim');
+          }
+        }
+      }
+    }, { 
+      threshold: 0.5,
+      rootMargin: '-10% 0px -20% 0px'
+    });
 
-for (var k = 0; k < items.length; k++) {
-observer.observe(items[k]);
-}
-} catch(e) {
-console.error('Scroll animation error:', e);
-}
+    for (var k = 0; k < items.length; k++) {
+      observer.observe(items[k]);
+    }
+  } catch(e) {
+    console.error('Scroll animation error:', e);
+  }
 });
 </script>
 
 <!-- 黑暗模式切换脚本 -->
 <script>
 (function() {
-  
   var currentTheme = localStorage.getItem('theme');
   if (!currentTheme) {
     localStorage.setItem('theme', 'light');
     currentTheme = 'light';
   }
 
-  
   if (currentTheme === 'dark') {
     document.body.classList.add('dark-mode');
   }
-
-  
 
   function toggleTheme() {
     var body = document.body;
     var isDark = body.classList.contains('dark-mode');
     
-    
     var overlay = document.createElement('div');
     overlay.id = 'theme-transition-overlay';
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;overflow:hidden;';
     
-   
     var clone = document.body.cloneNode(true);
     clone.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;';
     overlay.appendChild(clone);
     document.body.appendChild(overlay);
     
     if (isDark) {
-      
       body.classList.remove('dark-mode');
       localStorage.setItem('theme', 'light');
       body.classList.add('theme-transitioning-to-light');
       
-      
       overlay.style.clipPath = 'inset(0 0 0 0)';
       overlay.style.transition = 'clip-path 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
-      
-     
       overlay.style.borderRight = '5px solid #58a6ff';
       
       setTimeout(function() {
         overlay.style.clipPath = 'inset(0 0 0 100%)';
       }, 50);
     } else {
-      
       body.classList.add('dark-mode');
       localStorage.setItem('theme', 'dark');
       body.classList.add('theme-transitioning-to-dark');
       
-      
       overlay.style.clipPath = 'inset(0 0 0 0)';
       overlay.style.transition = 'clip-path 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
-      
-      // 添加紫色分界线
       overlay.style.borderRight = '5px solid #c678dd';
       
       setTimeout(function() {
@@ -201,7 +187,6 @@ console.error('Scroll animation error:', e);
       }, 50);
     }
     
-   
     setTimeout(function() {
       if (overlay && overlay.parentNode) {
         overlay.parentNode.removeChild(overlay);
@@ -211,7 +196,6 @@ console.error('Scroll animation error:', e);
     }, 1300);
   }
 
-  
   window.addEventListener('DOMContentLoaded', function() {
     var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"]');
     
