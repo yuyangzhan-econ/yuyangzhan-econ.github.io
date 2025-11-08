@@ -434,10 +434,24 @@ body.dark-mode .masthead__menu a {
   color: #c9d1d9 !important;
 }
 
+/* 黑暗模式导航栏链接 - 添加紫色下划线动画 */
+body.dark-mode .masthead a,
+body.dark-mode .greedy-nav a,
+body.dark-mode .masthead__menu a {
+  color: #c9d1d9 !important;
+  background-image: linear-gradient(to right, #c678dd, #c678dd) !important;  /* 紫色 */
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s ease, color 0.3s ease !important;
+  padding-bottom: 3px !important;
+}
+
 body.dark-mode .masthead a:hover,
-body.dark-mode .greedy-nav a:hover {
-  color: #58a6ff !important;
-  background-image: linear-gradient(to right, #58a6ff, #58a6ff) !important;
+body.dark-mode .greedy-nav a:hover,
+body.dark-mode .masthead__menu a:hover {
+  color: #c678dd !important;  /* 悬停时文字也变紫色 */
+  background-size: 100% 2px !important;  /* 下划线从左到右展开 */
 }
 
 /* 黑暗模式 - 主内容区 */
@@ -562,16 +576,15 @@ body.dark-mode .greedy-nav .visible-links a,
 body.dark-mode .greedy-nav__toggle,
 body.dark-mode .masthead__menu-item,
 body.dark-mode .greedy-nav .links a {
-  background: transparent !important;
   background-color: transparent !important;
   box-shadow: none !important;
+  border: none !important;
 }
 
-/* 移除可能的边框 */
-body.dark-mode .greedy-nav a,
-body.dark-mode .masthead a {
-  border: none !important;
-  outline: none !important;
+/* 导航栏悬停轻微高亮 */
+body.dark-mode .greedy-nav .visible-links a:hover,
+body.dark-mode .masthead__menu-item:hover {
+  background-color: rgba(198, 120, 221, 0.1) !important;  /* 轻微的紫色高亮 */
 }
 
 
