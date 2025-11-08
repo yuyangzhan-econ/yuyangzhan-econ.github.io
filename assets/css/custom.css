@@ -110,18 +110,16 @@ li {
 
 /* ==================== 链接样式（支持换行 + 明显颜色） ==================== */
 /* ==================== 链接样式（耶鲁蓝配色） ==================== */
-body a,
-.page__content a,
-#main a,
-.archive a,
-p a,
-li a,
-article a,
-.archive__item-title a {
-  color: #3e67b1 !important;  /* 耶鲁蓝 */
+/* ==================== 链接样式（分区域控制） ==================== */
+
+/* ========== 1. 正文链接（默认样式） ========== */
+.page__content a:not(.btn),
+#main article a:not(.btn),
+.archive__item-excerpt a:not(.btn),
+p a:not(.btn),
+li a:not(.btn) {
+  color: #3e67b1 !important;
   text-decoration: none !important;
-  text-decoration-line: none !important;
-  text-decoration-color: transparent !important;
   border-bottom: none !important;
   box-shadow: none !important;
   background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
@@ -133,32 +131,21 @@ article a,
   padding-bottom: 2px !important;
 }
 
-body a:link,
-body a:visited,
-body a:active,
-body a:focus {
-  text-decoration: none !important;
-  border-bottom: none !important;
-}
-
-body a:hover,
-.page__content a:hover,
-#main a:hover,
-.archive__item-title a:hover {
-  color: #0A3A75 !important;  /* 更深的耶鲁蓝 */
+.page__content a:not(.btn):hover,
+#main article a:not(.btn):hover,
+p a:not(.btn):hover,
+li a:not(.btn):hover {
+  color: #0A3A75 !important;
   background-size: 100% 2px !important;
   text-decoration: none !important;
 }
 
-/* 侧边栏链接 */
-/* 侧边栏和导航栏链接 - 应用相同的动画 */
-.sidebar a,
-.nav a,
-.masthead a,
-.author__urls a {
+/* ========== 2. 标题链接（Research/Teaching页面） ========== */
+.archive__item-title a {
+  color: #2c3e50 !important;
   text-decoration: none !important;
   border-bottom: none !important;
-  background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
+  background-image: linear-gradient(to right, #2c3e50, #2c3e50) !important;
   background-position: 0% 100% !important;
   background-repeat: no-repeat !important;
   background-size: 0% 2px !important;
@@ -167,11 +154,70 @@ body a:hover,
   padding-bottom: 2px !important;
 }
 
-.sidebar a:hover,
-.nav a:hover,
-.masthead a:hover,
-.author__urls a:hover {
+.archive__item-title a:hover {
+  color: #1a252f !important;
   background-size: 100% 2px !important;
+}
+
+/* ========== 3. 导航栏链接（修复快速缩回问题） ========== */
+.masthead a,
+.greedy-nav a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s ease, color 0.3s ease !important;
+  padding-bottom: 3px !important;
+  position: relative !important;
+}
+
+.masthead a:hover,
+.greedy-nav a:hover {
+  background-size: 100% 2px !important;
+  color: #3e67b1 !important;
+  /* 保持下划线不缩回 */
+}
+
+/* 移除可能的冲突样式 */
+.masthead a::before,
+.masthead a::after,
+.greedy-nav a::before,
+.greedy-nav a::after {
+  display: none !important;
+}
+
+/* ========== 4. 侧边栏链接 ========== */
+.sidebar a,
+.author__urls a {
+  color: #3e67b1 !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 1.5px !important;
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              color 0.3s ease !important;
+  padding-bottom: 2px !important;
+}
+
+.sidebar a:hover,
+.author__urls a:hover {
+  color: #0A3A75 !important;
+  background-size: 100% 1.5px !important;
+}
+
+/* ========== 5. 全局链接重置（移除所有状态的默认样式） ========== */
+a:link,
+a:visited,
+a:active,
+a:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
 /* 深色模式 */
