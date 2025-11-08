@@ -21,6 +21,7 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 window.addEventListener('load', function() {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
+var elementStates = new WeakMap(); // 记录每个元素的状态历史
 
 window.addEventListener('scroll', function() {
 var currentScroll = window.pageYOffset || 0;
@@ -55,6 +56,12 @@ el.style.transform = 'translateY(0)';
 el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
 el.setAttribute('data-state', 'dim');
 }
+// 初始化状态记录
+elementStates.set(el, {
+lastToggleTime: 0,
+lastScrollPos: lastScroll,
+toggleCount: 0
+});
 }
 
 
@@ -63,6 +70,29 @@ for (var j = 0; j < entries.length; j++) {
 var entry = entries[j];
 var el = entry.target;
 var state = el.getAttribute('data-state');
+var now = Date.now();
+var currentScrollPos = window.pageYOffset || 0;
+var elState = elementStates.get(el);
+
+// 检测是否是临界值抖动
+var timeSinceLastToggle = now - elState.lastToggleTime;
+var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
+
+// 如果在200ms内再次触发，且滚动距离小于50px，认为是临界值抖动
+if (timeSinceLastToggle < 200 && scrollDistance < 50) {
+elState.toggleCount++;
+// 如果连续抖动超过2次，直接忽略
+if (elState.toggleCount > 2) {
+continue;
+}
+} else {
+// 重置计数器（说明是正常的滚动触发）
+elState.toggleCount = 0;
+}
+
+// 更新状态记录
+elState.lastToggleTime = now;
+elState.lastScrollPos = currentScrollPos;
 
 if (entry.isIntersecting) {
 
