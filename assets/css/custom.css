@@ -576,20 +576,84 @@ body.dark-mode .masthead a {
 
 
 /* ==================== 黑暗模式转场动画（细线扫过效果） ==================== */
+/* ==================== 黑暗模式转场动画（真实内容切换） ==================== */
+
+/* 创建覆盖层来显示目标主题的内容 */
 body::before {
   content: '';
   position: fixed;
   top: 0;
-  left: -2px;
-  width: 2px;  /* 细线宽度 */
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: #c678dd;  /* 紫色线（白转黑） */
-  z-index: 9999;
-  transition: none;
+  z-index: -1;
   pointer-events: none;
   opacity: 0;
+  transition: none;
 }
 
+/* 主要的clip-path动画容器 */
+body.theme-transitioning-to-dark,
+body.theme-transitioning-to-light {
+  position: relative;
+}
+
+/* 白转黑：黑色主题从左边展开 */
+body.theme-transitioning-to-dark::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #c678dd 0%, #c678dd 2px, transparent 2px);
+  background-size: 100% 100%;
+  background-position: 0 0;
+  z-index: 9999;
+  pointer-events: none;
+  clip-path: inset(0 100% 0 0);
+  animation: sweepDark 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* 黑转白：白色主题从右边展开 */
+body.theme-transitioning-to-light::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to left, #58a6ff 0%, #58a6ff 2px, transparent 2px);
+  background-size: 100% 100%;
+  background-position: 100% 0;
+  z-index: 9999;
+  pointer-events: none;
+  clip-path: inset(0 0 0 100%);
+  animation: sweepLight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes sweepDark {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes sweepLight {
+  0% {
+    clip-path: inset(0 0 0 100%);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* 确保过渡期间样式平滑切换 */
+body * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
 /* 白色转黑色：紫色线从左到右 */
 body.theme-transitioning-to-dark::before {
   opacity: 1;
