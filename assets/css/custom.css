@@ -413,6 +413,105 @@ body.theme-transition-complete::before {
   left: 100%;
 }
 
+/* ==================== 黑暗模式转场动画 ==================== */
+
+/* 白转黑：紫色线从左边扫过，同时黑色主题展开 */
+body.theme-transitioning-to-dark::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: #c678dd;
+  z-index: 9999;
+  pointer-events: none;
+  animation: lineRight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+body.theme-transitioning-to-dark::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: #0d1117;
+  z-index: 9998;
+  pointer-events: none;
+  animation: fillRight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* 黑转白：蓝色线从右边扫过，同时白色主题展开 */
+body.theme-transitioning-to-light::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 3px;
+  height: 100%;
+  background: #58a6ff;
+  z-index: 9999;
+  pointer-events: none;
+  animation: lineLeft 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+body.theme-transitioning-to-light::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 9998;
+  pointer-events: none;
+  animation: fillLeft 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* 动画定义 */
+@keyframes lineRight {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes fillRight {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes lineLeft {
+  0% {
+    right: 0;
+  }
+  100% {
+    right: 100%;
+  }
+}
+
+@keyframes fillLeft {
+  0% {
+    right: -100%;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+/* 转场时防止滚动 */
+body.theme-transitioning-to-dark,
+body.theme-transitioning-to-light {
+  overflow-x: hidden;
+}
+
 /* ==================== 黑暗模式核心样式 ==================== */
 body.dark-mode {
   background: #0d1117 !important;
@@ -585,167 +684,4 @@ body.dark-mode .greedy-nav .links a {
 body.dark-mode .greedy-nav .visible-links a:hover,
 body.dark-mode .masthead__menu-item:hover {
   background-color: rgba(198, 120, 221, 0.1) !important;  /* 轻微的紫色高亮 */
-}
-
-
-/* ==================== 黑暗模式转场动画（细线扫过效果） ==================== */
-/* ==================== 黑暗模式转场动画（真实内容切换） ==================== */
-
-/* 创建覆盖层来显示目标主题的内容 */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0;
-  transition: none;
-}
-
-/* 主要的clip-path动画容器 */
-body.theme-transitioning-to-dark,
-body.theme-transitioning-to-light {
-  position: relative;
-}
-
-/* 白转黑：黑色主题从左边展开 */
-body.theme-transitioning-to-dark::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, #c678dd 0%, #c678dd 2px, transparent 2px);
-  background-size: 100% 100%;
-  background-position: 0 0;
-  z-index: 9999;
-  pointer-events: none;
-  clip-path: inset(0 100% 0 0);
-  animation: sweepDark 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-/* 黑转白：白色主题从右边展开 */
-body.theme-transitioning-to-light::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to left, #58a6ff 0%, #58a6ff 2px, transparent 2px);
-  background-size: 100% 100%;
-  background-position: 100% 0;
-  z-index: 9999;
-  pointer-events: none;
-  clip-path: inset(0 0 0 100%);
-  animation: sweepLight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-@keyframes sweepDark {
-  0% {
-    clip-path: inset(0 100% 0 0);
-  }
-  100% {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-@keyframes sweepLight {
-  0% {
-    clip-path: inset(0 0 0 100%);
-  }
-  100% {
-    clip-path: inset(0 0 0 0);
-  }
-}
-
-/* 确保过渡期间样式平滑切换 */
-body * {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-/* 白色转黑色：紫色线从左到右 */
-body.theme-transitioning-to-dark::before {
-  opacity: 1;
-  background: #c678dd;  /* 紫色 */
-  animation: sweepRightToDark 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-/* 黑色转白色：蓝色线从右到左 */
-body.theme-transitioning-to-light::before {
-  opacity: 1;
-  background: #58a6ff;  /* 蓝色 */
-  left: 100%;
-  animation: sweepLeftToLight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-@keyframes sweepRightToDark {
-  0% {
-    left: -2px;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-@keyframes sweepLeftToLight {
-  0% {
-    left: 100%;
-  }
-  100% {
-    left: -2px;
-  }
-}
-
-/* 线左边显示黑色模式，右边显示白色模式 */
-body.theme-transitioning-to-dark,
-body.theme-transitioning-to-light {
-  position: relative;
-  overflow-x: hidden;
-}
-
-/* 为了实现"线分隔两种模式"的效果，需要用伪元素覆盖 */
-body.theme-transitioning-to-dark::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: #0d1117;  /* 黑色模式背景 */
-  z-index: 9998;
-  animation: fillDark 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-body.theme-transitioning-to-light::after {
-  content: '';
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 100%;
-  background: #ffffff;  /* 白色模式背景 */
-  z-index: 9998;
-  animation: fillLight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-@keyframes fillDark {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
-}
-
-@keyframes fillLight {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
 }
