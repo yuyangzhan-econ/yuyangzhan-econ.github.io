@@ -19,9 +19,11 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 <!-- 简单滚动淡入效果 -->
 <script>
 window.addEventListener('load', function() {
+try {
 var lastScroll = window.pageYOffset || 0;
 var scrollingDown = true;
 var elementStates = new WeakMap();
+
 window.addEventListener('scroll', function() {
 var currentScroll = window.pageYOffset || 0;
 scrollingDown = currentScroll > lastScroll;
@@ -29,7 +31,6 @@ lastScroll = currentScroll;
 }, { passive: true });
 
 var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
-
 
 function isInViewport(el) {
 var rect = el.getBoundingClientRect();
@@ -40,29 +41,24 @@ var elCenter = rect.top + rect.height / 2;
 return elCenter >= top && elCenter <= bottom;
 }
 
-
 for (var i = 0; i < items.length; i++) {
 var el = items[i];
 if (isInViewport(el)) {
-
 el.style.opacity = '1';
 el.style.transform = 'translateY(0)';
 el.setAttribute('data-state', 'bright');
 } else {
-
 el.style.opacity = '0.3';
 el.style.transform = 'translateY(0)';
 el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
 el.setAttribute('data-state', 'dim');
 }
-
 elementStates.set(el, {
 lastToggleTime: 0,
 lastScrollPos: lastScroll,
 toggleCount: 0
 });
 }
-
 
 var observer = new IntersectionObserver(function(entries) {
 for (var j = 0; j < entries.length; j++) {
@@ -74,30 +70,33 @@ var currentScrollPos = window.pageYOffset || 0;
 var elState = elementStates.get(el);
 
 
+if (!elState) {
+elementStates.set(el, {
+lastToggleTime: 0,
+lastScrollPos: currentScrollPos,
+toggleCount: 0
+});
+elState = elementStates.get(el);
+}
+
 var timeSinceLastToggle = now - elState.lastToggleTime;
 var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
 
-
 if (timeSinceLastToggle < 200 && scrollDistance < 50) {
 elState.toggleCount++;
-
 if (elState.toggleCount > 2) {
 continue;
 }
 } else {
-
 elState.toggleCount = 0;
 }
-
 
 elState.lastToggleTime = now;
 elState.lastScrollPos = currentScrollPos;
 
 if (entry.isIntersecting) {
-
 if (state === 'dim') {
 if (scrollingDown) {
-
 el.style.transition = 'none';
 el.style.opacity = '0.3';
 el.style.transform = 'translateY(15px)';
@@ -108,7 +107,6 @@ el.style.opacity = '1';
 el.style.transform = 'translateY(0)';
 }, 10);
 } else {
-
 el.style.transform = 'translateY(0)';
 el.style.transition = 'opacity 0.8s ease';
 el.style.opacity = '1';
@@ -116,7 +114,6 @@ el.style.opacity = '1';
 el.setAttribute('data-state', 'bright');
 }
 } else {
-
 if (state === 'bright') {
 el.style.transition = 'opacity 0.8s ease';
 el.style.opacity = '0.3';
@@ -130,9 +127,12 @@ threshold: 0.5,
 rootMargin: '-10% 0px -20% 0px'
 });
 
-
 for (var k = 0; k < items.length; k++) {
 observer.observe(items[k]);
+}
+} catch(e) {
+
+console.error('Scroll animation error:', e);
 }
 });
 </script>
