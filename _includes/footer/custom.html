@@ -151,69 +151,85 @@ window.addEventListener('load', function() {
   function toggleTheme() {
     var body = document.body;
     var isDark = body.classList.contains('dark-mode');
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
     
-    var overlay = document.createElement('div');
-    overlay.id = 'theme-transition-overlay';
-    overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100vh;z-index:9999;pointer-events:none;overflow:hidden;';
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
     
-    var clone = document.documentElement.cloneNode(true);
-    
-    var scripts = clone.querySelectorAll('script');
-    for (var i = 0; i < scripts.length; i++) {
-      scripts[i].parentNode.removeChild(scripts[i]);
-    }
-    
-    clone.style.cssText = 'position:absolute;top:' + (-scrollY) + 'px;left:0;width:100%;height:auto;overflow:visible;';
-    
-    var cloneBody = clone.querySelector('body');
-    if (cloneBody) {
-      var footers = cloneBody.querySelectorAll('.page__footer, footer, .site-footer');
-      for (var j = 0; j < footers.length; j++) {
-        footers[j].style.display = 'none';
-      }
-    }
-    
-    overlay.appendChild(clone);
-    document.body.appendChild(overlay);
-    
-    if (isDark) {
-      body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-      body.classList.add('theme-transitioning-to-light');
+    var img = new Image();
+    img.onload = function() {
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      document.body.appendChild(canvas);
       
-      overlay.style.clipPath = 'inset(0 0 0 0)';
-      overlay.style.transition = 'clip-path 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
-      overlay.style.borderRight = '8px solid #58a6ff';
+      var startTime = Date.now();
+      var duration = 1200;
+      var lineColor = isDark ? '#58a6ff' : '#c678dd';
+      
+      function animate() {
+        var elapsed = Date.now() - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        var lineX = isDark ? canvas.width * (1 - progress) : canvas.width * progress;
+        
+        if (isDark) {
+          ctx.clearRect(lineX, 0, canvas.width - lineX, canvas.height);
+        } else {
+          ctx.clearRect(0, 0, lineX, canvas.height);
+        }
+        
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = 8;
+        ctx.beginPath();
+        ctx.moveTo(lineX, 0);
+        ctx.lineTo(lineX, canvas.height);
+        ctx.stroke();
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          if (canvas.parentNode) {
+            canvas.parentNode.removeChild(canvas);
+          }
+          body.classList.remove('theme-transitioning-to-dark');
+          body.classList.remove('theme-transitioning-to-light');
+        }
+      }
+      
+      if (isDark) {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        body.classList.add('theme-transitioning-to-light');
+      } else {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        body.classList.add('theme-transitioning-to-dark');
+      }
       
       setTimeout(function() {
-        overlay.style.clipPath = 'inset(0 0 0 100%)';
-      }, 50);
-    } else {
-      body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-      body.classList.add('theme-transitioning-to-dark');
-      
-      overlay.style.clipPath = 'inset(0 0 0 0)';
-      overlay.style.transition = 'clip-path 1.2s cubic-bezier(0.65, 0, 0.35, 1)';
-      overlay.style.borderRight = '8px solid #c678dd';
-      
-      setTimeout(function() {
-        overlay.style.clipPath = 'inset(0 100% 0 0)';
-      }, 50);
-    }
+        requestAnimationFrame(animate);
+      }, 10);
+    };
     
-    setTimeout(function() {
-      if (overlay && overlay.parentNode) {
-        overlay.parentNode.removeChild(overlay);
-      }
-      body.classList.remove('theme-transitioning-to-dark');
-      body.classList.remove('theme-transitioning-to-light');
-    }, 1300);
+    var svgString = '<svg xmlns="http://www.w3.org/2000/svg" width="' + canvas.width + '" height="' + canvas.height + '">' +
+      '<foreignObject width="100%" height="100%">' +
+      '<div xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;">' +
+      document.documentElement.outerHTML +
+      '</div>' +
+      '</foreignObject>' +
+      '</svg>';
+    
+    var blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+    var url = URL.createObjectURL(blob);
+    img.src = url;
   }
 
   window.addEventListener('DOMContentLoaded', function() {
-    var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"]');
+    var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"], .greedy-nav__toggle, button[aria-label*="dark"], button[aria-label*="theme"]');
     
     if (themeToggle) {
       themeToggle.addEventListener('click', function(e) {
