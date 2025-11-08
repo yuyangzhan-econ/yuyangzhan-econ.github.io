@@ -391,86 +391,75 @@ body[class*="about"] .page__title {
 
 
 
-/* ==================== 黑暗模式转场动画 ==================== */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: #1a1a1a;
-  z-index: 9999;
-  transition: left 0.8s cubic-bezier(0.77, 0, 0.175, 1);
-  pointer-events: none;
-}
+/* ==================== 黑暗模式转场动画（真实内容过渡） ==================== */
 
-body.theme-transitioning::before {
-  left: 0;
-}
-
-body.theme-transition-complete::before {
-  left: 100%;
-}
-
-/* ==================== 黑暗模式转场动画 ==================== */
-
-/* 白转黑：紫色线从左边扫过，同时黑色主题展开 */
+/* 白转黑：旧内容（白色模式）被遮罩逐渐覆盖，揭示下方新内容（黑色模式） */
 body.theme-transitioning-to-dark::before {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
-  width: 3px;
+  width: 5px;  /* 加粗线宽 */
   height: 100%;
-  background: #c678dd;
-  z-index: 9999;
+  background: #c678dd;  /* 紫色分界线 */
+  z-index: 10001;
   pointer-events: none;
-  animation: lineRight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  animation: lineMoveRight 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;  /* 减速 */
 }
 
 body.theme-transitioning-to-dark::after {
   content: '';
   position: fixed;
   top: 0;
-  left: -100%;
-  width: 100%;
+  left: 0;
+  width: 0;
   height: 100%;
-  background: #0d1117;
-  z-index: 9998;
+  background: transparent;
+  box-shadow: -5000px 0 0 5000px rgba(255, 255, 255, 1);  /* 白色遮罩 */
+  z-index: 10000;
   pointer-events: none;
-  animation: fillRight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  animation: maskMoveRight 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
-/* 黑转白：蓝色线从右边扫过，同时白色主题展开 */
+/* 黑转白：旧内容（黑色模式）被遮罩逐渐覆盖，揭示下方新内容（白色模式） */
 body.theme-transitioning-to-light::before {
   content: '';
   position: fixed;
   top: 0;
   right: 0;
-  width: 3px;
+  width: 5px;  /* 加粗线宽 */
   height: 100%;
-  background: #58a6ff;
-  z-index: 9999;
+  background: #58a6ff;  /* 淡蓝色分界线 */
+  z-index: 10001;
   pointer-events: none;
-  animation: lineLeft 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  animation: lineMoveLeft 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
 body.theme-transitioning-to-light::after {
   content: '';
   position: fixed;
   top: 0;
-  right: -100%;
-  width: 100%;
+  right: 0;
+  width: 0;
   height: 100%;
-  background: #ffffff;
-  z-index: 9998;
+  background: transparent;
+  box-shadow: 5000px 0 0 5000px rgba(13, 17, 23, 1);  /* 黑色遮罩 */
+  z-index: 10000;
   pointer-events: none;
-  animation: fillLeft 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+  animation: maskMoveLeft 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
 /* 动画定义 */
-@keyframes lineRight {
+@keyframes lineMoveRight {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: calc(100% - 5px);
+  }
+}
+
+@keyframes maskMoveRight {
   0% {
     left: 0;
   }
@@ -479,16 +468,16 @@ body.theme-transitioning-to-light::after {
   }
 }
 
-@keyframes fillRight {
+@keyframes lineMoveLeft {
   0% {
-    left: -100%;
+    right: 0;
   }
   100% {
-    left: 0;
+    right: calc(100% - 5px);
   }
 }
 
-@keyframes lineLeft {
+@keyframes maskMoveLeft {
   0% {
     right: 0;
   }
@@ -497,19 +486,10 @@ body.theme-transitioning-to-light::after {
   }
 }
 
-@keyframes fillLeft {
-  0% {
-    right: -100%;
-  }
-  100% {
-    right: 0;
-  }
-}
-
-/* 转场时防止滚动 */
+/* 防止转场时的溢出 */
 body.theme-transitioning-to-dark,
 body.theme-transitioning-to-light {
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 /* ==================== 黑暗模式核心样式 ==================== */
