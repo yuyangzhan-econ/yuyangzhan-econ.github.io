@@ -397,12 +397,9 @@ body[class*="about"] .page__title {
 }
 
 .theme-bar {
-  will-change: left;
-}
-
-body.theme-transitioning-to-dark,
-body.theme-transitioning-to-light {
-  overflow: hidden;
+  will-change: right;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* ==================== 黑暗模式核心样式 ==================== */
