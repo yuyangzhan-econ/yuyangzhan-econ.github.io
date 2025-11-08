@@ -159,11 +159,17 @@ console.error('Scroll animation error:', e);
     var body = document.body;
     var isDark = body.classList.contains('dark-mode');
     
-    
-    body.classList.add('theme-transitioning');
-    
-    setTimeout(function() {
+   
+    if (isDark) {
       
+      body.classList.add('theme-transitioning-to-light');
+    } else {
+      
+      body.classList.add('theme-transitioning-to-dark');
+    }
+    
+   
+    setTimeout(function() {
       if (isDark) {
         body.classList.remove('dark-mode');
         localStorage.setItem('theme', 'light');
@@ -171,15 +177,13 @@ console.error('Scroll animation error:', e);
         body.classList.add('dark-mode');
         localStorage.setItem('theme', 'dark');
       }
-      
-      body.classList.add('theme-transition-complete');
-      body.classList.remove('theme-transitioning');
-      
-      
-      setTimeout(function() {
-        body.classList.remove('theme-transition-complete');
-      }, 800);
     }, 400);
+    
+    
+    setTimeout(function() {
+      body.classList.remove('theme-transitioning-to-dark');
+      body.classList.remove('theme-transitioning-to-light');
+    }, 800);
   }
 
   
