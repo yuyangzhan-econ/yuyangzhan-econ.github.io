@@ -156,23 +156,22 @@ console.error('Scroll animation error:', e);
     var isDark = body.classList.contains('dark-mode');
     
     if (isDark) {
+     
       body.classList.add('theme-transitioning-to-light');
-      setTimeout(function() {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-      }, 50);
+      body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
     } else {
+     
+      body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
       body.classList.add('theme-transitioning-to-dark');
-      setTimeout(function() {
-        body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
-      }, 50);
     }
     
+   
     setTimeout(function() {
       body.classList.remove('theme-transitioning-to-dark');
       body.classList.remove('theme-transitioning-to-light');
-    }, 850);
+    }, 1200);
   }
 
   
