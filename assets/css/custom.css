@@ -557,6 +557,24 @@ body.dark-mode hr {
   border-color: #30363d !important;
 }
 
+/* 黑暗模式 - 导航栏按钮去掉背景 */
+body.dark-mode .greedy-nav .visible-links a,
+body.dark-mode .greedy-nav__toggle,
+body.dark-mode .masthead__menu-item,
+body.dark-mode .greedy-nav .links a {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 移除可能的边框 */
+body.dark-mode .greedy-nav a,
+body.dark-mode .masthead a {
+  border: none !important;
+  outline: none !important;
+}
+
+
 /* ==================== 黑暗模式转场动画（细线扫过效果） ==================== */
 body::before {
   content: '';
