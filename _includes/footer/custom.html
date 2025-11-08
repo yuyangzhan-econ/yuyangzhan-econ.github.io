@@ -137,4 +137,67 @@ console.error('Scroll animation error:', e);
 });
 </script>
 
+
+<!-- 黑暗模式切换脚本 -->
+<script>
+(function() {
+  
+  var currentTheme = localStorage.getItem('theme');
+  if (!currentTheme) {
+   
+    localStorage.setItem('theme', 'light');
+    currentTheme = 'light';
+  }
+
+  
+  if (currentTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+
+  
+  function toggleTheme() {
+    var body = document.body;
+    var isDark = body.classList.contains('dark-mode');
+    
+    
+    body.classList.add('theme-transitioning');
+    
+    setTimeout(function() {
+      
+      if (isDark) {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+      }
+      
+      body.classList.add('theme-transition-complete');
+      body.classList.remove('theme-transitioning');
+      
+      
+      setTimeout(function() {
+        body.classList.remove('theme-transition-complete');
+      }, 800);
+    }, 400);
+  }
+
+  
+  window.addEventListener('DOMContentLoaded', function() {
+   
+    var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"]');
+    
+    if (themeToggle) {
+      themeToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        toggleTheme();
+      });
+    } else {
+     
+      console.warn('Theme toggle button not found. Add class="theme-toggle" to your button.');
+    }
+  });
+})();
+</script>
+
 <!-- end custom footer snippets -->
