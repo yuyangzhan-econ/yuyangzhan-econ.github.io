@@ -162,7 +162,7 @@ window.addEventListener('load', function() {
     for (var i = 0; i < barCount; i++) {
       var bar = document.createElement('div');
       bar.className = 'theme-bar';
-      bar.style.cssText = 'position:absolute;right:100%;width:100%;top:' + (i * barHeight) + '%;height:' + barHeight + '%;';
+      bar.style.cssText = 'position:absolute;right:100%;width:100%;top:' + (i * barHeight) + '%;height:' + (barHeight + 0.5) + '%;';
       bar.style.background = isDark ? '#ffffff' : '#272727';
       
       var delay;
