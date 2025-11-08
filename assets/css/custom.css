@@ -491,15 +491,15 @@ body.dark-mode .archive__item-title a,
 body.dark-mode h1 a,
 body.dark-mode h2 a,
 body.dark-mode h3 a {
-  color: #58a6ff !important;  /* GitHub蓝色 */
-  background-image: linear-gradient(to right, #58a6ff, #58a6ff) !important;
+  color: #c678dd !important;  /* GitHub蓝色 */
+  background-image: linear-gradient(to right, #c678dd, #c678dd) !important;
 }
 
 body.dark-mode .archive__item-title a:hover,
 body.dark-mode h1 a:hover,
 body.dark-mode h2 a:hover,
 body.dark-mode h3 a:hover {
-  color: #79c0ff !important;
+  color: #d19ce6 !important;
   background-size: 100% 2px !important;
 }
 
@@ -555,4 +555,102 @@ body.dark-mode pre {
 /* 黑暗模式 - 分隔线 */
 body.dark-mode hr {
   border-color: #30363d !important;
+}
+
+/* ==================== 黑暗模式转场动画（细线扫过效果） ==================== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: -2px;
+  width: 2px;  /* 细线宽度 */
+  height: 100%;
+  background: #c678dd;  /* 紫色线（白转黑） */
+  z-index: 9999;
+  transition: none;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* 白色转黑色：紫色线从左到右 */
+body.theme-transitioning-to-dark::before {
+  opacity: 1;
+  background: #c678dd;  /* 紫色 */
+  animation: sweepRightToDark 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+/* 黑色转白色：蓝色线从右到左 */
+body.theme-transitioning-to-light::before {
+  opacity: 1;
+  background: #58a6ff;  /* 蓝色 */
+  left: 100%;
+  animation: sweepLeftToLight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes sweepRightToDark {
+  0% {
+    left: -2px;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes sweepLeftToLight {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: -2px;
+  }
+}
+
+/* 线左边显示黑色模式，右边显示白色模式 */
+body.theme-transitioning-to-dark,
+body.theme-transitioning-to-light {
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* 为了实现"线分隔两种模式"的效果，需要用伪元素覆盖 */
+body.theme-transitioning-to-dark::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #0d1117;  /* 黑色模式背景 */
+  z-index: 9998;
+  animation: fillDark 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+body.theme-transitioning-to-light::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: #ffffff;  /* 白色模式背景 */
+  z-index: 9998;
+  animation: fillLight 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+}
+
+@keyframes fillDark {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes fillLight {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
