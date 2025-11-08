@@ -1,219 +1,580 @@
-<!-- start custom footer snippets -->
+/* ==================== 方案6：Georgia + Helvetica ==================== */
+/* 系统自带字体，无需加载，加载最快 */
 
-<a href="/sitemap/">Sitemap</a>
+/* ==================== 字体平滑渲染 ==================== */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
-<!-- Support for MatJax -->
-<script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script"></script>
+/* ==================== 标题字体设置 ==================== */
+h1, h2, h3, h4, h5, h6,
+.page__title,
+.archive__item-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
 
-<!-- Support for Plotly -->
-<script defer src='https://cdnjs.cloudflare.com/ajax/libs/plotly.js/3.0.1/plotly.min.js'></script>
+/* 主标题（Welcome!等） */
+h1, .page__title {
+  font-size: 2.5em;
+  color: #1a1a1a;
+  margin-bottom: 0.8em;
+  font-weight: 400;
+}
 
-<!-- Support for Mermaid -->
-<script type="module">
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-mermaid.initialize({startOnLoad:true, theme:'default'});
-await mermaid.run({querySelector:'code.language-mermaid'});
-</script>
+/* 二级标题（Current, Short Bio等） */
+h2 {
+  font-size: 1.8em;
+  color: #2c3e50;
+  margin-top: 1.8em;
+  margin-bottom: 0.8em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
 
-<!-- 简单滚动淡入效果 -->
-<script>
-window.addEventListener('load', function() {
-  try {
-    var lastScroll = window.pageYOffset || 0;
-    var scrollingDown = true;
-    var elementStates = new WeakMap();
+/* 三级标题 */
+h3 {
+  font-size: 1.4em;
+  color: #34495e;
+  margin-top: 1.5em;
+  margin-bottom: 0.6em;
+  font-weight: 400;
+}
 
-    window.addEventListener('scroll', function() {
-      var currentScroll = window.pageYOffset || 0;
-      scrollingDown = currentScroll > lastScroll;
-      lastScroll = currentScroll;
-    }, { passive: true });
+/* ==================== 正文字体设置 ==================== */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #2c3e50;
+}
 
-    var items = document.querySelectorAll('.page__content h2, .page__content h3, .page__content p, .page__content ul, .page__content ol, .archive__item, .list__item');
+/* 段落 */
+p {
+  font-size: 1em;
+  line-height: 1.7;
+  color: #4a5568;
+  margin-bottom: 1em;
+}
 
-    function isInViewport(el) {
-      var rect = el.getBoundingClientRect();
-      var windowHeight = window.innerHeight;
-      var top = windowHeight * 0.1;
-      var bottom = windowHeight * 0.8;
-      var elCenter = rect.top + rect.height / 2;
-      return elCenter >= top && elCenter <= bottom;
-    }
+/* ==================== Research/Teaching 页面优化 ==================== */
+/* 调小标题字体 */
+.archive__item-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.2em !important;  /* 从原来的更大改成1.2em */
+  font-weight: 400;
+  color: #2c3e50;
+  margin-bottom: 0.5em;
+}
 
-    for (var i = 0; i < items.length; i++) {
-      var el = items[i];
-      if (isInViewport(el)) {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
-        el.setAttribute('data-state', 'bright');
-      } else {
-        el.style.opacity = '0.3';
-        el.style.transform = 'translateY(0)';
-        el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        el.setAttribute('data-state', 'dim');
-      }
-      elementStates.set(el, {
-        lastToggleTime: 0,
-        lastScrollPos: lastScroll,
-        toggleCount: 0
-      });
-    }
+.archive__item-title a {
+  color: #2c3e50;
+  text-decoration: none;
+  border-bottom: none;
+}
 
-    var observer = new IntersectionObserver(function(entries) {
-      for (var j = 0; j < entries.length; j++) {
-        var entry = entries[j];
-        var el = entry.target;
-        var state = el.getAttribute('data-state');
-        var now = Date.now();
-        var currentScrollPos = window.pageYOffset || 0;
-        var elState = elementStates.get(el);
+.archive__item-title a:hover {
+  color: #1a252f;
+  border-bottom: 1px solid #2c3e50;
+}
 
-        if (!elState) {
-          elementStates.set(el, {
-            lastToggleTime: 0,
-            lastScrollPos: currentScrollPos,
-            toggleCount: 0
-          });
-          elState = elementStates.get(el);
-        }
+/* 摘要文字 */
+.archive__item-excerpt {
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: #555;
+  margin-top: 0.5em;
+}
 
-        var timeSinceLastToggle = now - elState.lastToggleTime;
-        var scrollDistance = Math.abs(currentScrollPos - elState.lastScrollPos);
+/* 列表项 */
+.archive .list__item {
+  margin-bottom: 1.5em;
+}
 
-        if (timeSinceLastToggle < 200 && scrollDistance < 50) {
-          elState.toggleCount++;
-          if (elState.toggleCount > 2) {
-            continue;
-          }
-        } else {
-          elState.toggleCount = 0;
-        }
+/* ==================== 列表样式优化 ==================== */
+ul, ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
 
-        elState.lastToggleTime = now;
-        elState.lastScrollPos = currentScrollPos;
+li {
+  margin-bottom: 0.5em;
+  line-height: 1.7;
+  color: #4a5568;
+}
 
-        if (entry.isIntersecting) {
-          if (state === 'dim') {
-            if (scrollingDown) {
-              el.style.transition = 'none';
-              el.style.opacity = '0.3';
-              el.style.transform = 'translateY(15px)';
-              void el.offsetHeight;
-              el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-              setTimeout(function() {
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0)';
-              }, 10);
-            } else {
-              el.style.transform = 'translateY(0)';
-              el.style.transition = 'opacity 0.8s ease';
-              el.style.opacity = '1';
-            }
-            el.setAttribute('data-state', 'bright');
-          }
-        } else {
-          if (state === 'bright') {
-            el.style.transition = 'opacity 0.8s ease';
-            el.style.opacity = '0.3';
-            el.style.transform = 'translateY(0)';
-            el.setAttribute('data-state', 'dim');
-          }
-        }
-      }
-    }, { 
-      threshold: 0.5,
-      rootMargin: '-10% 0px -20% 0px'
-    });
+/* ==================== 链接样式（支持换行 + 明显颜色） ==================== */
+/* ==================== 链接样式（耶鲁蓝配色） ==================== */
+/* ==================== 链接样式（分区域控制） ==================== */
 
-    for (var k = 0; k < items.length; k++) {
-      observer.observe(items[k]);
-    }
-  } catch(e) {
-    console.error('Scroll animation error:', e);
+/* ========== 1. 正文链接（默认样式） ========== */
+.page__content a:not(.btn),
+#main article a:not(.btn),
+.archive__item-excerpt a:not(.btn),
+p a:not(.btn),
+li a:not(.btn) {
+  color: #3e67b1 !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              color 0.3s ease !important;
+  padding-bottom: 2px !important;
+}
+
+.page__content a:not(.btn):hover,
+#main article a:not(.btn):hover,
+p a:not(.btn):hover,
+li a:not(.btn):hover {
+  color: #0A3A75 !important;
+  background-size: 100% 2px !important;
+  text-decoration: none !important;
+}
+
+/* ========== 2. 标题链接（Research/Teaching页面） ========== */
+.archive__item-title a {
+  color: #2c3e50 !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background-image: linear-gradient(to right, #2c3e50, #2c3e50) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              color 0.3s ease !important;
+  padding-bottom: 2px !important;
+}
+
+.archive__item-title a:hover {
+  color: #1a252f !important;
+  background-size: 100% 2px !important;
+}
+
+/* ========== 3. 导航栏链接（修复快速缩回问题） ========== */
+.masthead a,
+.greedy-nav a {
+  color: inherit !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s ease, color 0.3s ease !important;
+  padding-bottom: 3px !important;
+  position: relative !important;
+}
+
+.masthead a:hover,
+.greedy-nav a:hover {
+  background-size: 100% 2px !important;
+  color: #3e67b1 !important;
+  /* 保持下划线不缩回 */
+}
+
+/* 移除可能的冲突样式 */
+.masthead a::before,
+.masthead a::after,
+.greedy-nav a::before,
+.greedy-nav a::after {
+  display: none !important;
+}
+
+/* ========== 4. 侧边栏链接 ========== */
+.sidebar a,
+.author__urls a {
+  color: #3e67b1 !important;
+  text-decoration: none !important;
+  border-bottom: none !important;
+  background-image: linear-gradient(to right, #3e67b1, #3e67b1) !important;
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 1.5px !important;
+  transition: background-size 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+              color 0.3s ease !important;
+  padding-bottom: 2px !important;
+}
+
+.sidebar a:hover,
+.author__urls a:hover {
+  color: #0A3A75 !important;
+  background-size: 100% 1.5px !important;
+}
+
+/* ========== 5. 全局链接重置（移除所有状态的默认样式） ========== */
+a:link,
+a:visited,
+a:active,
+a:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* 深色模式 */
+/* @media (prefers-color-scheme: dark) {
+  body a,
+  .page__content a,
+  #main a {
+    color: #5B9BD5 !important; 
+    background-image: linear-gradient(to right, #5B9BD5, #5B9BD5) !important;
   }
-});
-</script>
-
-<!-- 黑暗模式切换脚本 - 横条块阶梯动画 -->
-<script>
-(function() {
-  var currentTheme = localStorage.getItem('theme');
-  if (!currentTheme) {
-    localStorage.setItem('theme', 'light');
-    currentTheme = 'light';
+  
+  body a:hover,
+  .page__content a:hover {
+    color: #7BAFD4 !important;
   }
+} */
 
-  if (currentTheme === 'dark') {
-    document.body.classList.add('dark-mode');
+/* ==================== 强调文本 ==================== */
+em {
+  font-style: italic;
+  color: #c0392b;
+  font-weight: 500;
+}
+
+strong, b {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* ==================== 半透明背景设置 ==================== */
+/* 主体内容区域的半透明背景                                        白色模块*/
+/* .page__content {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 2em;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2em;
+} */
+/* ==================== 主内容区域 ==================== */
+.page__content,
+#main {
+  background: transparent !important;
+  padding: 2.5em !important;
+  margin-bottom: 2em !important;
+}
+
+
+/* 整体页面背景 - 简约渐变           蓝色背景           */
+/* body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e3edf7 100%);
+  background-attachment: fixed;
+} */
+
+/* ==================== 背景设置（浅色模式） ==================== */
+body {
+  background: #ffffff !important;
+  background-attachment: fixed !important;
+}
+
+
+
+/* 或者使用淡雅的图案背景（可选） */
+body.pattern-bg {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%233498db' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
+}
+
+/* ==================== Research/Teaching 模块调整 ==================== */
+/* 针对archive页面的调整 */
+.archive__item-title {
+  font-family: 'Lato', 'Helvetica Neue', sans-serif;
+  font-size: 1.1em !important; /* 从默认的更大字体改小 */
+  font-weight: 500;
+  margin-bottom: 0.5em;
+}
+
+.archive__item-excerpt {
+  font-size: 0.9em;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* Research/Teaching 列表项 */
+.list__item {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin-bottom: 1.5em;
+}
+
+.list__item h2 {
+  font-size: 1.3em !important; /* 改小标题 */
+  font-weight: 600;
+}
+
+/* ==================== 侧边栏优化 ==================== */
+.sidebar {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 1.5em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== 链接样式优化 ==================== */
+/* a {
+  color: #3498db;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #2980b9;
+  text-decoration: none;
+  border-bottom: 2px solid #3498db;
+} */
+
+/* ==================== 响应式调整 ==================== */
+@media (max-width: 768px) {
+  .page__title {
+    font-size: 2em;
   }
-
-  function toggleTheme() {
-    var body = document.body;
-    var isDark = body.classList.contains('dark-mode');
-    
-    var container = document.createElement('div');
-    container.id = 'theme-bars-container';
-    container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
-    
-    var barCount = 12;
-    var barHeight = 100 / barCount;
-    
-    for (var i = 0; i < barCount; i++) {
-      var bar = document.createElement('div');
-      bar.className = 'theme-bar';
-      bar.style.cssText = 'position:absolute;left:100%;width:100%;height:' + barHeight + '%;top:' + (i * barHeight) + '%;';
-      bar.style.background = isDark ? '#ffffff' : '#272727';
-      
-      var delay = isDark ? (i * 0.03) : ((barCount - 1 - i) * 0.03);
-      bar.style.transitionDelay = delay + 's';
-      
-      container.appendChild(bar);
-    }
-    
-    body.appendChild(container);
-    
-    setTimeout(function() {
-      var bars = container.querySelectorAll('.theme-bar');
-      for (var j = 0; j < bars.length; j++) {
-        bars[j].style.transition = 'left 0.6s cubic-bezier(0.65, 0, 0.35, 1)';
-        bars[j].style.left = '0';
-      }
-    }, 50);
-    
-    var maxDelay = isDark ? ((barCount - 1) * 0.03) : 0;
-    var switchTime = maxDelay * 1000 + 600;
-    
-    setTimeout(function() {
-      if (isDark) {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
-      } else {
-        body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
-      }
-    }, switchTime);
-    
-    setTimeout(function() {
-      if (container && container.parentNode) {
-        container.parentNode.removeChild(container);
-      }
-    }, switchTime + 100);
+  
+  h2 {
+    font-size: 1.5em;
   }
+  
+  .page__content {
+    padding: 1.5em;
+  }
+}
 
-  window.addEventListener('DOMContentLoaded', function() {
-    var themeToggle = document.querySelector('.dark-toggle, .theme-toggle, #theme-toggle, [data-toggle="theme"]');
-    
-    if (themeToggle) {
-      themeToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        toggleTheme();
-      });
-    } else {
-      console.warn('Theme toggle button not found.');
-    }
-  });
-})();
-</script>
 
-<!-- end custom footer snippets -->
+
+
+
+
+
+/* ==================== About页面特殊布局 ==================== */
+/* 为About页面添加背景图片 */
+body.about-page,
+body[class*="about"] {
+  /* background: url('YOUR_IMAGE_URL_HERE.jpg') center/cover no-repeat fixed !important; */
+  background: #fefdf9 !important;
+  /* 如果不想用图片，改成: background: #ffffff !important; */
+}
+
+/* About页面的内容容器 */
+body.about-page .page__content,
+body[class*="about"] .page__content {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  margin-top: 120px !important; /* 顶部留空 */
+  margin-bottom: 80px !important; /* 底部留空 */
+  padding: 3em !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Welcome标题显示在白色背景上方 */
+body.about-page .page__title,
+body[class*="about"] .page__title {
+  margin-top: -60px !important;
+  padding-top: 0 !important;
+  background: transparent !important;
+}
+
+
+
+/* ==================== 黑暗模式转场动画 - 横条块效果 ==================== */
+#theme-bars-container {
+  overflow: hidden;
+}
+
+.theme-bar {
+  will-change: left;
+}
+
+body.theme-transitioning-to-dark,
+body.theme-transitioning-to-light {
+  overflow: hidden;
+}
+
+/* ==================== 黑暗模式核心样式 ==================== */
+body.dark-mode {
+  background: #0d1117 !important;
+  color: #c9d1d9 !important;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* 黑暗模式 - 导航栏 */
+body.dark-mode .masthead,
+body.dark-mode .masthead__inner-wrap,
+body.dark-mode .greedy-nav {
+  background: #161b22 !important;
+  border-bottom: 1px solid #30363d !important;
+}
+
+body.dark-mode .masthead a,
+body.dark-mode .greedy-nav a,
+body.dark-mode .masthead__menu a {
+  color: #c9d1d9 !important;
+}
+
+/* 黑暗模式导航栏链接 - 添加紫色下划线动画 */
+body.dark-mode .masthead a,
+body.dark-mode .greedy-nav a,
+body.dark-mode .masthead__menu a {
+  color: #c9d1d9 !important;
+  background-image: linear-gradient(to right, #c678dd, #c678dd) !important;  /* 紫色 */
+  background-position: 0% 100% !important;
+  background-repeat: no-repeat !important;
+  background-size: 0% 2px !important;
+  transition: background-size 0.35s ease, color 0.3s ease !important;
+  padding-bottom: 3px !important;
+}
+
+body.dark-mode .masthead a:hover,
+body.dark-mode .greedy-nav a:hover,
+body.dark-mode .masthead__menu a:hover {
+  color: #c678dd !important;  /* 悬停时文字也变紫色 */
+  background-size: 100% 2px !important;  /* 下划线从左到右展开 */
+}
+
+/* 黑暗模式 - 主内容区 */
+body.dark-mode .page,
+body.dark-mode .page__content,
+body.dark-mode #main,
+body.dark-mode article {
+  background: #0d1117 !important;
+  color: #c9d1d9 !important;
+}
+
+/* 黑暗模式 - 标题 */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode .page__title {
+  color: #f0f6fc !important;
+  border-bottom-color: #30363d !important;
+}
+
+/* 黑暗模式 - 段落和文本 */
+body.dark-mode p,
+body.dark-mode li,
+body.dark-mode .archive__item-excerpt {
+  color: #c9d1d9 !important;
+}
+
+/* 黑暗模式 - 链接（VS Code紫色配色） */
+body.dark-mode .page__content a:not(.btn),
+body.dark-mode #main a:not(.btn),
+body.dark-mode article a:not(.btn),
+body.dark-mode p a:not(.btn),
+body.dark-mode li a:not(.btn) {
+  color: #c678dd !important;  /* VS Code紫色 */
+  background-image: linear-gradient(to right, #c678dd, #c678dd) !important;
+}
+
+body.dark-mode .page__content a:not(.btn):hover,
+body.dark-mode #main a:not(.btn):hover,
+body.dark-mode p a:not(.btn):hover,
+body.dark-mode li a:not(.btn):hover {
+  color: #d19ce6 !important;  /* 更亮的紫色 */
+  background-size: 100% 2px !important;
+}
+
+/* 黑暗模式 - 标题链接 */
+body.dark-mode .archive__item-title a,
+body.dark-mode h1 a,
+body.dark-mode h2 a,
+body.dark-mode h3 a {
+  color: #c678dd !important;  /* GitHub蓝色 */
+  background-image: linear-gradient(to right, #c678dd, #c678dd) !important;
+}
+
+body.dark-mode .archive__item-title a:hover,
+body.dark-mode h1 a:hover,
+body.dark-mode h2 a:hover,
+body.dark-mode h3 a:hover {
+  color: #d19ce6 !important;
+  background-size: 100% 2px !important;
+}
+
+/* 黑暗模式 - 侧边栏 */
+body.dark-mode .sidebar,
+body.dark-mode .sidebar__right {
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+}
+
+body.dark-mode .sidebar a,
+body.dark-mode .author__urls a {
+  color: #58a6ff !important;
+  background-image: linear-gradient(to right, #58a6ff, #58a6ff) !important;
+}
+
+body.dark-mode .sidebar a:hover,
+body.dark-mode .author__urls a:hover {
+  color: #79c0ff !important;
+  background-size: 100% 1.5px !important;
+}
+
+/* 黑暗模式 - About页面特殊处理 */
+body.dark-mode.about-page,
+body.dark-mode[class*="about"] {
+  background: #0d1117 !important;
+}
+
+body.dark-mode.about-page .page__content,
+body.dark-mode[class*="about"] .page__content {
+  background: rgba(22, 27, 34, 0.95) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 黑暗模式 - 强调文本 */
+body.dark-mode em {
+  color: #ff7b72 !important;
+}
+
+body.dark-mode strong,
+body.dark-mode b {
+  color: #f0f6fc !important;
+}
+
+/* 黑暗模式 - 代码块 */
+body.dark-mode code,
+body.dark-mode pre {
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+  color: #e6edf3 !important;
+}
+
+/* 黑暗模式 - 分隔线 */
+body.dark-mode hr {
+  border-color: #30363d !important;
+}
+
+/* 黑暗模式 - 导航栏按钮去掉背景 */
+body.dark-mode .greedy-nav .visible-links a,
+body.dark-mode .greedy-nav__toggle,
+body.dark-mode .masthead__menu-item,
+body.dark-mode .greedy-nav .links a {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* 导航栏悬停轻微高亮 */
+body.dark-mode .greedy-nav .visible-links a:hover,
+body.dark-mode .masthead__menu-item:hover {
+  background-color: rgba(198, 120, 221, 0.1) !important;  /* 轻微的紫色高亮 */
+}
