@@ -6,8 +6,30 @@ author_profile: false
 share: false
 ---
 
-{% include base_path %}
+<style>
+.content-container {
+  background: var(--global-bg-color);
+  border: 1px solid var(--global-border-color);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
 
-{% for post in site.teaching reversed %}
-  {% include archive-single.html %}
-{% endfor %}
+.teaching-note {
+  font-size: 0.9em;
+  color: #666;
+  font-style: italic;
+  margin-top: 15px;
+}
+</style>
+
+<div class="content-container">
+  {% include base_path %}
+
+  {% for post in site.teaching reversed %}
+    {% include archive-single.html %}
+  {% endfor %}
+</div>
+
+<p class="teaching-note">I am passionate about teaching and have served as a teaching assistant for students from diverse cultural backgrounds and academic levels.</p>
