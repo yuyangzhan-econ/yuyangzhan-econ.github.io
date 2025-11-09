@@ -6,16 +6,45 @@ author_profile: false
 ---
 
 <style>
+.content-container {
+  background: var(--global-bg-color);
+  border: 1px solid var(--global-border-color);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 summary {
   cursor: pointer;
   font-weight: bold;
   padding: 10px;
   border-left: 3px solid #0066cc;
   transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+}
+
+summary::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  transition: width 0.3s ease;
+}
+
+body:not(.dark-mode) summary:hover::after {
+  width: 100%;
+  background-color: #0066cc;
+}
+
+body.dark-mode summary:hover::after {
+  width: 100%;
+  background-color: #9d7bea;
 }
 
 summary:hover {
-  color: #0066cc;
   border-left-width: 5px;
 }
 
@@ -58,20 +87,22 @@ details {
 }
 </style>
 
-<h2>Working Papers</h2>
+<div class="content-container">
+  <h2>Working Papers</h2>
 
-<h3 class="paper-title">Strategic Land Supply and Booming Urban Greens in China <span style="color: #0066cc;">(New Draft Coming Soon)</span></h3>
+  <h3 class="paper-title">Strategic Land Supply and Booming Urban Greens in China <span style="color: #0066cc;">(New Draft Coming Soon)</span></h3>
 
-<p class="paper-meta">Independent Research</p>
+  <p class="paper-meta">Independent Research</p>
 
-<p><em>What changes will occur in the land transfer behavior of local officials when the cost of directly manipulating data increases?</em></p>
+  <p><em>What changes will occur in the land transfer behavior of local officials when the cost of directly manipulating data increases?</em></p>
 
-<details>
-  <summary>Abstract</summary>
-  <div class="abstract">
-    This paper examines shifting China's air-quality monitoring stations to independent private operators prompted municipal officials to strategically develop green spaces around monitoring stations. A simple model demonstrates that higher data manipulation costs caused by the reform generate substitution effects (expanded real green space) and signal-strength effects (increased reliance on credible data). Analysis of over one million land-transfer records with difference-in-differences design reveals park and green-space transfers nearly doubled within 5 km of monitoring stations post-reform, with effects diminishing by distance. These findings underscore the necessity of comprehensive, multi-metric evaluation systems to prevent unintended spatial resource allocation distortions.
-  </div>
-</details>
+  <details>
+    <summary>Abstract</summary>
+    <div class="abstract">
+      This paper examines shifting China's air-quality monitoring stations to independent private operators prompted municipal officials to strategically develop green spaces around monitoring stations. A simple model demonstrates that higher data manipulation costs caused by the reform generate substitution effects (expanded real green space) and signal-strength effects (increased reliance on credible data). Analysis of over one million land-transfer records with difference-in-differences design reveals park and green-space transfers nearly doubled within 5 km of monitoring stations post-reform, with effects diminishing by distance. These findings underscore the necessity of comprehensive, multi-metric evaluation systems to prevent unintended spatial resource allocation distortions.
+    </div>
+  </details>
+</div>
 
 <script>
 (function() {
