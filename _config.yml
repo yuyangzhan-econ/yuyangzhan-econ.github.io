@@ -272,13 +272,7 @@ defaults:
       comments: true
   # _portfolio
   - scope:
-      path: ""
-      type: Research
     values:
-      layout: single
-      author_profile: true
-      share: true
-      comment: true
   # _talks
   - scope:
       path: ""
