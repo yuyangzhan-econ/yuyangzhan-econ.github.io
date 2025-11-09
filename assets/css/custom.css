@@ -1,3 +1,4 @@
+
 /* ==================== 页面加载动画 ==================== */
 #page-loader {
   position: fixed;
@@ -371,7 +372,7 @@ strong, b {
 
 /* ==================== 背景设置（浅色模式） ==================== */
 body {
-  background: ##f9fafb !important;
+  background: #ffffff !important;
   background-attachment: fixed !important;
 }
 
@@ -500,7 +501,7 @@ body[class*="about"] .page__title {
 
 /* ==================== 黑暗模式核心样式 ==================== */
 body.dark-mode {
-  background: #262624 !important;
+  background: #0d1117 !important;
   color: #c9d1d9 !important;
   transition: background 0.3s ease, color 0.3s ease;
 }
@@ -509,7 +510,7 @@ body.dark-mode {
 body.dark-mode .masthead,
 body.dark-mode .masthead__inner-wrap,
 body.dark-mode .greedy-nav {
-  background: #2e2e2e !important;
+  background: #161b22 !important;
   border-bottom: 1px solid #30363d !important;
 }
 
@@ -544,7 +545,7 @@ body.dark-mode .page,
 body.dark-mode .page__content,
 body.dark-mode #main,
 body.dark-mode article {
-  background: #262624 !important;
+  background: #0d1117 !important;
   color: #c9d1d9 !important;
 }
 
@@ -605,7 +606,7 @@ body.dark-mode h3 a:hover {
 /* 黑暗模式 - 侧边栏 */
 body.dark-mode .sidebar,
 body.dark-mode .sidebar__right {
-  background: #2e2e2e !important;
+  background: #161b22 !important;
   border: 1px solid #30363d !important;
 }
 
@@ -624,12 +625,12 @@ body.dark-mode .author__urls a:hover {
 /* 黑暗模式 - About页面特殊处理 */
 body.dark-mode.about-page,
 body.dark-mode[class*="about"] {
-  background: #262624 !important;
+  background: #0d1117 !important;
 }
 
 body.dark-mode.about-page .page__content,
 body.dark-mode[class*="about"] .page__content {
-  background: rgba(47, 47, 47, 0.95) !important;
+  background: rgba(22, 27, 34, 0.95) !important;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -646,14 +647,14 @@ body.dark-mode b {
 /* 黑暗模式 - 代码块 */
 body.dark-mode code,
 body.dark-mode pre {
-  background: #2e2e2e !important;
+  background: #161b22 !important;
   border: 1px solid #30363d !important;
   color: #e6edf3 !important;
 }
 
 /* 黑暗模式 - 分隔线 */
 body.dark-mode hr {
-  border-color: #404040 !important;
+  border-color: #30363d !important;
 }
 
 /* 黑暗模式 - 导航栏按钮去掉背景 */
