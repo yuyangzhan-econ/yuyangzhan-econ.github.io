@@ -10,10 +10,37 @@ summary {
   cursor: pointer;
   font-weight: bold;
   padding: 10px;
-  border-left: 3px solid #0066cc;
+  padding-right: 30px;
   transition: all 0.3s ease;
   position: relative;
   display: inline-block;
+  list-style: none;
+}
+
+/* 移除默认的三角形 */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::before {
+  content: '▶';
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+body:not(.dark-mode) summary::before {
+  color: #0066cc;
+}
+
+body.dark-mode summary::before {
+  color: #9d7bea;
+}
+
+details[open] summary::before {
+  transform: translateY(-50%) rotate(90deg);
 }
 
 summary::after {
@@ -27,22 +54,17 @@ summary::after {
 }
 
 body:not(.dark-mode) summary:hover::after {
-  width: 100%;
+  width: calc(100% - 30px);
   background-color: #0066cc;
 }
 
 body.dark-mode summary:hover::after {
-  width: 100%;
+  width: calc(100% - 30px);
   background-color: #9d7bea;
-}
-
-summary:hover {
-  border-left-width: 5px;
 }
 
 .abstract {
   padding: 15px;
-  border-left: 3px solid rgba(128, 128, 128, 0.3);
   margin-top: 5px;
   line-height: 1.6;
   overflow: hidden;
@@ -73,7 +95,7 @@ details {
 }
 
 .paper-meta {
-  color: #666;
+  color: #888;
   font-style: italic;
   margin-bottom: 10px;
 }
