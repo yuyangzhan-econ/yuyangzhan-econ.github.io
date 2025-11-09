@@ -10,7 +10,7 @@ summary {
   cursor: pointer;
   font-weight: bold;
   padding: 10px;
-  padding-right: 30px;
+  padding-left: 30px;
   transition: all 0.3s ease;
   position: relative;
   display: inline-block;
@@ -22,10 +22,11 @@ summary::-webkit-details-marker {
   display: none;
 }
 
+/* 三角形在Abstract前面 */
 summary::before {
   content: '▶';
   position: absolute;
-  right: 5px;
+  left: 5px;
   top: 50%;
   transform: translateY(-50%);
   transition: transform 0.3s ease, color 0.3s ease;
@@ -47,7 +48,7 @@ summary::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 30px;
   width: 0;
   height: 2px;
   transition: width 0.3s ease;
@@ -65,6 +66,7 @@ body.dark-mode summary:hover::after {
 
 .abstract {
   padding: 15px;
+  padding-left: 30px;
   margin-top: 5px;
   line-height: 1.6;
   overflow: hidden;
@@ -89,15 +91,27 @@ details {
   margin-bottom: 20px;
 }
 
+/* 调整论文内容的行间距 - 更紧凑 */
 .paper-title {
-  margin-top: 30px;
-  margin-bottom: 5px;
+  margin-top: 0;
+  margin-bottom: 8px;
 }
 
 .paper-meta {
   color: #888;
   font-style: italic;
-  margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+/* 论文标题前的间距 */
+h3.paper-title {
+  margin-top: 40px;
+}
+
+/* 论文内部元素紧凑 */
+.page__content > p {
+  margin-bottom: 8px;
 }
 </style>
 
@@ -106,7 +120,7 @@ details {
 ### Strategic Land Supply and Booming Urban Greens in China <span style="color: #0066cc;">(New Draft Coming Soon)</span>
 {: .paper-title}
 
-*Independent Research*
+Independent Research
 {: .paper-meta}
 
 *What changes will occur in the land transfer behavior of local officials when the cost of directly manipulating data increases?*
