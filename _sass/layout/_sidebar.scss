@@ -262,3 +262,11 @@
     }
   }
 }
+
+body.dark-mode {
+  .author__urls a[href*="github"] img,
+  .author__urls a[href*="github"] i,
+  .author__urls a[href*="github"] svg {
+    filter: invert(1);
+  }
+}
