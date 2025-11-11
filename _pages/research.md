@@ -104,6 +104,13 @@ details {
   margin-bottom: 8px;
 }
 
+.paper-author {
+  color: #888;
+  font-style: normal;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
 /* 论文标题前的间距 */
 h3.paper-title {
   margin-top: 40px;
@@ -121,7 +128,7 @@ h3.paper-title {
 {: .paper-title}
 
 Independent Research
-{: .paper-meta}
+{: .paper-author}
 
 What changes will occur in the land transfer behavior of local officials when the cost of directly manipulating data increases?
 {: .paper-meta}
