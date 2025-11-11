@@ -501,7 +501,7 @@ body[class*="about"] .page__title {
 
 /* ==================== 黑暗模式核心样式 ==================== */
 body.dark-mode {
-  background: #0d1117 !important;
+  background: #272727 !important;
   color: #c9d1d9 !important;
   transition: background 0.3s ease, color 0.3s ease;
 }
