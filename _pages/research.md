@@ -123,7 +123,8 @@ h3.paper-title {
 Independent Research
 {: .paper-meta}
 
-*What changes will occur in the land transfer behavior of local officials when the cost of directly manipulating data increases?*
+What changes will occur in the land transfer behavior of local officials when the cost of directly manipulating data increases?
+{: .paper-meta}
 
 <details>
   <summary>Abstract</summary>
