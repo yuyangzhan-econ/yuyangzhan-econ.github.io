@@ -89,13 +89,17 @@
 
 <!-- 黑暗模式脚本 -->
 <script>
-// 初始化主题（添加到html，body在footer中添加）
-try {
-  var savedTheme = localStorage.getItem('theme') || 'light';
-  if (savedTheme === 'dark') {
-    document.documentElement.classList.add('dark-mode');
-  }
-} catch(e) {}
+// 初始化主题 - 默认白色模式
+// 如果要改为"记住用户选择"，把下面一行改为：var savedTheme = localStorage.getItem('theme') || 'light';
+var savedTheme = localStorage.getItem('theme');
+if (!savedTheme) {
+  localStorage.setItem('theme', 'light');
+  savedTheme = 'light';
+}
+if (savedTheme === 'dark') {
+  document.documentElement.classList.add('dark-mode');
+}
+
 
 // 更新图标
 function updateThemeIcon(isDark) {
