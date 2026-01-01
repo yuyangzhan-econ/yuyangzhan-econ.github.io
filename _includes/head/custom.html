@@ -89,68 +89,70 @@
 
 <!-- 黑暗模式脚本 - 必须在head中加载以便按钮点击时函数已定义 -->
 <script>
-// 初始化主题（立即执行，避免闪烁）
-(function() {
-  var currentTheme = localStorage.getItem('theme');
-  if (!currentTheme) {
-    localStorage.setItem('theme', 'light');
-    currentTheme = 'light';
-  }
-  if (currentTheme === 'dark') {
+// 初始化主题
+try {
+  var savedTheme = localStorage.getItem('theme') || 'light';
+  if (savedTheme === 'dark') {
     document.documentElement.classList.add('dark-mode');
   }
-})();
+} catch(e) {}
 
 // 全局切换函数
 function toggleDarkMode() {
-  var body = document.body;
-  var isDark = body.classList.contains('dark-mode');
+  try {
+    var body = document.body;
+    if (!body) return;
 
-  var container = document.createElement('div');
-  container.id = 'theme-bars-container';
-  container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+    var isDark = body.classList.contains('dark-mode');
 
-  var barCount = 10;
-  var barHeight = 100 / barCount;
+    // 创建动画容器
+    var container = document.createElement('div');
+    container.id = 'theme-bars-container';
+    container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
 
-  for (var i = 0; i < barCount; i++) {
-    var bar = document.createElement('div');
-    bar.className = 'theme-bar';
-    bar.style.cssText = 'position:absolute;right:100%;width:100%;top:' + (i * barHeight) + '%;height:' + (barHeight + 0.5) + '%;';
-    bar.style.background = isDark ? '#ffffff' : '#272727';
+    var barCount = 10;
+    var barHeight = 100 / barCount;
 
-    var delay = isDark ? (i * 0.04) : ((barCount - 1 - i) * 0.04);
-    bar.style.transition = 'right 0.7s cubic-bezier(0.65, 0, 0.35, 1) ' + delay + 's';
-
-    container.appendChild(bar);
-  }
-
-  body.appendChild(container);
-
-  setTimeout(function() {
-    var bars = container.querySelectorAll('.theme-bar');
-    for (var j = 0; j < bars.length; j++) {
-      bars[j].style.right = '0';
-    }
-  }, 50);
-
-  var switchTime = ((barCount - 1) * 0.04 + 0.7) * 1000;
-
-  setTimeout(function() {
-    if (isDark) {
-      body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    } else {
-      body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
+    for (var i = 0; i < barCount; i++) {
+      var bar = document.createElement('div');
+      bar.className = 'theme-bar';
+      bar.style.cssText = 'position:absolute;right:100%;width:100%;top:' + (i * barHeight) + '%;height:' + (barHeight + 0.5) + '%;';
+      bar.style.background = isDark ? '#ffffff' : '#272727';
+      var delay = isDark ? (i * 0.04) : ((barCount - 1 - i) * 0.04);
+      bar.style.transition = 'right 0.7s cubic-bezier(0.65, 0, 0.35, 1) ' + delay + 's';
+      container.appendChild(bar);
     }
 
+    body.appendChild(container);
+
+    // 开始动画
     setTimeout(function() {
-      if (container && container.parentNode) {
-        container.parentNode.removeChild(container);
+      var bars = container.querySelectorAll('.theme-bar');
+      for (var j = 0; j < bars.length; j++) {
+        bars[j].style.right = '0';
       }
-    }, 100);
-  }, switchTime);
+    }, 50);
+
+    // 切换主题
+    var switchTime = ((barCount - 1) * 0.04 + 0.7) * 1000;
+    setTimeout(function() {
+      if (isDark) {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+      }
+      // 移除动画容器
+      setTimeout(function() {
+        if (container && container.parentNode) {
+          container.parentNode.removeChild(container);
+        }
+      }, 100);
+    }, switchTime);
+  } catch(e) {
+    console.error('Dark mode toggle error:', e);
+  }
 }
 </script>
 
