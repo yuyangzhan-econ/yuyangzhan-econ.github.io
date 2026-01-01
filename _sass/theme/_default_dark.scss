@@ -33,7 +33,8 @@ $navicon-height             : 4px;
 $sidebar-link-max-width     : 250px;
 $sidebar-screen-min-width   : 1024px;
 
-/* Dark theme for the site - triggered by body.dark-mode class */
+/* Dark theme for the site - triggered by .dark-mode class on html or body */
+html.dark-mode,
 body.dark-mode {
     --global-base-color                 : #{$background};
     --global-bg-color                   : #{$background};

@@ -149,10 +149,15 @@ window.addEventListener('load', function() {
 });
 </script>
 
-<!-- 同步body的dark-mode类（head中已添加到html） -->
+<!-- 同步body的dark-mode类并更新图标 -->
 <script>
-if (localStorage.getItem('theme') === 'dark') {
+var isDarkMode = localStorage.getItem('theme') === 'dark';
+if (isDarkMode) {
   document.body.classList.add('dark-mode');
+}
+// 更新图标
+if (typeof updateThemeIcon === 'function') {
+  updateThemeIcon(isDarkMode);
 }
 </script>
 
