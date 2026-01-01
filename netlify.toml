@@ -1,0 +1,14 @@
+[build]
+  command = "bundle exec jekyll build"
+  publish = "_site"
+
+[build.environment]
+  RUBY_VERSION = "3.2.0"
+  JEKYLL_ENV = "production"
+
+# 预览部署设置
+[context.deploy-preview]
+  command = "bundle exec jekyll build"
+
+[context.branch-deploy]
+  command = "bundle exec jekyll build"
