@@ -23,35 +23,40 @@ layout: default
     {% if page.title %}<meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
     <div class="page__inner-wrap">
 
-      <div class="home-profile">
-        <div class="home-profile__avatar">
-          {% if author.avatar contains "://" %}
-            <img src="{{ author.avatar }}" alt="{{ author.name }}" fetchpriority="high" />
-          {% else %}
-            <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}" fetchpriority="high" />
-          {% endif %}
+      <div class="home-columns">
+
+        <aside class="home-sidebar">
+          <div class="home-profile__avatar">
+            {% if author.avatar contains "://" %}
+              <img src="{{ author.avatar }}" alt="{{ author.name }}" fetchpriority="high" />
+            {% else %}
+              <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}" fetchpriority="high" />
+            {% endif %}
+          </div>
+          <div class="home-profile__info">
+            <h2 class="home-profile__name">{{ author.name }}</h2>
+            {% if author.bio %}<p class="home-profile__bio">{{ author.bio }}</p>{% endif %}
+            <ul class="home-profile__links">
+              {% if author.location %}<li><i class="fas fa-fw fa-location-dot" aria-hidden="true"></i> {{ author.location }}</li>{% endif %}
+              {% if author.employer %}<li><i class="fas fa-fw fa-building-columns" aria-hidden="true"></i> {{ author.employer }}</li>{% endif %}
+              {% if author.email %}<li><a href="mailto:{{ author.email }}"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> {{ author.email }}</a></li>{% endif %}
+              {% if author.github %}<li><a href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>{% endif %}
+              {% if author.googlescholar %}<li><a href="{{ author.googlescholar }}"><i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i> Google Scholar</a></li>{% endif %}
+              {% if author.orcid %}<li><a href="{{ author.orcid }}"><i class="ai ai-orcid ai-fw" aria-hidden="true"></i> ORCID</a></li>{% endif %}
+            </ul>
+          </div>
+        </aside>
+
+        <div class="home-content">
+          <section class="page__content" itemprop="text">
+            {{ content }}
+          </section>
+          <footer class="page__meta">
+            {% include page__taxonomy.html %}
+          </footer>
         </div>
-        <div class="home-profile__info">
-          <h2 class="home-profile__name">{{ author.name }}</h2>
-          {% if author.bio %}<p class="home-profile__bio">{{ author.bio }}</p>{% endif %}
-          <ul class="home-profile__links">
-            {% if author.location %}<li><i class="fas fa-fw fa-location-dot" aria-hidden="true"></i> {{ author.location }}</li>{% endif %}
-            {% if author.employer %}<li><i class="fas fa-fw fa-building-columns" aria-hidden="true"></i> {{ author.employer }}</li>{% endif %}
-            {% if author.email %}<li><a href="mailto:{{ author.email }}"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> {{ author.email }}</a></li>{% endif %}
-            {% if author.github %}<li><a href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>{% endif %}
-            {% if author.googlescholar %}<li><a href="{{ author.googlescholar }}"><i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i> Google Scholar</a></li>{% endif %}
-            {% if author.orcid %}<li><a href="{{ author.orcid }}"><i class="ai ai-orcid ai-fw" aria-hidden="true"></i> ORCID</a></li>{% endif %}
-          </ul>
-        </div>
+
       </div>
-
-      <section class="page__content" itemprop="text">
-        {{ content }}
-      </section>
-
-      <footer class="page__meta">
-        {% include page__taxonomy.html %}
-      </footer>
 
     </div>
   </article>
