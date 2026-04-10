@@ -3,7 +3,7 @@ permalink: /
 title: "Welcome"
 layout: home
 author_profile: false
-hero_image: /images/hero-banner.jpg
+hero_image: /images/v2-de5b20821618189b762916496b3c70d7_r.png
 hero_title: "Welcome"
 redirect_from: 
   - /about/
