@@ -1,7 +1,10 @@
 ---
 permalink: /
-title: "Welcome!"
-author_profile: true
+title: "Welcome"
+layout: home
+author_profile: false
+hero_image: /images/hero-banner.jpg
+hero_title: "Welcome"
 redirect_from: 
   - /about/
   - /about.html

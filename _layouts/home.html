@@ -1,0 +1,70 @@
+---
+layout: default
+---
+
+{% include base_path %}
+{% assign author = site.author %}
+{% if page.author and site.data.authors[page.author] %}
+  {% assign author = site.data.authors[page.author] %}
+{% endif %}
+{% assign hero_img = page.hero_image | default: '/images/hero-banner.jpg' %}
+
+<div class="home-hero" id="home-hero">
+  <div class="home-hero__bg" id="home-hero-bg" style="background-image: url('{{ hero_img }}');"></div>
+  <div class="home-hero__overlay">
+    <div class="home-hero__title-wrap">
+      <h1 class="home-hero__title">{{ page.hero_title | default: "Welcome" }}</h1>
+    </div>
+  </div>
+</div>
+
+<div id="main" class="home-main" role="main">
+  <article class="page home-page" itemscope itemtype="http://schema.org/CreativeWork">
+    {% if page.title %}<meta itemprop="headline" content="{{ page.title | markdownify | strip_html | strip_newlines | escape_once }}">{% endif %}
+    <div class="page__inner-wrap">
+
+      <div class="home-profile">
+        <div class="home-profile__avatar">
+          {% if author.avatar contains "://" %}
+            <img src="{{ author.avatar }}" alt="{{ author.name }}" fetchpriority="high" />
+          {% else %}
+            <img src="{{ author.avatar | prepend: '/images/' | prepend: base_path }}" alt="{{ author.name }}" fetchpriority="high" />
+          {% endif %}
+        </div>
+        <div class="home-profile__info">
+          <h2 class="home-profile__name">{{ author.name }}</h2>
+          {% if author.bio %}<p class="home-profile__bio">{{ author.bio }}</p>{% endif %}
+          <ul class="home-profile__links">
+            {% if author.location %}<li><i class="fas fa-fw fa-location-dot" aria-hidden="true"></i> {{ author.location }}</li>{% endif %}
+            {% if author.employer %}<li><i class="fas fa-fw fa-building-columns" aria-hidden="true"></i> {{ author.employer }}</li>{% endif %}
+            {% if author.email %}<li><a href="mailto:{{ author.email }}"><i class="fas fa-fw fa-envelope" aria-hidden="true"></i> {{ author.email }}</a></li>{% endif %}
+            {% if author.github %}<li><a href="https://github.com/{{ author.github }}"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>{% endif %}
+            {% if author.googlescholar %}<li><a href="{{ author.googlescholar }}"><i class="ai ai-google-scholar ai-fw" aria-hidden="true"></i> Google Scholar</a></li>{% endif %}
+            {% if author.orcid %}<li><a href="{{ author.orcid }}"><i class="ai ai-orcid ai-fw" aria-hidden="true"></i> ORCID</a></li>{% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <section class="page__content" itemprop="text">
+        {{ content }}
+      </section>
+
+      <footer class="page__meta">
+        {% include page__taxonomy.html %}
+      </footer>
+
+    </div>
+  </article>
+</div>
+
+<script>
+(function() {
+  var heroBg = document.getElementById('home-hero-bg');
+  if (!heroBg) { return; }
+  function onScroll() {
+    var scrollY = window.pageYOffset;
+    heroBg.style.transform = 'translateY(' + (scrollY * 0.4) + 'px)';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+})();
+</script>

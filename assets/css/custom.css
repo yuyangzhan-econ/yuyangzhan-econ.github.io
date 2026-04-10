@@ -671,3 +671,188 @@ body.dark-mode .greedy-nav .visible-links a:hover,
 body.dark-mode .masthead__menu-item:hover {
   background-color: rgba(198, 120, 221, 0.1) !important;  /* 轻微的紫色高亮 */
 }
+
+/* ==================== 稍高的导航栏 ==================== */
+.masthead__inner-wrap {
+  padding: 0.85em 1em !important;
+}
+
+body {
+  padding-top: 80px !important;
+}
+
+/* ==================== 首页 Hero Banner ==================== */
+.home-hero {
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.home-hero__bg {
+  position: absolute;
+  top: -30%;
+  left: 0;
+  width: 100%;
+  height: 160%;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-color: #1a2a3a;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.home-hero__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2.5em 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.18) 55%, transparent 100%);
+}
+
+.home-hero__title-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2em;
+}
+
+.home-hero__title {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-size: 3.8em !important;
+  color: #ffffff !important;
+  text-shadow: 2px 2px 14px rgba(0,0,0,0.9) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* ==================== 首页宽内容布局（无侧边栏） ==================== */
+.home-main {
+  max-width: 1100px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 2em !important;
+  padding-right: 2em !important;
+  margin-top: 0 !important;
+}
+
+.home-page {
+  width: 100% !important;
+  float: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .home-main {
+    padding-left: 1.2em !important;
+    padding-right: 1.2em !important;
+  }
+  .home-hero {
+    height: 280px;
+  }
+  .home-hero__title {
+    font-size: 2.4em !important;
+  }
+}
+
+/* ==================== 首页内嵌作者信息 ==================== */
+.home-profile {
+  display: flex;
+  gap: 2.5em;
+  align-items: flex-start;
+  padding: 2.5em 0 2em;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 2em;
+}
+
+.home-profile__avatar img {
+  width: 160px;
+  height: 259px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 4px;
+  display: block;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+
+.home-profile__info {
+  flex: 1;
+  padding-top: 0.5em;
+}
+
+.home-profile__name {
+  font-family: Georgia, serif !important;
+  font-size: 1.6em !important;
+  color: #1a1a1a !important;
+  margin: 0 0 0.4em !important;
+  border: none !important;
+  font-weight: 400 !important;
+}
+
+.home-profile__bio {
+  color: #555 !important;
+  font-size: 0.95em;
+  margin-bottom: 1.2em;
+  line-height: 1.6;
+}
+
+.home-profile__links {
+  list-style: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em 1.8em;
+}
+
+.home-profile__links li {
+  font-size: 0.9em;
+  color: #555;
+  margin: 0 !important;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .home-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .home-profile__links {
+    justify-content: center;
+  }
+}
+
+/* ==================== 黑暗模式 - 首页新元素 ==================== */
+body.dark-mode .home-hero__title {
+  color: #ffffff !important;
+}
+
+body.dark-mode .home-profile {
+  border-bottom-color: #30363d !important;
+}
+
+body.dark-mode .home-profile__name {
+  color: #f0f6fc !important;
+}
+
+body.dark-mode .home-profile__bio,
+body.dark-mode .home-profile__links li {
+  color: #8b949e !important;
+}
+
+body.dark-mode .home-profile__links li a {
+  color: #58a6ff !important;
+  background-image: linear-gradient(to right, #58a6ff, #58a6ff) !important;
+}
+
+body.dark-mode .home-profile__links li a:hover {
+  color: #79c0ff !important;
+  background-size: 100% 1.5px !important;
+}
