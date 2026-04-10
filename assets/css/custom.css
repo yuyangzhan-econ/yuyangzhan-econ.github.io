@@ -503,7 +503,6 @@ body[class*="about"] .page__title {
 body.dark-mode {
   background: #272727 !important;
   color: #c9d1d9 !important;
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* 黑暗模式 - 导航栏 */
