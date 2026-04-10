@@ -87,6 +87,93 @@
 }
 </style>
 
+
+<!-- 黑暗模式脚本 -->
+<script>
+// 初始化主题 - 默认白色模式
+// 如果要改为"记住用户选择"，把下面一行改为：var savedTheme = localStorage.getItem('theme') || 'light';
+var savedTheme = localStorage.getItem('theme');
+if (!savedTheme) {
+  localStorage.setItem('theme', 'light');
+  savedTheme = 'light';
+}
+if (savedTheme === 'dark') {
+  document.documentElement.classList.add('dark-mode');
+}
+
+
+// 更新图标
+function updateThemeIcon(isDark) {
+  var icon = document.getElementById('theme-icon');
+  if (icon) {
+    icon.className = isDark ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+  }
+}
+
+// 全局切换函数
+function toggleDarkMode() {
+  try {
+    var html = document.documentElement;
+    var body = document.body;
+    if (!body) return;
+
+    var isDark = body.classList.contains('dark-mode');
+
+    // 创建动画容器
+    var container = document.createElement('div');
+    container.id = 'theme-bars-container';
+    container.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;';
+
+    var barCount = 10;
+    var barHeight = 100 / barCount;
+
+    for (var i = 0; i < barCount; i++) {
+      var bar = document.createElement('div');
+      bar.className = 'theme-bar';
+      bar.style.cssText = 'position:absolute;right:100%;width:100%;top:' + (i * barHeight) + '%;height:' + (barHeight + 0.5) + '%;';
+      bar.style.background = isDark ? '#ffffff' : '#272727';
+      var delay = isDark ? (i * 0.04) : ((barCount - 1 - i) * 0.04);
+      bar.style.transition = 'right 0.7s cubic-bezier(0.65, 0, 0.35, 1) ' + delay + 's';
+      container.appendChild(bar);
+    }
+
+    body.appendChild(container);
+
+    // 开始动画
+    setTimeout(function() {
+      var bars = container.querySelectorAll('.theme-bar');
+      for (var j = 0; j < bars.length; j++) {
+        bars[j].style.right = '0';
+      }
+    }, 50);
+
+    // 切换主题
+    var switchTime = ((barCount - 1) * 0.04 + 0.7) * 1000;
+    setTimeout(function() {
+      if (isDark) {
+        html.classList.remove('dark-mode');
+        body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        updateThemeIcon(false);
+      } else {
+        html.classList.add('dark-mode');
+        body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        updateThemeIcon(true);
+      }
+      // 移除动画容器
+      setTimeout(function() {
+        if (container && container.parentNode) {
+          container.parentNode.removeChild(container);
+        }
+      }, 300);
+    }, switchTime);
+  } catch(e) {
+    console.error('Dark mode toggle error:', e);
+  }
+}
+</script>
+
 <div id="page-loader">
   <div class="loader-content">
     <div class="loader-text">Loading...</div>

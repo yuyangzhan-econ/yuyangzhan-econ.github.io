@@ -345,5 +345,6 @@ tag_archive:
 # - http://jch.penibelst.de/
 compress_html:
   clippings: all
+  blanklines: true
   ignore:
     envs: development
