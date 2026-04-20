@@ -64,12 +64,17 @@ layout: default
 
 <script>
 (function() {
+  document.body.classList.add('has-hero-banner');
   var heroBg = document.getElementById('home-hero-bg');
-  if (!heroBg) { return; }
+  var hero = document.getElementById('home-hero');
+  if (!heroBg || !hero) { return; }
   function onScroll() {
     var scrollY = window.pageYOffset;
     heroBg.style.transform = 'translateY(' + (scrollY * 0.4) + 'px)';
+    var triggered = scrollY > (hero.offsetHeight - 60);
+    document.body.classList.toggle('navbar-scrolled', triggered);
   }
   window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 })();
 </script>

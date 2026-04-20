@@ -684,10 +684,9 @@ body {
 /* ==================== 首页 Hero Banner ==================== */
 .home-hero {
   position: relative;
-  height: 280px;
+  height: 240px;
   overflow: hidden;
   width: 100%;
-  margin-top: -28px; /* 消除导航栏与hero之间的空隙 */
 }
 
 .home-hero__bg {
@@ -755,11 +754,11 @@ body {
   display: flex;
   gap: 2em;
   align-items: flex-start;
-  padding: 0.8em 0 0;
+  padding: 0.4em 0 0;
 }
 
 .home-sidebar {
-  width: 240px;
+  width: 190px;
   flex-shrink: 0;
 }
 
@@ -774,8 +773,8 @@ body {
 
 /* ==================== 首页左侧作者信息（纵向） ==================== */
 .home-profile__avatar img {
-  width: 240px;
-  height: 388px; /* 黄金比例 240 × 1.618 ≈ 388 */
+  width: 190px;
+  height: 307px; /* 黄金比例 190 × 1.618 ≈ 307 */
   object-fit: cover;
   object-position: center top;
   border-radius: 4px;
@@ -828,7 +827,6 @@ body {
   }
   .home-hero {
     height: 160px;
-    margin-top: -20px;
   }
   .home-hero__title {
     font-size: 2em !important;
@@ -881,4 +879,62 @@ body.dark-mode .home-profile__links li a {
 body.dark-mode .home-profile__links li a:hover {
   color: #79c0ff !important;
   background-size: 100% 1.5px !important;
+}
+
+/* ==================== 首页透明导航栏 ==================== */
+body.has-hero-banner { padding-top: 0 !important; }
+
+body.has-hero-banner .home-hero { margin-top: 0; }
+
+body.has-hero-banner .masthead,
+body.has-hero-banner .masthead__inner-wrap,
+body.has-hero-banner .greedy-nav,
+body.has-hero-banner .masthead__menu-item {
+  background: transparent !important;
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+}
+
+body.has-hero-banner .masthead::after {
+  background: transparent !important;
+  transition: background-color 0.35s ease;
+}
+
+body.has-hero-banner:not(.navbar-scrolled) .masthead a,
+body.has-hero-banner:not(.navbar-scrolled) .greedy-nav a,
+body.has-hero-banner:not(.navbar-scrolled) .masthead__menu a {
+  color: #ffffff !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.55);
+}
+
+body.has-hero-banner:not(.navbar-scrolled) #theme-icon {
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.55);
+}
+
+body.has-hero-banner.navbar-scrolled .masthead,
+body.has-hero-banner.navbar-scrolled .masthead__inner-wrap,
+body.has-hero-banner.navbar-scrolled .greedy-nav,
+body.has-hero-banner.navbar-scrolled .masthead__menu-item {
+  background: var(--global-bg-color) !important;
+}
+
+body.has-hero-banner.navbar-scrolled .masthead::after {
+  background: var(--global-border-color) !important;
+}
+
+body.dark-mode.has-hero-banner.navbar-scrolled .masthead,
+body.dark-mode.has-hero-banner.navbar-scrolled .masthead__inner-wrap,
+body.dark-mode.has-hero-banner.navbar-scrolled .greedy-nav,
+body.dark-mode.has-hero-banner.navbar-scrolled .masthead__menu-item {
+  background: #161b21 !important;
+}
+
+body.dark-mode.has-hero-banner.navbar-scrolled .masthead::after {
+  background: #30363d !important;
+}
+
+/* 首页正文第一个标题紧贴 banner */
+body.has-hero-banner .home-content .page__content > h2:first-child,
+body.has-hero-banner .home-content .page__content > h1:first-child {
+  margin-top: 0 !important;
 }
