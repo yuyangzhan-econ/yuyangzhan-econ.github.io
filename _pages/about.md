@@ -3,7 +3,7 @@ permalink: /
 title: "Welcome"
 layout: home
 author_profile: false
-hero_image: /images/mountain.png
+hero_image: /images/mountain.jpg
 hero_title: "Welcome"
 redirect_from: 
   - /about/
