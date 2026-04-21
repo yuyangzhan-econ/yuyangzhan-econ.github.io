@@ -14,6 +14,22 @@ layout: default
   <div class="home-hero__overlay">
     <div class="home-hero__title-wrap">
       <h1 class="home-hero__title">{{ page.hero_title | default: "Welcome" }}</h1>
+      {% if page.hero_current or page.hero_short_bio %}
+      <div class="home-hero__intro">
+        {% if page.hero_current %}
+        <div class="home-hero__panel">
+          <p class="home-hero__label">Current</p>
+          <p class="home-hero__text">{{ page.hero_current }}</p>
+        </div>
+        {% endif %}
+        {% if page.hero_short_bio %}
+        <div class="home-hero__panel">
+          <p class="home-hero__label">Short Bio</p>
+          <p class="home-hero__text">{{ page.hero_short_bio }}</p>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
   </div>
 </div>
