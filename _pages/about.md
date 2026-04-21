@@ -5,6 +5,8 @@ layout: home
 author_profile: false
 hero_image: /images/mountain.jpg
 hero_title: "Welcome"
+hero_current: "I am looking for a Ph.D. position in economics and predoctoral (pre-doc) positions."
+hero_short_bio: "I am Yuyang Zhan (詹禹阳), a fourth-year undergraduate at Renmin University of China majoring in Labor Economics, interested in Political Economy, Development Economics, and Behavioral Economics."
 redirect_from: 
   - /about/
   - /about.html
@@ -28,5 +30,4 @@ I am interested in the intersections of Political Economy, Development Economics
 - Merit Student, RUC, 2023, 2024
 - International Exchange Scholarship (10,000 rmb, highest), RUC with Dahua Education Fund, 2025
 - Research and Innovation Scholarship (10,000 rmb, highest), RUC with JD.com, Inc., 2025
-
 
