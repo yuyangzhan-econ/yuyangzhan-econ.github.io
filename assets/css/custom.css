@@ -91,7 +91,6 @@ body.dark-mode .cube {
 
 /* 图片懒加载优化 */
 img {
-  loading: lazy;
   content-visibility: auto;
 }
 
@@ -510,7 +509,12 @@ body.dark-mode .masthead,
 body.dark-mode .masthead__inner-wrap,
 body.dark-mode .greedy-nav {
   background: #161b21 !important;
-  border-bottom: 1px solid #30363d !important;
+  border-bottom: none !important;
+}
+
+/* 仅保留一条导航分隔线，避免黑线叠加 */
+body.dark-mode .masthead::after {
+  background: #30363d !important;
 }
 
 body.dark-mode .masthead a,

@@ -18,13 +18,19 @@ await mermaid.run({querySelector:'code.language-mermaid'});
 
 <!-- 简化的滚动淡入效果（性能优化） -->
 <script>
-window.addEventListener('load', function() {
-  document.getElementById('page-loader').style.opacity = '0';
-  setTimeout(function() {
-    document.getElementById('page-loader').style.display = 'none';
-  }, 500);
+(function() {
+  function hideLoader() {
+    var loader = document.getElementById('page-loader');
+    if (!loader || loader.dataset.hidden === 'true') return;
+    loader.dataset.hidden = 'true';
+    loader.style.opacity = '0';
+    setTimeout(function() {
+      loader.style.display = 'none';
+    }, 500);
+  }
 
-  try {
+  function initScrollEffects() {
+    try {
     var lastScroll = window.pageYOffset || 0;
     var scrollingDown = true;
     var elementStates = new WeakMap();
@@ -146,7 +152,25 @@ window.addEventListener('load', function() {
   } catch(e) {
     console.error('Scroll animation error:', e);
   }
-});
+  }
+
+  // 页面可交互后立即隐藏 loader，避免等待所有资源完成
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hideLoader, { once: true });
+  } else {
+    hideLoader();
+  }
+
+  // 兜底：即使外部资源异常，也不会长期卡在 loading
+  setTimeout(hideLoader, 1800);
+
+  // 平滑滚动效果延后到空闲时初始化，降低首屏主线程竞争
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(initScrollEffects, { timeout: 1200 });
+  } else {
+    setTimeout(initScrollEffects, 120);
+  }
+})();
 </script>
 
 <!-- 页面加载时同步 body 的深色模式状态 -->
