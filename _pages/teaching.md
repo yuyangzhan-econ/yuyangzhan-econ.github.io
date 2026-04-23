@@ -9,7 +9,7 @@ author_profile: false
 
 ## Renmin University of China  
 
-### Intermediate Microeconomics (Fall 2025)
+### Intermediate Microeconomics (Fall 2025, Spring 2026)
 Teaching Assistant for [Jun Han](http://slhr.ruc.edu.cn/En/Teacher_Home/HAN_Jun/index.htm), Undergraduate course, Beijing
 
 
