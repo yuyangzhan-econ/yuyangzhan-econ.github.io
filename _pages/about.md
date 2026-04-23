@@ -21,7 +21,7 @@ I am interested in the intersections of Political Economy, Development Economics
 - Sept. 2022 - June 2026: Bachelor of Economics, Renmin University of China (expected)
   
 ### Non-Degree Programs
-- Sept. 2024 - January 2026: MicroMasters Program in Data, Economics, and Design of Policy, Massachusetts Institute of Technology (expected)
+- Sept. 2024 - January 2026: MicroMasters Program in Data, Economics, and Design of Policy, Massachusetts Institute of Technology
 - July 2024: International Summer Institute, Oriel College, University of Oxford
 
 ## Honors and Awards
