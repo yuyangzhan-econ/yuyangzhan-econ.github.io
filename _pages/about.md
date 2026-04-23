@@ -11,12 +11,15 @@ redirect_from:
 I am looking for a Ph.D. position in economics and predoctoral (pre-doc) positions.
 
 ## Short Bio
-I am Yuyang Zhan (詹禹阳, [pronunciation](https://oluxiwen.github.io/pronouncing-chinese-names-guide/)), a forth-year undergraduate student in the [School of Labor and Human Resources](http://slhr.ruc.edu.cn/En/index.htm) at [Renmin University of China](https://en.ruc.edu.cn/), majoring in Labor Economics. You can view my CV [here](https://yuyangzhan-econ.github.io/CV/Yuyang%20Zhan%20CV.pdf).
+I am Yuyang Zhan (詹禹阳, [pronunciation](https://oluxiwen.github.io/pronouncing-chinese-names-guide/)), a forth-year undergraduate student majoring in Economics at [Renmin University of China](https://en.ruc.edu.cn/). I have been accepted into the [Master of Applied Science in Data, Economics, and Design of Policy program](https://economics.mit.edu/academic-programs/masters-programs/master-data-economics-and-design-policy-dedp) at the [Massachusetts Institute of Technology](https://web.mit.edu/https://web.mit.edu/). You can view my CV [here](https://yuyangzhan-econ.github.io/CV/Yuyang%20Zhan%20CV.pdf).
 
 I am interested in the intersections of Political Economy, Development Economics, and Behavioral Economics. I explore how individuals' beliefs, ideology, social norms, and cognitive biases interact with development and political outcomes. Currently, I am particularly interested in how misperceptions about others' beliefs create economically meaningful impacts, and how information interventions can correct these biases.  Besides, I am also interested in probabilistic judgment. Scroll down to see more information.
 
 ## Education
+### Degree Programs
+- Not yet enrolled: Master of Applied Science in Data, Economics, and Design of Policy program, Massachusetts Institute of Technology
 - Sept. 2022 - June 2026: Bachelor of Economics, Renmin University of China (expected)
+### Non-Degree Programs
 - Sept. 2024 - January 2026: MicroMasters Program in Data, Economics, and Design of Policy, Massachusetts Institute of Technology (expected)
 - July 2024: International Summer Institute, Oriel College, University of Oxford
 
