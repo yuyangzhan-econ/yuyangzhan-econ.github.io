@@ -80,6 +80,14 @@ main { min-width: 0; outline: 0; }
 .current-note { margin: 15px 0 0; color: var(--muted); font-size: 15px; }
 .subheading { font: 400 17px/1.32 var(--heading-font); letter-spacing: 0; margin-bottom: 13px; }
 
+/* Chinese names use a lighter Song-style serif independently from the Latin font. */
+.bio-copy [lang="zh-Hans"],
+.profile-name [lang="zh-Hans"] {
+  font-family: "Songti SC", STSong, "Songti TC", SimSun, serif;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
 /* Long-form prose is justified on both sides; labels, titles, dates and navigation are not stretched. */
 .bio-copy p,
 .abstract-body p,
