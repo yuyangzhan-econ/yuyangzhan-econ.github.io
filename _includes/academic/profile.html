@@ -1,0 +1,11 @@
+<aside class="profile" aria-label="About Yuyang Zhan">
+  <h1 class="profile-name">{{ site.author.name }}<span lang="zh-Hans">{{ site.author.chinese_name }}</span></h1>
+  <img class="profile-photo" src="{{ '/images/yuyang-zhan.jpg' | relative_url }}" width="600" height="750" alt="Portrait of Yuyang Zhan" fetchpriority="high">
+  <div class="profile-identity">
+    <p class="profile-role">{{ site.author.bio }}</p>
+    <p><a href="{{ site.author.university_url }}">{{ site.author.employer }}</a></p>
+    <p class="profile-location">{{ site.author.location }}</p>
+  </div>
+  <p class="profile-email"><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></p>
+  <p class="profile-links"><a href="{{ site.cv_path | relative_url }}">CV</a><span aria-hidden="true"> / </span><a href="https://github.com/{{ site.author.github }}">GitHub</a></p>
+</aside>
