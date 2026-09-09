@@ -19,12 +19,13 @@
       button.title = label;
       document.querySelector('#theme-color')?.setAttribute('content', dark ? '#272727' : '#ffffff');
     };
-    sync(root.dataset.theme === 'dark');
+    // Every new page load starts in light mode. Theme choice is intentionally not persisted.
+    sync(false);
     button.hidden = false;
     button.addEventListener('click', async () => {
       if (button.disabled) return;
       const dark = root.dataset.theme !== 'dark';
-      const apply = () => { sync(dark); storage.write('theme', dark ? 'dark' : 'light'); };
+      const apply = () => sync(dark);
       if (reducedMotion.matches || !Element.prototype.animate) { apply(); return; }
       button.disabled = true;
       const overlay = document.createElement('div');
@@ -52,7 +53,6 @@
   }
 
   function initReveals() {
-    // Keep seen sections when visiting Personal and returning. A reload resets them.
     const key = 'academic-sections-seen-v1';
     if (performance.getEntriesByType('navigation')[0]?.type === 'reload') storage.write(key, '[]', true);
     let seen;
@@ -79,7 +79,6 @@
     reducedMotion.addEventListener('change', event => {
       if (event.matches) { sections.forEach(reveal); observer.disconnect(); }
     });
-    // A keyboard user must never focus a still-dim interactive control.
     sections.forEach(section => section.addEventListener('focusin', () => { reveal(section); observer.unobserve(section); }));
   }
 
@@ -123,11 +122,10 @@
       try {
         const url = new URL(link.href);
         if (url.pathname === location.pathname && url.pathname.endsWith('/personal/')) link.setAttribute('aria-current', 'page');
-      } catch (_) { /* A self-contained offline preview has no HTTP base URL. */ }
+      } catch (_) {}
     });
   }
 
-  // Each feature fails independently; content is visible without JavaScript.
   [initTheme, initReveals, initAbstracts, initNavigation].forEach(init => {
     try { init(); } catch (error) {
       if (init === initReveals) document.querySelectorAll('.reveal-pending').forEach(section => section.classList.remove('reveal-pending'));
