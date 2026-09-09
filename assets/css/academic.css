@@ -79,6 +79,19 @@ main { min-width: 0; outline: 0; }
 .content-section:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
 .current-note { margin: 15px 0 0; color: var(--muted); font-size: 15px; }
 .subheading { font: 400 17px/1.32 var(--heading-font); letter-spacing: 0; margin-bottom: 13px; }
+
+/* Long-form prose is justified on both sides; labels, titles, dates and navigation are not stretched. */
+.bio-copy p,
+.abstract-body p,
+#teaching > p,
+.teaching-entry > p:not(.entry-meta),
+.personal > p:not(.back-link) {
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
+  hyphens: auto;
+}
+
 .research-paper,
 .teaching-entry { line-height: 1.34; }
 .entry-title { font: 500 16px/1.32 var(--body-font); letter-spacing: -.008em; margin-bottom: 2px; }
@@ -91,9 +104,10 @@ main { min-width: 0; outline: 0; }
 .teaching-entry + .teaching-entry { margin-top: 28px; }
 .teaching-entry p:last-child { margin-bottom: 0; }
 .paper-abstract { margin: 0; }
+.paper-abstract.is-animating { overflow: hidden; }
 .paper-abstract summary { display: table; cursor: pointer; list-style: none; color: var(--link); padding: 1px 0; font: 400 15.5px/1.32 var(--body-font); }
 .paper-abstract summary::-webkit-details-marker { display: none; }
-.paper-abstract summary::before { content: "▸"; display: inline-block; font-size: 11px; margin-right: 6px; transition: transform .22s ease; }
+.paper-abstract summary::before { content: "▸"; display: inline-block; font-size: 11px; margin-right: 6px; transition: transform .26s ease; }
 .paper-abstract[open] summary::before { transform: rotate(90deg); }
 .paper-abstract summary span { background: linear-gradient(var(--link),var(--link)) left bottom / 0 1px no-repeat; padding-bottom: 1px; transition: background-size .3s ease; }
 .paper-abstract summary:hover span { background-size: 100% 1px; }
