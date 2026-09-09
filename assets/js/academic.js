@@ -85,27 +85,51 @@
   function initAbstracts() {
     document.querySelectorAll('details.paper-abstract').forEach(details => {
       const summary = details.querySelector('summary');
-      const body = details.querySelector('.abstract-body');
-      if (!summary || !body) return;
+      if (!summary) return;
       let animation = null;
-      let desiredOpen = details.open;
+
+      const cleanUp = () => {
+        details.style.height = '';
+        details.classList.remove('is-animating');
+        animation = null;
+      };
+
+      const animateOpen = () => {
+        const startHeight = details.offsetHeight;
+        details.open = true;
+        const endHeight = details.offsetHeight;
+        details.style.height = `${startHeight}px`;
+        details.classList.add('is-animating');
+        animation = details.animate(
+          { height: [`${startHeight}px`, `${endHeight}px`] },
+          { duration: 320, easing: 'cubic-bezier(.22,.61,.36,1)' }
+        );
+        animation.onfinish = cleanUp;
+        animation.oncancel = cleanUp;
+      };
+
+      const animateClose = () => {
+        const startHeight = details.offsetHeight;
+        const endHeight = summary.offsetHeight;
+        details.style.height = `${startHeight}px`;
+        details.classList.add('is-animating');
+        animation = details.animate(
+          { height: [`${startHeight}px`, `${endHeight}px`] },
+          { duration: 280, easing: 'cubic-bezier(.4,0,.2,1)' }
+        );
+        animation.onfinish = () => {
+          details.open = false;
+          cleanUp();
+        };
+        animation.oncancel = cleanUp;
+      };
+
       summary.addEventListener('click', event => {
         if (reducedMotion.matches || !Element.prototype.animate) return;
         event.preventDefault();
-        desiredOpen = animation ? !desiredOpen : !details.open;
-        const start = details.getBoundingClientRect().height;
-        if (animation) { animation.onfinish = null; animation.cancel(); }
-        details.style.height = `${start}px`;
-        details.style.overflow = 'hidden';
-        details.open = true;
-        const end = desiredOpen ? summary.getBoundingClientRect().height + body.getBoundingClientRect().height : summary.getBoundingClientRect().height;
-        animation = details.animate({ height: [`${start}px`, `${end}px`] }, { duration: 240, easing: 'ease-in-out' });
-        animation.onfinish = () => {
-          details.open = desiredOpen;
-          details.style.height = '';
-          details.style.overflow = '';
-          animation = null;
-        };
+        if (animation) animation.cancel();
+        if (details.open) animateClose();
+        else animateOpen();
       });
     });
   }
