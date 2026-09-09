@@ -11,14 +11,14 @@ site_theme: default
 author:
   name: Yuyang Zhan
   chinese_name: 詹禹阳
-  avatar: yuyang-zhan.jpg
+  avatar: image.png
   bio: Visiting Student
   location: Berkeley, CA
   employer: University of California, Berkeley
   university_url: https://www.berkeley.edu/
   email: yuyang.zhan@berkeley.edu
   github: yuyangzhan-econ
-cv_path: /CV/Yuyang-Zhan-2026.pdf
+cv_path: "/CV/Yuyang Zhan CV.pdf"
 publication_category:
   books:
     title: Books
