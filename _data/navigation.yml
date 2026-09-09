@@ -1,6 +1,6 @@
 main:
   - title: CV
-    url: /CV/Yuyang-Zhan-2026.pdf
+    url: "/CV/Yuyang Zhan CV.pdf"
   - title: Research
     url: /#research
   - title: Teaching
