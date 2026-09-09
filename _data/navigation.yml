@@ -5,5 +5,9 @@ main:
     url: /#research
   - title: Teaching
     url: /#teaching
+  - title: Education
+    url: /#education
+  - title: Awards
+    url: /#honors
   - title: Personal
     url: /personal/
