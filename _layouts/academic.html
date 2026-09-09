@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} · {{ site.name }}</title>
+  <meta name="description" content="{{ site.description | escape }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page.title }} · {{ site.name }}">
+  <meta property="og:description" content="{{ site.description | escape }}">
+  <meta property="og:image" content="{{ '/images/image.png' | absolute_url }}">
+  <meta name="theme-color" content="#ffffff" id="theme-color">
+  <link rel="icon" href="{{ '/images/favicon.svg' | relative_url }}" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/academic.css' | relative_url }}">
+  <script src="{{ '/assets/js/academic.js' | relative_url }}" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include academic/nav.html %}
+  <div class="site-shell{% if page.hide_profile %} site-shell--single{% endif %}">
+    {% unless page.hide_profile %}{% include academic/profile.html %}{% endunless %}
+    <main id="main" tabindex="-1">{{ content }}</main>
+  </div>
+  <footer class="site-footer"><span>© 2026 {{ site.name }}</span><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></footer>
+</body>
+</html>
