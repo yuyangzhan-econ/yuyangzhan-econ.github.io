@@ -21,8 +21,8 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   {% include academic/nav.html %}
-  <div class="site-shell">
-    {% include academic/profile.html %}
+  <div class="site-shell{% if page.hide_profile %} site-shell--single{% endif %}">
+    {% unless page.hide_profile %}{% include academic/profile.html %}{% endunless %}
     <main id="main" tabindex="-1">{{ content }}</main>
   </div>
   <footer class="site-footer"><span>© 2026 {{ site.name }}</span><a href="mailto:{{ site.author.email }}">{{ site.author.email }}</a></footer>
